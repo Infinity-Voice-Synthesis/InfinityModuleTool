@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Infinity组件工具</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="src.qrc">
+    <normaloff>:/pic/icon/LOGO.png</normaloff>:/pic/icon/LOGO.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>2</number>
+      </property>
+      <widget class="QWidget" name="engine">
+       <attribute name="title">
+        <string>引擎</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="database">
+       <attribute name="title">
+        <string>声库</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="dictionary">
+       <attribute name="title">
+        <string>字典</string>
+       </attribute>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>字典名称</string>
+          </property>
+          <property name="buddy">
+           <cstring>dicname</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="dicname">
+          <property name="placeholderText">
+           <string>请输入字典名称</string>
+          </property>
+          <property name="clearButtonEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QSplitter" name="splitter">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QTableWidget" name="charactertable">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="showGrid">
+            <bool>true</bool>
+           </property>
+           <property name="gridStyle">
+            <enum>Qt::SolidLine</enum>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="cornerButtonEnabled">
+            <bool>true</bool>
+           </property>
+           <attribute name="horizontalHeaderCascadingSectionResizes">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+            <bool>true</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>name</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>CP</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>PP</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>VSP</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>VEP</string>
+            </property>
+           </column>
+          </widget>
+          <widget class="QTableWidget" name="translatetable">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::DoubleClicked</set>
+           </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="showGrid">
+            <bool>true</bool>
+           </property>
+           <property name="gridStyle">
+            <enum>Qt::SolidLine</enum>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="cornerButtonEnabled">
+            <bool>true</bool>
+           </property>
+           <attribute name="horizontalHeaderCascadingSectionResizes">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+            <bool>true</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string>字</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>发音</string>
+            </property>
+           </column>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>引擎</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave_as"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>声库</string>
+    </property>
+    <addaction name="actionNew_2"/>
+    <addaction name="actionOpen_2"/>
+    <addaction name="actionSave_as_2"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>封装</string>
+    </property>
+    <addaction name="actionFiles"/>
+    <addaction name="actionSign"/>
+    <addaction name="actionBuild"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>关于</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="actionDeveloper"/>
+   </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>字典</string>
+    </property>
+    <addaction name="actionNew_dic"/>
+    <addaction name="actionOpen_dic"/>
+    <addaction name="actionSave_dic"/>
+    <addaction name="separator"/>
+    <addaction name="actionFrom_cedict"/>
+    <addaction name="separator"/>
+    <addaction name="actionAutoC"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_5"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionNew">
+   <property name="text">
+    <string>新信息表</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>读取信息表</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="text">
+    <string>保存信息表</string>
+   </property>
+  </action>
+  <action name="actionNew_2">
+   <property name="text">
+    <string>新信息表</string>
+   </property>
+  </action>
+  <action name="actionOpen_2">
+   <property name="text">
+    <string>读取信息表</string>
+   </property>
+  </action>
+  <action name="actionSave_as_2">
+   <property name="text">
+    <string>保存信息表</string>
+   </property>
+  </action>
+  <action name="actionBuild">
+   <property name="text">
+    <string>封装组件</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>关于</string>
+   </property>
+  </action>
+  <action name="actionDeveloper">
+   <property name="text">
+    <string>验证开发者身份</string>
+   </property>
+  </action>
+  <action name="actionFiles">
+   <property name="text">
+    <string>生成文件树</string>
+   </property>
+  </action>
+  <action name="actionNew_dic">
+   <property name="text">
+    <string>新字典</string>
+   </property>
+  </action>
+  <action name="actionOpen_dic">
+   <property name="text">
+    <string>读取字典</string>
+   </property>
+  </action>
+  <action name="actionSave_dic">
+   <property name="text">
+    <string>保存字典</string>
+   </property>
+  </action>
+  <action name="actionFrom_cedict">
+   <property name="text">
+    <string>从cedict字典导入</string>
+   </property>
+  </action>
+  <action name="actionSign">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>签名</string>
+   </property>
+  </action>
+  <action name="actionAutoC">
+   <property name="text">
+    <string>识别辅音开头的发音并设置默认CP</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="src.qrc"/>
+ </resources>
+ <connections/>
+</ui>

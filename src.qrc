@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>icon/LOGO.ico</file>
+    </qresource>
+    <qresource prefix="/pic">
+        <file>icon/LOGO.png</file>
+    </qresource>
+    <qresource prefix="/other">
+        <file>developer.json</file>
+    </qresource>
+</RCC>
