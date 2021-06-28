@@ -22,6 +22,8 @@
 #include <QDebug>
 #include <QPixmap>
 #include "version.h"
+#include <QTableWidgetItem>
+#include "ParamDialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -67,5 +69,11 @@ private slots:
     void on_actionAutoC_triggered();
     void on_loadenginemain_clicked();
     void on_openengineicon_clicked();
+    void on_ewplist_currentItemChanged(QTableWidgetItem* item1, QTableWidgetItem* item2);
+    void on_ewpadd_clicked();
+    void on_ewpedit_clicked();
+    void on_ewpdel_clicked();
+    void on_ewpup_clicked();
+    void on_ewpdown_clicked();
 };
 #endif // MAINWINDOW_H

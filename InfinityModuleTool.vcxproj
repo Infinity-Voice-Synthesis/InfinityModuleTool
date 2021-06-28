@@ -208,12 +208,14 @@
     <ClCompile Include="developerdialog.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="ParamDialog.cpp" />
     <ClCompile Include="QIconWidget.cpp" />
     <ClCompile Include="rsasignature.cpp" />
     <ClCompile Include="transeditdialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QIconWidget.h" />
+    <QtMoc Include="ParamDialog.h" />
     <ClInclude Include="version.h" />
     <QtMoc Include="chareditdialog.h">
     </QtMoc>
@@ -250,6 +252,7 @@
     </QtUic>
     <QtUic Include="mainwindow.ui">
     </QtUic>
+    <QtUic Include="ParamDialog.ui" />
     <QtUic Include="QIconWidget.ui" />
     <QtUic Include="transeditdialog.ui">
     </QtUic>

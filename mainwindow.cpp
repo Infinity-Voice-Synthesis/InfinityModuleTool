@@ -572,3 +572,49 @@ void MainWindow::on_openengineicon_clicked()
         ui->engineicon->setPix(pix);
     }
 }
+
+void MainWindow::on_ewplist_currentItemChanged(QTableWidgetItem* item1, QTableWidgetItem* item2)
+{
+    Q_UNUSED(item1);
+    Q_UNUSED(item2);
+    int index = ui->ewplist->currentRow();
+    if (index >= 0 && index < ui->ewplist->rowCount()) {
+        ui->ewpadd->setEnabled(true);
+        ui->ewpedit->setEnabled(true);
+        ui->ewpdel->setEnabled(true);
+        ui->ewpup->setEnabled(true);
+        ui->ewpdown->setEnabled(true);
+    }
+    else {
+        ui->ewpadd->setEnabled(true);
+        ui->ewpedit->setEnabled(false);
+        ui->ewpdel->setEnabled(false);
+        ui->ewpup->setEnabled(false);
+        ui->ewpdown->setEnabled(false);
+    }
+}
+
+void MainWindow::on_ewpadd_clicked()
+{
+
+}
+
+void MainWindow::on_ewpedit_clicked()
+{
+
+}
+
+void MainWindow::on_ewpdel_clicked()
+{
+
+}
+
+void MainWindow::on_ewpup_clicked()
+{
+
+}
+
+void MainWindow::on_ewpdown_clicked()
+{
+
+}

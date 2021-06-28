@@ -15,6 +15,7 @@ QIconWidget::~QIconWidget()
 
 void QIconWidget::paintEvent(QPaintEvent* event)
 {
+	Q_UNUSED(event);
 	if (pix.width() != 0 && pix.height() != 0) {
 		QPainter painter(this);
 
@@ -31,6 +32,7 @@ void QIconWidget::paintEvent(QPaintEvent* event)
 
 void QIconWidget::resizeEvent(QResizeEvent* event)
 {
+	Q_UNUSED(event);
 	repaint();
 }
 
