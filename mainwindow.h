@@ -20,6 +20,7 @@
 #include <QFileInfo>
 #include <QMap>
 #include <QDebug>
+#include <QPixmap>
 #include "version.h"
 
 QT_BEGIN_NAMESPACE
@@ -64,5 +65,7 @@ private slots:
     void on_actionSave_dic_triggered();
     void on_actionFrom_cedict_triggered();
     void on_actionAutoC_triggered();
+    void on_loadenginemain_clicked();
+    void on_openengineicon_clicked();
 };
 #endif // MAINWINDOW_H

@@ -13,9 +13,12 @@ class QIconWidget : public QWidget
 public:
 	QIconWidget(QWidget *parent = Q_NULLPTR);
 	~QIconWidget();
+	void setPix(QPixmap pix);
+	QPixmap getPix();
 
 private:
 	Ui::QIconWidget *ui;
+	QPixmap pix;
 protected:
 	void paintEvent(QPaintEvent* event);
 	void resizeEvent(QResizeEvent* event);

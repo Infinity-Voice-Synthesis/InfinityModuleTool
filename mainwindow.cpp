@@ -550,3 +550,25 @@ void MainWindow::on_actionAutoC_triggered()
     }
     ui->tabWidget->setCurrentIndex(2);
 }
+
+void MainWindow::on_loadenginemain_clicked()
+{
+    QString name = QFileDialog::getOpenFileName(this, "select the engine", QDir::currentPath(), "Infinity engine(*.dll)");
+    if (!name.isEmpty()) {
+        QFileInfo filei(name);
+        QDir::setCurrent(filei.absolutePath());
+        ui->enginemain->setText(filei.fileName());
+    }
+}
+
+void MainWindow::on_openengineicon_clicked()
+{
+    QString name = QFileDialog::getOpenFileName(this, "select the icon", QDir::currentPath(), "Image files(*.jpg *.jpeg *.png *.bmp)");
+    if (!name.isEmpty()) {
+        QFileInfo filei(name);
+        QDir::setCurrent(filei.absolutePath());
+        ui->engineiconname->setText(name);
+        QPixmap pix(name);
+        ui->engineicon->setPix(pix);
+    }
+}
