@@ -40,4 +40,10 @@ void ParamDialog::on_buttonBox_accepted()
 	this->max = ui->max->value();
 	this->min = ui->min->value();
 	this->def = ui->def->value();
+	this->close();
+}
+
+void ParamDialog::on_buttonBox_rejected()
+{
+	this->close();
 }

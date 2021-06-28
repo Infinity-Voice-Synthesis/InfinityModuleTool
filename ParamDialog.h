@@ -22,4 +22,5 @@ private slots:
 	void on_max_valueChanged(double value);
 	void on_min_valueChanged(double value);
 	void on_buttonBox_accepted();
+	void on_buttonBox_rejected();
 };

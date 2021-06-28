@@ -268,6 +268,41 @@ void MainWindow::settransrow(int row, QString name, QString phoneme)
     ui->translatetable->setItem(row,1,item);
 }
 
+void MainWindow::setewprow(int row, QString name, double max, double min, double def)
+{
+    QTableWidgetItem* item;
+
+    item = new QTableWidgetItem(name);
+    ui->ewplist->setItem(row, 0, item);
+
+    item = new QTableWidgetItem(QString::number(max));
+    ui->ewplist->setItem(row, 1, item);
+
+    item = new QTableWidgetItem(QString::number(min));
+    ui->ewplist->setItem(row, 2, item);
+
+    item = new QTableWidgetItem(QString::number(def));
+    ui->ewplist->setItem(row, 3, item);
+}
+
+void MainWindow::setenprow(int row, QString name, double max, double min, double def)
+{
+    QTableWidgetItem* item;
+
+    item = new QTableWidgetItem(name);
+    ui->enplist->setItem(row, 0, item);
+
+    item = new QTableWidgetItem(QString::number(max));
+    ui->enplist->setItem(row, 1, item);
+
+    item = new QTableWidgetItem(QString::number(min));
+    ui->enplist->setItem(row, 2, item);
+
+    item = new QTableWidgetItem(QString::number(def));
+    ui->enplist->setItem(row, 3, item);
+}
+
+
 void MainWindow::on_actionNew_dic_triggered()
 {
     QString name=QInputDialog::getText(this,"input the dictionary name","dictionary name",QLineEdit::Normal,"",nullptr,Qt::Dialog|Qt::WindowCloseButtonHint);
@@ -582,8 +617,18 @@ void MainWindow::on_ewplist_currentItemChanged(QTableWidgetItem* item1, QTableWi
         ui->ewpadd->setEnabled(true);
         ui->ewpedit->setEnabled(true);
         ui->ewpdel->setEnabled(true);
-        ui->ewpup->setEnabled(true);
-        ui->ewpdown->setEnabled(true);
+        if (index > 0) {
+            ui->ewpup->setEnabled(true);
+        }
+        else {
+            ui->ewpup->setEnabled(false);
+        }
+        if (index < ui->ewplist->rowCount() - 1) {
+            ui->ewpdown->setEnabled(true);
+        }
+        else {
+            ui->ewpdown->setEnabled(false);
+        }
     }
     else {
         ui->ewpadd->setEnabled(true);
@@ -596,25 +641,327 @@ void MainWindow::on_ewplist_currentItemChanged(QTableWidgetItem* item1, QTableWi
 
 void MainWindow::on_ewpadd_clicked()
 {
-
+    ParamDialog pd(this);
+    pd.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+    pd.exec();
+    if (!pd.name.isEmpty()) {
+        ui->ewplist->insertRow(0);
+        this->setewprow(0, pd.name, pd.max, pd.min, pd.def);
+    }
 }
 
 void MainWindow::on_ewpedit_clicked()
 {
-
+    int index = ui->ewplist->currentRow();
+    ParamDialog pd(this);
+    pd.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+    pd.setparam(
+        ui->ewplist->item(index, 0)->text(),
+        ui->ewplist->item(index, 1)->text().toDouble(),
+        ui->ewplist->item(index, 2)->text().toDouble(),
+        ui->ewplist->item(index, 3)->text().toDouble()
+    );
+    pd.exec();
+    if (!pd.name.isEmpty()) {
+        this->setewprow(index, pd.name, pd.max, pd.min, pd.def);
+    }
 }
 
 void MainWindow::on_ewpdel_clicked()
 {
-
+    int index = ui->ewplist->currentRow();
+    ui->ewplist->removeRow(index);
 }
 
 void MainWindow::on_ewpup_clicked()
 {
-
+    int index = ui->ewplist->currentRow();
+    QString namet = ui->ewplist->item(index - 1, 0)->text();
+    double maxt = ui->ewplist->item(index - 1, 1)->text().toDouble();
+    double mint = ui->ewplist->item(index - 1, 2)->text().toDouble();
+    double deft = ui->ewplist->item(index - 1, 3)->text().toDouble();
+    this->setewprow(
+        index - 1,
+        ui->ewplist->item(index, 0)->text(),
+        ui->ewplist->item(index, 1)->text().toDouble(),
+        ui->ewplist->item(index, 2)->text().toDouble(),
+        ui->ewplist->item(index, 3)->text().toDouble()
+        );
+    this->setewprow(index, namet, maxt, mint, deft);
 }
 
 void MainWindow::on_ewpdown_clicked()
 {
+    int index = ui->ewplist->currentRow();
+    QString namet = ui->ewplist->item(index + 1, 0)->text();
+    double maxt = ui->ewplist->item(index + 1, 1)->text().toDouble();
+    double mint = ui->ewplist->item(index + 1, 2)->text().toDouble();
+    double deft = ui->ewplist->item(index + 1, 3)->text().toDouble();
+    this->setewprow(
+        index + 1,
+        ui->ewplist->item(index, 0)->text(),
+        ui->ewplist->item(index, 1)->text().toDouble(),
+        ui->ewplist->item(index, 2)->text().toDouble(),
+        ui->ewplist->item(index, 3)->text().toDouble()
+    );
+    this->setewprow(index, namet, maxt, mint, deft);
+}
 
+void MainWindow::on_enplist_currentItemChanged(QTableWidgetItem* item1, QTableWidgetItem* item2)
+{
+    Q_UNUSED(item1);
+    Q_UNUSED(item2);
+    int index = ui->enplist->currentRow();
+    if (index >= 0 && index < ui->enplist->rowCount()) {
+        ui->enpadd->setEnabled(true);
+        ui->enpedit->setEnabled(true);
+        ui->enpdel->setEnabled(true);
+        if (index > 0) {
+            ui->enpup->setEnabled(true);
+        }
+        else {
+            ui->enpup->setEnabled(false);
+        }
+        if (index < ui->enplist->rowCount() - 1) {
+            ui->enpdown->setEnabled(true);
+        }
+        else {
+            ui->enpdown->setEnabled(false);
+        }
+    }
+    else {
+        ui->enpadd->setEnabled(true);
+        ui->enpedit->setEnabled(false);
+        ui->enpdel->setEnabled(false);
+        ui->enpup->setEnabled(false);
+        ui->enpdown->setEnabled(false);
+    }
+}
+
+void MainWindow::on_enpadd_clicked()
+{
+    ParamDialog pd(this);
+    pd.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+    pd.exec();
+    if (!pd.name.isEmpty()) {
+        ui->enplist->insertRow(0);
+        this->setenprow(0, pd.name, pd.max, pd.min, pd.def);
+    }
+}
+
+void MainWindow::on_enpedit_clicked()
+{
+    int index = ui->enplist->currentRow();
+    ParamDialog pd(this);
+    pd.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+    pd.setparam(
+        ui->enplist->item(index, 0)->text(),
+        ui->enplist->item(index, 1)->text().toDouble(),
+        ui->enplist->item(index, 2)->text().toDouble(),
+        ui->enplist->item(index, 3)->text().toDouble()
+    );
+    pd.exec();
+    if (!pd.name.isEmpty()) {
+        this->setenprow(index, pd.name, pd.max, pd.min, pd.def);
+    }
+}
+
+void MainWindow::on_enpdel_clicked()
+{
+    int index = ui->enplist->currentRow();
+    ui->enplist->removeRow(index);
+}
+
+void MainWindow::on_enpup_clicked()
+{
+    int index = ui->enplist->currentRow();
+    QString namet = ui->enplist->item(index - 1, 0)->text();
+    double maxt = ui->enplist->item(index - 1, 1)->text().toDouble();
+    double mint = ui->enplist->item(index - 1, 2)->text().toDouble();
+    double deft = ui->enplist->item(index - 1, 3)->text().toDouble();
+    this->setenprow(
+        index - 1,
+        ui->enplist->item(index, 0)->text(),
+        ui->enplist->item(index, 1)->text().toDouble(),
+        ui->enplist->item(index, 2)->text().toDouble(),
+        ui->enplist->item(index, 3)->text().toDouble()
+    );
+    this->setenprow(index, namet, maxt, mint, deft);
+}
+
+void MainWindow::on_enpdown_clicked()
+{
+    int index = ui->enplist->currentRow();
+    QString namet = ui->enplist->item(index + 1, 0)->text();
+    double maxt = ui->enplist->item(index + 1, 1)->text().toDouble();
+    double mint = ui->enplist->item(index + 1, 2)->text().toDouble();
+    double deft = ui->enplist->item(index + 1, 3)->text().toDouble();
+    this->setenprow(
+        index + 1,
+        ui->enplist->item(index, 0)->text(),
+        ui->enplist->item(index, 1)->text().toDouble(),
+        ui->enplist->item(index, 2)->text().toDouble(),
+        ui->enplist->item(index, 3)->text().toDouble()
+    );
+    this->setenprow(index, namet, maxt, mint, deft);
+}
+
+void MainWindow::on_actionNew_triggered()
+{
+    ui->enginename->clear();
+    ui->enginemain->clear();
+    ui->engineiconname->clear();
+    ui->engineicon->setPix(QPixmap());
+    ui->engineauthor->clear();
+    ui->engineversion->setValue(0.1);
+    ui->engineinfor->clear();
+    while (ui->ewplist->rowCount() > 0) {
+        ui->ewplist->removeRow(0);
+    }
+    while (ui->enplist->rowCount() > 0) {
+        ui->enplist->removeRow(0);
+    }
+    ui->tabWidget->setCurrentIndex(0);
+    ui->toolBox->setCurrentIndex(0);
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString filen = QFileDialog::getOpenFileName(this, "open engine information form", QDir::currentPath(), "Infinity engine information(*.ifteinfor)");
+    if (!filen.isEmpty()) {
+        QFileInfo filei(filen);
+        QDir::setCurrent(filei.absolutePath());
+
+        QFile file(filen);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+            file.close();
+            if (jd.isObject()) {
+                QJsonObject jo = jd.object();
+
+                if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+                    ui->enginename->setText(jo.find("name")->toString());
+                    ui->enginemain->setText(jo.find("main")->toString());
+                    ui->engineiconname->setText("From information form");
+                    QPixmap pix;
+                    pix.loadFromData(QByteArray::fromBase64(jo.find("icon")->toString().toLocal8Bit()));
+                    ui->engineicon->setPix(pix);
+                    ui->engineauthor->setText(jo.find("author")->toString());
+                    ui->engineversion->setValue(jo.find("version")->toDouble());
+                    ui->engineinfor->setPlainText(jo.find("infor")->toString());
+
+                    QJsonArray ewpa = jo.find("ewp")->toArray();
+                    QJsonArray enpa = jo.find("enp")->toArray();
+
+                    while (ui->ewplist->rowCount() > 0) {
+                        ui->ewplist->removeRow(0);
+                    }
+                    while (ui->enplist->rowCount() > 0) {
+                        ui->enplist->removeRow(0);
+                    }
+
+                    for (int i = 0; i < ewpa.size(); i++) {
+                        QJsonObject sjo = ewpa.at(i).toObject();
+                        int index = ui->ewplist->rowCount();
+                        ui->ewplist->insertRow(index);
+                        this->setewprow(
+                            index,
+                            sjo.find("name")->toString(),
+                            sjo.find("max")->toDouble(),
+                            sjo.find("min")->toDouble(),
+                            sjo.find("default")->toDouble()
+                        );
+                    }
+
+                    for (int i = 0; i < enpa.size(); i++) {
+                        QJsonObject sjo = enpa.at(i).toObject();
+                        int index = ui->enplist->rowCount();
+                        ui->enplist->insertRow(index);
+                        this->setenprow(
+                            index,
+                            sjo.find("name")->toString(),
+                            sjo.find("max")->toDouble(),
+                            sjo.find("min")->toDouble(),
+                            sjo.find("default")->toDouble()
+                        );
+                    }
+                }
+                else {
+                    QMessageBox::warning(this, "error", "can't support file:" + filen);
+                }
+            }
+            else {
+                QMessageBox::warning(this, "error", "broken file:" + filen);
+            }
+        }
+        else {
+            QMessageBox::warning(this, "error", "can't open file:" + filen);
+        }
+    }
+    ui->tabWidget->setCurrentIndex(0);
+    ui->toolBox->setCurrentIndex(0);
+}
+
+void MainWindow::on_actionSave_as_triggered()
+{
+    if (!ui->enginename->text().isEmpty()) {
+        QString filen = QFileDialog::getSaveFileName(this, "save engine information form", QDir::currentPath(), "Infinity engine information(*.ifteinfor)");
+        if (!filen.isEmpty()) {
+            QFileInfo filei(filen);
+            QDir::setCurrent(filei.absolutePath());
+
+            QJsonObject jo;
+            jo.insert("IMT_Version", ::_IMT_Version);
+            jo.insert("name", ui->enginename->text());
+            jo.insert("main", ui->enginemain->text());
+            QByteArray icondata;
+            QBuffer iconbuffer(&icondata);
+            ui->engineicon->getPix().save(&iconbuffer, "PNG");
+            jo.insert("icon", QString::fromLocal8Bit(icondata.toBase64()));
+            jo.insert("author", ui->engineauthor->text());
+            jo.insert("version", ui->engineversion->value());
+            jo.insert("infor", ui->engineinfor->toPlainText());
+
+            QJsonArray ewpa, enpa;
+
+            for (int i = 0; i < ui->ewplist->rowCount(); i++) {
+                QJsonObject sjo;
+                sjo.insert("name", ui->ewplist->item(i, 0)->text());
+                sjo.insert("max", ui->ewplist->item(i, 1)->text().toDouble());
+                sjo.insert("min", ui->ewplist->item(i, 2)->text().toDouble());
+                sjo.insert("default", ui->ewplist->item(i, 3)->text().toDouble());
+                ewpa.append(sjo);
+            }
+            for (int i = 0; i < ui->enplist->rowCount(); i++) {
+                QJsonObject sjo;
+                sjo.insert("name", ui->enplist->item(i, 0)->text());
+                sjo.insert("max", ui->enplist->item(i, 1)->text().toDouble());
+                sjo.insert("min", ui->enplist->item(i, 2)->text().toDouble());
+                sjo.insert("default", ui->enplist->item(i, 3)->text().toDouble());
+                enpa.append(sjo);
+            }
+
+            jo.insert("ewp", ewpa);
+            jo.insert("enp", enpa);
+
+            QJsonDocument jd;
+            jd.setObject(jo);
+
+            QByteArray data = jd.toJson(QJsonDocument::Indented);
+
+            QFile file(filen);
+            if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+                file.write(data);
+                file.close();
+            }
+            else {
+                QMessageBox::warning(this, "error", "can't open file:" + filen);
+            }
+        }
+    }
+    else {
+        QMessageBox::warning(this, "error", "the engine name is empty");
+    }
+    ui->tabWidget->setCurrentIndex(0);
+    ui->toolBox->setCurrentIndex(0);
 }

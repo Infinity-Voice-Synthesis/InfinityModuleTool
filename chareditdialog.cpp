@@ -38,4 +38,10 @@ void CharEditDialog::on_buttonBox_accepted()
     }else{
         QMessageBox::warning(this, "error", "settings error");
     }
+    this->close();
+}
+
+void CharEditDialog::on_buttonBox_rejected()
+{
+    this->close();
 }

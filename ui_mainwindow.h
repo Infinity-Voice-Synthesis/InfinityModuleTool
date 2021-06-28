@@ -344,6 +344,7 @@ public:
         ewplist->setObjectName(QString::fromUtf8("ewplist"));
         ewplist->setEditTriggers(QAbstractItemView::NoEditTriggers);
         ewplist->setAlternatingRowColors(true);
+        ewplist->setSelectionBehavior(QAbstractItemView::SelectRows);
         ewplist->horizontalHeader()->setCascadingSectionResizes(true);
 
         gridLayout_5->addWidget(ewplist, 0, 0, 1, 5);
@@ -397,6 +398,7 @@ public:
         enplist->setEnabled(true);
         enplist->setEditTriggers(QAbstractItemView::NoEditTriggers);
         enplist->setAlternatingRowColors(true);
+        enplist->setSelectionBehavior(QAbstractItemView::SelectRows);
         enplist->horizontalHeader()->setCascadingSectionResizes(true);
 
         gridLayout_6->addWidget(enplist, 0, 0, 1, 5);

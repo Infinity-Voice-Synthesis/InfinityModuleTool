@@ -23,6 +23,7 @@ public:
     double VEP=0.8;
 private slots:
     void on_buttonBox_accepted();
+    void on_buttonBox_rejected();
 
 private:
     Ui::CharEditDialog *ui;
