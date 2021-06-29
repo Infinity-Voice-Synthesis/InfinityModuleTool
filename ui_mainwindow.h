@@ -178,7 +178,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(887, 775);
+        MainWindow->resize(946, 733);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/pic/icon/LOGO.png"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
@@ -234,7 +234,7 @@ public:
         toolBox->setSizePolicy(sizePolicy);
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 944, 621));
+        page->setGeometry(QRect(0, 0, 837, 562));
         verticalLayout = new QVBoxLayout(page);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         groupBox_2 = new QGroupBox(page);
@@ -502,7 +502,7 @@ public:
         toolBox_2->setSizePolicy(sizePolicy);
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 826, 478));
+        page_4->setGeometry(QRect(0, 0, 896, 550));
         gridLayout_11 = new QGridLayout(page_4);
         gridLayout_11->setObjectName(QString::fromUtf8("gridLayout_11"));
         groupBox_5 = new QGroupBox(page_4);
@@ -836,7 +836,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 887, 26));
+        menubar->setGeometry(QRect(0, 0, 946, 26));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
         menu_2 = new QMenu(menubar);
@@ -895,7 +895,7 @@ public:
 
         tabWidget->setCurrentIndex(1);
         toolBox->setCurrentIndex(0);
-        toolBox_2->setCurrentIndex(1);
+        toolBox_2->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
