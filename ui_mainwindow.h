@@ -234,7 +234,7 @@ public:
         toolBox->setSizePolicy(sizePolicy);
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 837, 562));
+        page->setGeometry(QRect(0, 0, 896, 520));
         verticalLayout = new QVBoxLayout(page);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         groupBox_2 = new QGroupBox(page);
@@ -642,7 +642,7 @@ public:
         toolBox_2->addItem(page_4, QString::fromUtf8("\345\243\260\345\272\223\344\277\241\346\201\257"));
         page_5 = new QWidget();
         page_5->setObjectName(QString::fromUtf8("page_5"));
-        page_5->setGeometry(QRect(0, 0, 863, 571));
+        page_5->setGeometry(QRect(0, 0, 896, 550));
         gridLayout_14 = new QGridLayout(page_5);
         gridLayout_14->setObjectName(QString::fromUtf8("gridLayout_14"));
         groupBox_7 = new QGroupBox(page_5);
@@ -893,9 +893,9 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
         toolBox->setCurrentIndex(0);
-        toolBox_2->setCurrentIndex(0);
+        toolBox_2->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

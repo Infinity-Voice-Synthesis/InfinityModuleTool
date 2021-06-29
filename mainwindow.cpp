@@ -268,6 +268,17 @@ void MainWindow::settransrow(int row, QString name, QString phoneme)
     ui->translatetable->setItem(row,1,item);
 }
 
+void MainWindow::setllrow(int row, QString pitch, QString sdb)
+{
+    QTableWidgetItem* item;
+
+    item = new QTableWidgetItem(pitch);
+    ui->lsdlink->setItem(row, 0, item);
+
+    item = new QTableWidgetItem(sdb);
+    ui->lsdlink->setItem(row, 1, item);
+}
+
 void MainWindow::setewprow(int row, QString name, double max, double min, double def)
 {
     QTableWidgetItem* item;
@@ -1150,6 +1161,7 @@ void MainWindow::on_lsdadd_clicked()
 void MainWindow::on_lsdedit_clicked()
 {
     int index = ui->lsdlist->currentRow();
+    QString sdt = ui->lsdlist->item(index)->text();
     QString sname = QInputDialog::getText(this, "Edit sub library", "Input sub library name", QLineEdit::Normal, ui->lsdlist->item(index)->text());
     if (!sname.isEmpty()) {
         bool ok = true;
@@ -1164,6 +1176,11 @@ void MainWindow::on_lsdedit_clicked()
         if (ok) {
             ui->lsdlist->item(index)->setText(sname);
             ui->lsddefault->setItemText(index, sname);
+            for (int i = 0; i < ui->lsdlink->rowCount(); i++) {
+                if (ui->lsdlink->item(i, 1)->text() == sdt) {
+                    ui->lsdlink->item(i, 1)->setText(sname);
+                }
+            }
         }
         else {
             QMessageBox::warning(this, "error", "the item is already exists");
@@ -1174,8 +1191,14 @@ void MainWindow::on_lsdedit_clicked()
 void MainWindow::on_lsddel_clicked()
 {
     int index = ui->lsdlist->currentRow();
+    QString sdt = ui->lsdlist->item(index)->text();
     delete ui->lsdlist->takeItem(index);
     ui->lsddefault->removeItem(index);
+    for (int i = 0; i < ui->lsdlink->rowCount(); i++) {
+        if (ui->lsdlink->item(i, 1)->text() == sdt) {
+            ui->lsdlink->item(i, 1)->setText(ui->lsddefault->currentText());
+        }
+    }
 }
 
 void MainWindow::on_lsdup_clicked()
@@ -1198,4 +1221,288 @@ void MainWindow::on_lsddown_clicked()
     ui->lsdlist->item(index)->setText(strt);
     ui->lsddefault->setItemText(index, strt);
     ui->lsdlist->setCurrentRow(index + 1);
+}
+
+void MainWindow::on_lsdlink_currentItemChanged(QTableWidgetItem* item1, QTableWidgetItem* item2)
+{
+    Q_UNUSED(item1);
+    Q_UNUSED(item2);
+    int index = ui->lsdlink->currentRow();
+    if (index >= 0 && index < ui->lsdlink->rowCount()) {
+        ui->lladd->setEnabled(true);
+        ui->lledit->setEnabled(true);
+        ui->lldel->setEnabled(true);
+        if (index > 0) {
+            ui->llup->setEnabled(true);
+        }
+        else {
+            ui->llup->setEnabled(false);
+        }
+        if (index < ui->lsdlink->rowCount() - 1) {
+            ui->lldown->setEnabled(true);
+        }
+        else {
+            ui->lldown->setEnabled(false);
+        }
+    }
+    else {
+        ui->lladd->setEnabled(true);
+        ui->lledit->setEnabled(false);
+        ui->lldel->setEnabled(false);
+        ui->llup->setEnabled(false);
+        ui->lldown->setEnabled(false);
+    }
+}
+
+void MainWindow::on_lladd_clicked()
+{
+    SLDialog sld(this);
+    sld.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+    QStringList sdblist;
+    for (int i = 0; i < ui->lsdlist->count(); i++) {
+        sdblist.append(ui->lsdlist->item(i)->text());
+    }
+    sld.setlist(sdblist);
+    sld.exec();
+    if (!sld.pitch.isEmpty() && !sld.sdb.isEmpty()) {
+        bool ok = true;
+        for (int i = 0; i < ui->lsdlink->rowCount(); i++) {
+            if (ui->lsdlink->item(i, 0)->text() == sld.pitch) {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) {
+            ui->lsdlink->insertRow(0);
+            this->setllrow(0, sld.pitch, sld.sdb);
+        }
+        else {
+            QMessageBox::warning(this, "error", "the link is already exists!");
+        }
+    }
+}
+
+void MainWindow::on_lledit_clicked()
+{
+    int index = ui->lsdlink->currentRow();
+    SLDialog sld(this);
+    sld.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+    QStringList sdblist;
+    for (int i = 0; i < ui->lsdlist->count(); i++) {
+        sdblist.append(ui->lsdlist->item(i)->text());
+    }
+    sld.setlist(sdblist);
+    sld.setlink(
+        ui->lsdlink->item(index, 0)->text(),
+        ui->lsdlink->item(index, 1)->text()
+    );
+    sld.exec();
+    if (!sld.pitch.isEmpty() && !sld.sdb.isEmpty()) {
+        bool ok = true;
+        for (int i = 0; i < ui->lsdlink->rowCount(); i++) {
+            if (i != index) {
+                if (ui->lsdlink->item(i, 0)->text() == sld.pitch) {
+                    ok = false;
+                    break;
+                }
+            }
+        }
+        if (ok) {
+            this->setllrow(index, sld.pitch, sld.sdb);
+        }
+        else {
+            QMessageBox::warning(this, "error", "the link is already exists!");
+        }
+    }
+}
+
+void MainWindow::on_lldel_clicked()
+{
+    int index = ui->lsdlink->currentRow();
+    ui->lsdlink->removeRow(index);
+}
+
+void MainWindow::on_llup_clicked()
+{
+    int index = ui->lsdlink->currentRow();
+    QString pitcht = ui->lsdlink->item(index - 1, 0)->text();
+    QString sdbt = ui->lsdlink->item(index - 1, 1)->text();
+    this->setllrow(
+        index - 1,
+        ui->lsdlink->item(index, 0)->text(),
+        ui->lsdlink->item(index, 1)->text()
+    );
+    this->setllrow(index, pitcht, sdbt);
+    ui->lsdlink->setCurrentCell(index - 1, 0);
+}
+
+void MainWindow::on_lldown_clicked()
+{
+    int index = ui->lsdlink->currentRow();
+    QString pitcht = ui->lsdlink->item(index + 1, 0)->text();
+    QString sdbt = ui->lsdlink->item(index + 1, 1)->text();
+    this->setllrow(
+        index + 1,
+        ui->lsdlink->item(index, 0)->text(),
+        ui->lsdlink->item(index, 1)->text()
+    );
+    this->setllrow(index, pitcht, sdbt);
+    ui->lsdlink->setCurrentCell(index + 1, 0);
+}
+
+void MainWindow::on_actionNew_2_triggered()
+{
+    ui->libraryname->clear();
+    ui->libraryengine->clear();
+    ui->librarydictionary->clear();
+    ui->libraryiconname->clear();
+    ui->libraryicon->setPix(QPixmap());
+    ui->libraryauthor->clear();
+    ui->libraryversion->setValue(0.1);
+    ui->libraryinfor->clear();
+    while (ui->lsdlist->count() > 0) {
+        delete ui->lsdlist->takeItem(0);
+    }
+    ui->lsddefault->clear();
+    while (ui->lsdlink->rowCount() > 0) {
+        ui->lsdlink->removeRow(0);
+    }
+    ui->tabWidget->setCurrentIndex(1);
+    ui->toolBox_2->setCurrentIndex(0);
+}
+
+void MainWindow::on_actionOpen_2_triggered()
+{
+    QString filen = QFileDialog::getOpenFileName(this, "open library information form", QDir::currentPath(), "Infinity library information(*.iftlinfor)");
+    if (!filen.isEmpty()) {
+        QFileInfo filei(filen);
+        QDir::setCurrent(filei.absolutePath());
+
+        QFile file(filen);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+            file.close();
+            if (jd.isObject()) {
+                QJsonObject jo = jd.object();
+
+                if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+                    ui->libraryname->setText(jo.find("name")->toString());
+                    ui->libraryengine->setText(jo.find("engine")->toString());
+                    ui->librarydictionary->setText(jo.find("dictionary")->toString());
+                    ui->libraryiconname->setText("From information form");
+                    QPixmap pix;
+                    pix.loadFromData(QByteArray::fromBase64(jo.find("icon")->toString().toLocal8Bit()));
+                    ui->libraryicon->setPix(pix);
+                    ui->libraryauthor->setText(jo.find("author")->toString());
+                    ui->libraryversion->setValue(jo.find("version")->toDouble());
+                    ui->libraryinfor->setPlainText(jo.find("infor")->toString());
+
+                    QJsonArray sdblista = jo.find("sdblist")->toArray();
+                    QJsonArray sdblinka = jo.find("sdblink")->toArray();
+
+                    while (ui->lsdlist->count() > 0) {
+                        delete ui->lsdlist->takeItem(0);
+                    }
+                    ui->lsddefault->clear();
+                    while (ui->lsdlink->rowCount() > 0) {
+                        ui->lsdlink->removeRow(0);
+                    }
+
+                    for (int i = 0; i < sdblista.size(); i++) {
+                        QString sname = sdblista.at(i).toString();
+                        int count = ui->lsdlist->count();
+                        ui->lsdlist->insertItem(count, sname);
+                        ui->lsddefault->insertItem(count, sname);
+                    }
+                    ui->lsddefault->setCurrentText(jo.find("sdbdefault")->toString());
+
+                    for (int i = 0; i < sdblinka.size(); i++) {
+                        QJsonObject sjo = sdblinka.at(i).toObject();
+                        int index = ui->lsdlink->rowCount();
+                        ui->lsdlink->insertRow(index);
+                        this->setllrow(
+                            index,
+                            sjo.find("pitch")->toString(),
+                            sjo.find("sdb")->toString()
+                        );
+                    }
+                }
+                else {
+                    QMessageBox::warning(this, "error", "can't support file:" + filen);
+                }
+            }
+            else {
+                QMessageBox::warning(this, "error", "broken file:" + filen);
+            }
+        }
+        else {
+            QMessageBox::warning(this, "error", "can't open file:" + filen);
+        }
+    }
+    ui->tabWidget->setCurrentIndex(1);
+    ui->toolBox->setCurrentIndex(0);
+}
+
+void MainWindow::on_actionSave_as_2_triggered()
+{
+    if (!ui->libraryname->text().isEmpty()) {
+        if (ui->lsddefault->count() > 0) {
+            QString filen = QFileDialog::getSaveFileName(this, "save library information form", QDir::currentPath(), "Infinity library information(*.iftlinfor)");
+            if (!filen.isEmpty()) {
+                QFileInfo filei(filen);
+                QDir::setCurrent(filei.absolutePath());
+
+                QJsonObject jo;
+                jo.insert("IMT_Version", ::_IMT_Version);
+                jo.insert("name", ui->libraryname->text());
+                jo.insert("engine", ui->libraryengine->text());
+                jo.insert("dictionary", ui->librarydictionary->text());
+                QByteArray icondata;
+                QBuffer iconbuffer(&icondata);
+                ui->libraryicon->getPix().save(&iconbuffer, "PNG");
+                jo.insert("icon", QString::fromLocal8Bit(icondata.toBase64()));
+                jo.insert("author", ui->libraryauthor->text());
+                jo.insert("version", ui->libraryversion->value());
+                jo.insert("infor", ui->libraryinfor->toPlainText());
+
+                QJsonArray sdblista, sdblinka;
+
+                for (int i = 0; i < ui->lsdlist->count(); i++) {
+                    sdblista.append(ui->lsdlist->item(i)->text());
+                }
+
+                for (int i = 0; i < ui->lsdlink->rowCount(); i++) {
+                    QJsonObject sjo;
+                    sjo.insert("pitch", ui->lsdlink->item(i, 0)->text());
+                    sjo.insert("sdb", ui->lsdlink->item(i, 1)->text());
+                    sdblinka.append(sjo);
+                }
+                jo.insert("sdbdefault", ui->lsddefault->currentText());
+                jo.insert("sdblist", sdblista);
+                jo.insert("sdblink", sdblinka);
+
+                QJsonDocument jd;
+                jd.setObject(jo);
+
+                QByteArray data = jd.toJson(QJsonDocument::Indented);
+
+                QFile file(filen);
+                if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+                    file.write(data);
+                    file.close();
+                }
+                else {
+                    QMessageBox::warning(this, "error", "can't open file:" + filen);
+                }
+            }
+        }
+        else {
+            QMessageBox::warning(this, "error", "no default sub library");
+        }
+    }
+    else {
+        QMessageBox::warning(this, "error", "the library name is empty");
+    }
+    ui->tabWidget->setCurrentIndex(1);
+    ui->toolBox->setCurrentIndex(0);
 }

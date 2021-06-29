@@ -26,6 +26,7 @@
 #include "ParamDialog.h"
 #include <QBuffer>
 #include <QListWidgetItem>
+#include "SLDialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -48,6 +49,7 @@ private:
     void devetrue();
     void setcharrow(int row, QString name, double CP = 0, double PP = 0, double VSP = 0.2, double VEP = 0.8);
     void settransrow(int row, QString name, QString phoneme);
+    void setllrow(int row, QString pitch, QString sdb);
     void setewprow(int row, QString name, double max, double min, double def);
     void setenprow(int row, QString name, double max, double min, double def);
     QMap<QString,QString> getTransFromCedict(QString data);
@@ -97,5 +99,14 @@ private slots:
     void on_lsddel_clicked();
     void on_lsdup_clicked();
     void on_lsddown_clicked();
+    void on_lsdlink_currentItemChanged(QTableWidgetItem* item1, QTableWidgetItem* item2);
+    void on_lladd_clicked();
+    void on_lledit_clicked();
+    void on_lldel_clicked();
+    void on_llup_clicked();
+    void on_lldown_clicked();
+    void on_actionNew_2_triggered();
+    void on_actionOpen_2_triggered();
+    void on_actionSave_as_2_triggered();
 };
 #endif // MAINWINDOW_H

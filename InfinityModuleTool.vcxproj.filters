@@ -71,6 +71,9 @@
     <ClCompile Include="ParamDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SLDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="chareditdialog.h">
@@ -94,6 +97,9 @@
     <QtMoc Include="ParamDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="SLDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="chareditdialog.ui">
@@ -112,6 +118,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="ParamDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="SLDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
