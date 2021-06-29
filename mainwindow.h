@@ -25,6 +25,7 @@
 #include <QTableWidgetItem>
 #include "ParamDialog.h"
 #include <QBuffer>
+#include <QListWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -87,5 +88,14 @@ private slots:
     void on_actionNew_triggered();
     void on_actionOpen_triggered();
     void on_actionSave_as_triggered();
+    void on_loadlibraryengine_clicked();
+    void on_loadlibrarydictionary_clicked();
+    void on_loadlibraryicon_clicked();
+    void on_lsdlist_currentItemChanged(QListWidgetItem* item1, QListWidgetItem* item2);
+    void on_lsdadd_clicked();
+    void on_lsdedit_clicked();
+    void on_lsddel_clicked();
+    void on_lsdup_clicked();
+    void on_lsddown_clicked();
 };
 #endif // MAINWINDOW_H

@@ -67,9 +67,9 @@ void MainWindow::paintEvent(QPaintEvent *event)
     QString times=QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     for (int i=0;i<50;i++) {
         if(i%2){
-            painter.drawText(QPointF(0.05*width(),i*(height()/50)),"name:"+Developername);
+            painter.drawText(QPointF(0.05*width(),i*(double)((double)height()/ (double)50)),"name:"+Developername);
         }else{
-            painter.drawText(QPointF(0.05*width(),i*(height()/50)),"time:"+times);
+            painter.drawText(QPointF(0.05*width(),i* (double)((double)height()/ (double)50)),"time:"+times);
         }
     }
     QWidget::paintEvent(event);
@@ -645,8 +645,20 @@ void MainWindow::on_ewpadd_clicked()
     pd.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     pd.exec();
     if (!pd.name.isEmpty()) {
-        ui->ewplist->insertRow(0);
-        this->setewprow(0, pd.name, pd.max, pd.min, pd.def);
+        bool ok = true;
+        for (int i = 0; i < ui->ewplist->rowCount(); i++) {
+            if (ui->ewplist->item(i, 0)->text() == pd.name) {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) {
+            ui->ewplist->insertRow(0);
+            this->setewprow(0, pd.name, pd.max, pd.min, pd.def);
+        }
+        else {
+            QMessageBox::warning(this, "error", "the parameter is already exists");
+        }
     }
 }
 
@@ -663,7 +675,21 @@ void MainWindow::on_ewpedit_clicked()
     );
     pd.exec();
     if (!pd.name.isEmpty()) {
-        this->setewprow(index, pd.name, pd.max, pd.min, pd.def);
+        bool ok = true;
+        for (int i = 0; i < ui->ewplist->rowCount(); i++) {
+            if (i != index) {
+                if (ui->ewplist->item(i, 0)->text() == pd.name) {
+                    ok = false;
+                    break;
+                }
+            }
+        }
+        if (ok) {
+            this->setewprow(index, pd.name, pd.max, pd.min, pd.def);
+        }
+        else {
+            QMessageBox::warning(this, "error", "the parameter is already exists");
+        }
     }
 }
 
@@ -688,6 +714,7 @@ void MainWindow::on_ewpup_clicked()
         ui->ewplist->item(index, 3)->text().toDouble()
         );
     this->setewprow(index, namet, maxt, mint, deft);
+    ui->ewplist->setCurrentCell(index - 1, 0);
 }
 
 void MainWindow::on_ewpdown_clicked()
@@ -705,6 +732,7 @@ void MainWindow::on_ewpdown_clicked()
         ui->ewplist->item(index, 3)->text().toDouble()
     );
     this->setewprow(index, namet, maxt, mint, deft);
+    ui->ewplist->setCurrentCell(index + 1, 0);
 }
 
 void MainWindow::on_enplist_currentItemChanged(QTableWidgetItem* item1, QTableWidgetItem* item2)
@@ -744,8 +772,20 @@ void MainWindow::on_enpadd_clicked()
     pd.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     pd.exec();
     if (!pd.name.isEmpty()) {
-        ui->enplist->insertRow(0);
-        this->setenprow(0, pd.name, pd.max, pd.min, pd.def);
+        bool ok = true;
+        for (int i = 0; i < ui->enplist->rowCount(); i++) {
+            if (ui->enplist->item(i, 0)->text() == pd.name) {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) {
+            ui->enplist->insertRow(0);
+            this->setenprow(0, pd.name, pd.max, pd.min, pd.def);
+        }
+        else {
+            QMessageBox::warning(this, "error", "the parameter is already exists");
+        }
     }
 }
 
@@ -762,7 +802,21 @@ void MainWindow::on_enpedit_clicked()
     );
     pd.exec();
     if (!pd.name.isEmpty()) {
-        this->setenprow(index, pd.name, pd.max, pd.min, pd.def);
+        bool ok = true;
+        for (int i = 0; i < ui->enplist->rowCount(); i++) {
+            if (i != index) {
+                if (ui->enplist->item(i, 0)->text() == pd.name) {
+                    ok = false;
+                    break;
+                }
+            }
+        }
+        if (ok) {
+            this->setenprow(index, pd.name, pd.max, pd.min, pd.def);
+        }
+        else {
+            QMessageBox::warning(this, "error", "the parameter is already exists");
+        }
     }
 }
 
@@ -787,6 +841,7 @@ void MainWindow::on_enpup_clicked()
         ui->enplist->item(index, 3)->text().toDouble()
     );
     this->setenprow(index, namet, maxt, mint, deft);
+    ui->enplist->setCurrentCell(index - 1, 0);
 }
 
 void MainWindow::on_enpdown_clicked()
@@ -804,6 +859,7 @@ void MainWindow::on_enpdown_clicked()
         ui->enplist->item(index, 3)->text().toDouble()
     );
     this->setenprow(index, namet, maxt, mint, deft);
+    ui->enplist->setCurrentCell(index + 1, 0);
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -964,4 +1020,182 @@ void MainWindow::on_actionSave_as_triggered()
     }
     ui->tabWidget->setCurrentIndex(0);
     ui->toolBox->setCurrentIndex(0);
+}
+
+void MainWindow::on_loadlibraryengine_clicked()
+{
+    QString filen = QFileDialog::getOpenFileName(this, "select engine information form", QDir::currentPath(), "Infinity engine information(*.ifteinfor)");
+    if (!filen.isEmpty()) {
+        QFileInfo filei(filen);
+        QDir::setCurrent(filei.absolutePath());
+
+        QFile file(filen);
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+            file.close();
+            if (jd.isObject()) {
+                QJsonObject jo = jd.object();
+
+                if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+                    ui->libraryengine->setText(jo.find("name")->toString());
+                }
+                else {
+                    QMessageBox::warning(this, "error", "can't support file:" + filen);
+                }
+            }
+            else {
+                QMessageBox::warning(this, "error", "broken file:" + filen);
+            }
+        }
+        else {
+            QMessageBox::warning(this, "error", "can't open file:" + filen);
+        }
+    }
+}
+
+void MainWindow::on_loadlibrarydictionary_clicked()
+{
+    QString filen = QFileDialog::getExistingDirectory(this, "select dictionary directory", QDir::currentPath());
+    if (!filen.isEmpty()) {
+        QDir::setCurrent(filen);
+        QFile file(filen + "/dictionary.json");
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+            file.close();
+            if (jd.isObject()) {
+                QJsonObject jo = jd.object();
+
+                if (jo.find("version")->toDouble() <= ::_IMT_Version) {
+                    ui->librarydictionary->setText(jo.find("name")->toString());
+                }
+                else {
+                    QMessageBox::warning(this, "error", "can't support file:" + filen + "/dictionary.json");
+                }
+
+            }
+            else {
+                QMessageBox::warning(this, "error", "broken file:" + filen + "/dictionary.json");
+            }
+        }
+        else {
+            QMessageBox::warning(this, "error", "can't open file:" + filen + "/dictionary.json");
+        }
+    }
+}
+
+void MainWindow::on_loadlibraryicon_clicked()
+{
+    QString name = QFileDialog::getOpenFileName(this, "select the icon", QDir::currentPath(), "Image files(*.jpg *.jpeg *.png *.bmp)");
+    if (!name.isEmpty()) {
+        QFileInfo filei(name);
+        QDir::setCurrent(filei.absolutePath());
+        ui->libraryiconname->setText(name);
+        QPixmap pix(name);
+        ui->libraryicon->setPix(pix);
+    }
+}
+
+void MainWindow::on_lsdlist_currentItemChanged(QListWidgetItem* item1, QListWidgetItem* item2)
+{
+    Q_UNUSED(item1);
+    Q_UNUSED(item2);
+    int index = ui->lsdlist->currentRow();
+    if (index >= 0 && index < ui->lsdlist->count()) {
+        ui->lsdadd->setEnabled(true);
+        ui->lsdedit->setEnabled(true);
+        ui->lsddel->setEnabled(true);
+        if (index > 0) {
+            ui->lsdup->setEnabled(true);
+        }
+        else {
+            ui->lsdup->setEnabled(false);
+        }
+        if (index < ui->lsdlist->count() - 1) {
+            ui->lsddown->setEnabled(true);
+        }
+        else {
+            ui->lsddown->setEnabled(false);
+        }
+    }
+    else {
+        ui->lsdadd->setEnabled(true);
+        ui->lsdedit->setEnabled(false);
+        ui->lsddel->setEnabled(false);
+        ui->lsdup->setEnabled(false);
+        ui->lsddown->setEnabled(false);
+    }
+}
+
+void MainWindow::on_lsdadd_clicked()
+{
+    QString sname = QInputDialog::getText(this, "New sub library", "Input sub library name");
+    if (!sname.isEmpty()) {
+        bool ok = true;
+        for (int i = 0; i < ui->lsdlist->count(); i++) {
+            if (ui->lsdlist->item(i)->text() == sname) {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) {
+            ui->lsdlist->insertItem(0, sname);
+            ui->lsddefault->insertItem(0, sname);
+        }
+        else {
+            QMessageBox::warning(this, "error", "the item is already exists");
+        }
+    }
+}
+
+void MainWindow::on_lsdedit_clicked()
+{
+    int index = ui->lsdlist->currentRow();
+    QString sname = QInputDialog::getText(this, "Edit sub library", "Input sub library name", QLineEdit::Normal, ui->lsdlist->item(index)->text());
+    if (!sname.isEmpty()) {
+        bool ok = true;
+        for (int i = 0; i < ui->lsdlist->count(); i++) {
+            if (i != index) {
+                if (ui->lsdlist->item(i)->text() == sname) {
+                    ok = false;
+                    break;
+                }
+            }
+        }
+        if (ok) {
+            ui->lsdlist->item(index)->setText(sname);
+            ui->lsddefault->setItemText(index, sname);
+        }
+        else {
+            QMessageBox::warning(this, "error", "the item is already exists");
+        }
+    }
+}
+
+void MainWindow::on_lsddel_clicked()
+{
+    int index = ui->lsdlist->currentRow();
+    delete ui->lsdlist->takeItem(index);
+    ui->lsddefault->removeItem(index);
+}
+
+void MainWindow::on_lsdup_clicked()
+{
+    int index = ui->lsdlist->currentRow();
+    QString strt = ui->lsdlist->item(index - 1)->text();
+    ui->lsdlist->item(index - 1)->setText(ui->lsdlist->item(index)->text());
+    ui->lsddefault->setItemText(index - 1, ui->lsdlist->item(index)->text());
+    ui->lsdlist->item(index)->setText(strt);
+    ui->lsddefault->setItemText(index,strt);
+    ui->lsdlist->setCurrentRow(index - 1);
+}
+
+void MainWindow::on_lsddown_clicked()
+{
+    int index = ui->lsdlist->currentRow();
+    QString strt = ui->lsdlist->item(index + 1)->text();
+    ui->lsdlist->item(index + 1)->setText(ui->lsdlist->item(index)->text());
+    ui->lsddefault->setItemText(index + 1, ui->lsdlist->item(index)->text());
+    ui->lsdlist->item(index)->setText(strt);
+    ui->lsddefault->setItemText(index, strt);
+    ui->lsdlist->setCurrentRow(index + 1);
 }

@@ -96,14 +96,6 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="debug\moc_predefs.h.cbt">
-      <Filter>Generated Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="release\moc_predefs.h.cbt">
-      <Filter>Generated Files</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
     <QtUic Include="chareditdialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
@@ -136,6 +128,7 @@
     <QtRcc Include="src.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="logo.rc" />
