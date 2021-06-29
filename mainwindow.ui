@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>912</width>
-    <height>653</height>
+    <width>887</width>
+    <height>775</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="engine">
        <attribute name="title">
@@ -45,8 +45,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>862</width>
-             <height>440</height>
+             <width>944</width>
+             <height>621</height>
             </rect>
            </property>
            <attribute name="label">
@@ -323,8 +323,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>862</width>
-             <height>440</height>
+             <width>826</width>
+             <height>448</height>
             </rect>
            </property>
            <attribute name="label">
@@ -338,6 +338,9 @@
               </property>
               <property name="alternatingRowColors">
                <bool>true</bool>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::SingleSelection</enum>
               </property>
               <property name="selectionBehavior">
                <enum>QAbstractItemView::SelectRows</enum>
@@ -417,6 +420,14 @@
            </layout>
           </widget>
           <widget class="QWidget" name="page_3">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>826</width>
+             <height>448</height>
+            </rect>
+           </property>
            <attribute name="label">
             <string>音符参数</string>
            </attribute>
@@ -431,6 +442,9 @@
               </property>
               <property name="alternatingRowColors">
                <bool>true</bool>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::SingleSelection</enum>
               </property>
               <property name="selectionBehavior">
                <enum>QAbstractItemView::SelectRows</enum>
@@ -517,6 +531,469 @@
        <attribute name="title">
         <string>声库</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="QToolBox" name="toolBox_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <widget class="QWidget" name="page_4">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>826</width>
+             <height>478</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>声库信息</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_11">
+            <item row="0" column="0">
+             <widget class="QGroupBox" name="groupBox_5">
+              <property name="title">
+               <string>基础信息</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_9">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>声库名称</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>libraryname</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1" colspan="2">
+                <widget class="QLineEdit" name="libraryname">
+                 <property name="placeholderText">
+                  <string>请输入声库名称</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>引擎名称</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>libraryengine</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="libraryengine">
+                 <property name="placeholderText">
+                  <string>设置声库所属的引擎</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QPushButton" name="loadlibraryengine">
+                 <property name="text">
+                  <string>从信息表载入</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>字典名称</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>librarydictionary</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="librarydictionary">
+                 <property name="placeholderText">
+                  <string>设置声库使用的字典</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="2">
+                <widget class="QPushButton" name="loadlibrarydictionary">
+                 <property name="text">
+                  <string>从声库载入</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QGroupBox" name="groupBox_6">
+              <property name="title">
+               <string>附加信息</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_10">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_10">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>声库作者</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>engineauthor</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="libraryauthor">
+                 <property name="placeholderText">
+                  <string>请输入作者</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QLabel" name="label_11">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>声库版本</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>engineversion</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3">
+                <widget class="QDoubleSpinBox" name="libraryversion">
+                 <property name="singleStep">
+                  <double>0.100000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>0.100000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_12">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>声库介绍</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>engineinfor</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <spacer name="horizontalSpacer_7">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>320</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="1" column="2">
+                <spacer name="horizontalSpacer_8">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Maximum</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>58</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="1" column="3">
+                <spacer name="horizontalSpacer_9">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>348</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="2" column="0" colspan="4">
+                <widget class="QPlainTextEdit" name="libraryinfor">
+                 <property name="placeholderText">
+                  <string>无介绍</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="0" column="1" rowspan="2">
+             <widget class="QGroupBox" name="groupBox_4">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title">
+               <string>声库图标</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_8">
+               <item row="0" column="0">
+                <widget class="QLineEdit" name="libraryiconname">
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                 <property name="placeholderText">
+                  <string>无文件</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QPushButton" name="loadlibraryicon">
+                 <property name="text">
+                  <string>从文件载入</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" colspan="2">
+                <widget class="QIconWidget" name="libraryicon" native="true">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="page_5">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>863</width>
+             <height>571</height>
+            </rect>
+           </property>
+           <attribute name="label">
+            <string>音阶配置</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_14">
+            <item row="0" column="0">
+             <widget class="QGroupBox" name="groupBox_7">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title">
+               <string>音阶调整</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_12">
+               <item row="0" column="0" colspan="5">
+                <widget class="QListWidget" name="lsdlist">
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="alternatingRowColors">
+                  <bool>true</bool>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectRows</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" colspan="2">
+                <widget class="QPushButton" name="lsdadd">
+                 <property name="text">
+                  <string>添加</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2" colspan="2">
+                <widget class="QPushButton" name="lsdedit">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>编辑</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="4">
+                <widget class="QPushButton" name="lsddel">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>删除</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0" colspan="3">
+                <widget class="QPushButton" name="lsdup">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>上移</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="3" colspan="2">
+                <widget class="QPushButton" name="lsddown">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>下移</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_13">
+                 <property name="text">
+                  <string>默认音阶</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>lsddefault</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1" colspan="4">
+                <widget class="QComboBox" name="lsddefault"/>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QGroupBox" name="groupBox_8">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title">
+               <string>音阶映射</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_13">
+               <item row="0" column="0" colspan="5">
+                <widget class="QTableWidget" name="lsdlink">
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="alternatingRowColors">
+                  <bool>true</bool>
+                 </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::SingleSelection</enum>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectRows</enum>
+                 </property>
+                 <attribute name="horizontalHeaderCascadingSectionResizes">
+                  <bool>true</bool>
+                 </attribute>
+                 <column>
+                  <property name="text">
+                   <string>音名</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>默认声库音阶</string>
+                  </property>
+                 </column>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QPushButton" name="lladd">
+                 <property name="text">
+                  <string>添加</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QPushButton" name="lledit">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>编辑</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QPushButton" name="lldel">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>删除</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="3">
+                <widget class="QPushButton" name="llup">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>上移</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="4">
+                <widget class="QPushButton" name="lldown">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>下移</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="dictionary">
        <attribute name="title">
@@ -672,7 +1149,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>912</width>
+     <width>887</width>
      <height>26</height>
     </rect>
    </property>
