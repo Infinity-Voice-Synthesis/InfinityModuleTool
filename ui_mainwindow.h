@@ -379,7 +379,7 @@ public:
         toolBox->addItem(page, QString::fromUtf8("\345\274\225\346\223\216\344\277\241\346\201\257"));
         page_2 = new QWidget();
         page_2->setObjectName(QString::fromUtf8("page_2"));
-        page_2->setGeometry(QRect(0, 0, 826, 448));
+        page_2->setGeometry(QRect(0, 0, 515, 144));
         gridLayout_5 = new QGridLayout(page_2);
         gridLayout_5->setObjectName(QString::fromUtf8("gridLayout_5"));
         ewplist = new QTableWidget(page_2);
@@ -434,7 +434,7 @@ public:
         toolBox->addItem(page_2, QString::fromUtf8("\345\217\202\346\225\260\346\233\262\347\272\277"));
         page_3 = new QWidget();
         page_3->setObjectName(QString::fromUtf8("page_3"));
-        page_3->setGeometry(QRect(0, 0, 826, 448));
+        page_3->setGeometry(QRect(0, 0, 515, 144));
         gridLayout_6 = new QGridLayout(page_3);
         gridLayout_6->setObjectName(QString::fromUtf8("gridLayout_6"));
         enplist = new QTableWidget(page_3);
@@ -895,7 +895,7 @@ public:
 
         tabWidget->setCurrentIndex(0);
         toolBox->setCurrentIndex(0);
-        toolBox_2->setCurrentIndex(1);
+        toolBox_2->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

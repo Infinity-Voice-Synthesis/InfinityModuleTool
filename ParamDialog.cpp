@@ -1,7 +1,11 @@
-#include "ParamDialog.h"
+﻿#include "ParamDialog.h"
 #include "ui_ParamDialog.h"
 
-ParamDialog::ParamDialog(QWidget *parent)
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
+
+ParamDialog::ParamDialog(QWidget* parent)
 	: QDialog(parent)
 {
 	ui = new Ui::ParamDialog();

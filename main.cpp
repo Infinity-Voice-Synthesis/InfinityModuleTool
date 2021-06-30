@@ -1,11 +1,15 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
+
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
 
 #include <QApplication>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-    return a.exec();
+	QApplication a(argc, argv);
+	MainWindow w;
+	w.show();
+	return a.exec();
 }

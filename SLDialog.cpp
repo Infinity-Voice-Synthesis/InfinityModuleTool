@@ -1,7 +1,11 @@
-#include "SLDialog.h"
+﻿#include "SLDialog.h"
 #include "ui_SLDialog.h"
 
-SLDialog::SLDialog(QWidget *parent)
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
+
+SLDialog::SLDialog(QWidget* parent)
 	: QDialog(parent)
 {
 	ui = new Ui::SLDialog();

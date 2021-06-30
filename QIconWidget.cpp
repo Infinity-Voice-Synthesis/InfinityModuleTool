@@ -1,7 +1,11 @@
-#include "QIconWidget.h"
+﻿#include "QIconWidget.h"
 #include "ui_QIconWidget.h"
 
-QIconWidget::QIconWidget(QWidget *parent)
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
+
+QIconWidget::QIconWidget(QWidget* parent)
 	: QWidget(parent)
 {
 	ui = new Ui::QIconWidget();
