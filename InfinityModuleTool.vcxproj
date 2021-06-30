@@ -206,6 +206,7 @@
   <ItemGroup>
     <ClCompile Include="chareditdialog.cpp" />
     <ClCompile Include="developerdialog.cpp" />
+    <ClCompile Include="FileScaner.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="ParamDialog.cpp" />
@@ -218,6 +219,7 @@
     <QtMoc Include="QIconWidget.h" />
     <QtMoc Include="ParamDialog.h" />
     <QtMoc Include="SLDialog.h" />
+    <ClInclude Include="FileScaner.h" />
     <ClInclude Include="version.h" />
     <QtMoc Include="chareditdialog.h">
     </QtMoc>

@@ -74,6 +74,9 @@
     <ClCompile Include="SLDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileScaner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="chareditdialog.h">
@@ -144,6 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileScaner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
