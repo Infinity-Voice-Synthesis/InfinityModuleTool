@@ -493,6 +493,7 @@ void MainWindow::on_actionSave_dic_triggered()
 			if (filet.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
 				filet.write(datat.toUtf8());
 				filet.close();
+				QMessageBox::information(this, "保存", "已保存字典：" + filen);
 			}
 			else {
 				QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/translate.raw");
@@ -1037,6 +1038,7 @@ void MainWindow::on_actionSave_as_triggered()
 			if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
 				file.write(data);
 				file.close();
+				QMessageBox::information(this, "保存", "已保存引擎信息表：" + filen);
 			}
 			else {
 				QMessageBox::warning(this, "出错", "无法打开文件：" + filen);
@@ -1507,6 +1509,7 @@ void MainWindow::on_actionSave_as_2_triggered()
 				if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
 					file.write(data);
 					file.close();
+					QMessageBox::information(this, "保存", "已保存声库信息表：" + filen);
 				}
 				else {
 					QMessageBox::warning(this, "出错", "无法打开文件：" + filen);
@@ -1530,4 +1533,124 @@ void MainWindow::on_actionFiles_triggered()
 	FTBDialog ftbd(this);
 	ftbd.setWindowFlags(Qt::Dialog | Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint);
 	ftbd.exec();
+}
+
+void MainWindow::on_actionSign_triggered()
+{
+	QString filen = QFileDialog::getOpenFileName(this, "选择要签名的信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor);;Infinity声库信息表(*.iftlinfor)");
+	if (!filen.isEmpty()) {
+		QFileInfo filei(filen);
+		QDir::setCurrent(filei.absolutePath());
+
+		QFile file(filen);
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QString data = file.readAll();
+			QJsonDocument jd = QJsonDocument::fromJson(data.toUtf8());
+			file.close();
+			if (jd.isObject()) {
+				QJsonObject jo = jd.object();
+
+				if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+
+					QFile prikeyfile(":/keys/keys/1.pri.key");
+					if (prikeyfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+						QString prikey = prikeyfile.readAll();
+						prikeyfile.close();
+
+						QCryptographicHash hash(QCryptographicHash::Sha512);
+						hash.addData(data.toLatin1().data());
+						QString datahash = hash.result().toHex().toLower();
+
+						QString datasign;
+						RSASignature::private_encrypt(datahash, prikey, datasign);
+
+						QFile signfile(filen + ".signature");
+						if (signfile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+							signfile.write(datasign.toUtf8());
+							signfile.close();
+							QMessageBox::information(this, "签名", "已对信息表签名：" + filen);
+						}
+						else {
+							QMessageBox::warning(this, "出错", "无法写入签名文件！");
+						}
+					}
+					else {
+						QMessageBox::warning(this, "出错", "无法载入私钥！");
+					}
+				}
+				else {
+					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
+				}
+			}
+			else {
+				QMessageBox::warning(this, "出错", "文件格式损坏：" + filen);
+			}
+		}
+		else {
+			QMessageBox::warning(this, "出错", "无法打开文件：" + filen);
+		}
+	}
+}
+
+void MainWindow::on_actionCheckSign_triggered()
+{
+	QString filen = QFileDialog::getOpenFileName(this, "选择要校验签名的信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor);;Infinity声库信息表(*.iftlinfor)");
+	if (!filen.isEmpty()) {
+		QFileInfo filei(filen);
+		QDir::setCurrent(filei.absolutePath());
+
+		QFile file(filen);
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QString data = file.readAll();
+			QJsonDocument jd = QJsonDocument::fromJson(data.toUtf8());
+			file.close();
+			if (jd.isObject()) {
+				QJsonObject jo = jd.object();
+
+				if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+
+					QFile publicfile(":/keys/keys/1.pub.key");
+					if (publicfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+						QString pubkey = publicfile.readAll();
+						publicfile.close();
+
+						QCryptographicHash hash(QCryptographicHash::Sha512);
+						hash.addData(data.toLatin1().data());
+						QString datahash = hash.result().toHex().toLower();
+
+						QFile signfile(filen + ".signature");
+						if (signfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+							QString signdata = signfile.readAll();
+							signfile.close();
+
+							QString datadecrypted;
+							RSASignature::public_decrypt(signdata, pubkey, datadecrypted);
+
+							if (datadecrypted == datahash) {
+								QMessageBox::information(this, "签名校验", "信息表的指纹与签名相符：" + filen);
+							}
+							else {
+								QMessageBox::warning(this, "签名校验", "信息表的指纹与签名不符：" + filen);
+							}
+						}
+						else {
+							QMessageBox::warning(this, "出错", "签名文件丢失或无法读取！");
+						}
+					}
+					else {
+						QMessageBox::warning(this, "出错", "无法载入私钥！");
+					}
+				}
+				else {
+					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
+				}
+			}
+			else {
+				QMessageBox::warning(this, "出错", "文件格式损坏：" + filen);
+			}
+		}
+		else {
+			QMessageBox::warning(this, "出错", "无法打开文件：" + filen);
+		}
+	}
 }

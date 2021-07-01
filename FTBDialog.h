@@ -26,6 +26,6 @@ private:
 	FSThread fst;
 private slots:
 	void on_selectpath_clicked();
-	void on_scan_clicked();
-	void on_fst_finished();
+	void on_startscan_clicked();
+	void on_fst_finished(QStringList result, QString path);
 };

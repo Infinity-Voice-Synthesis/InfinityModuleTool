@@ -548,8 +548,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>896</width>
-             <height>550</height>
+             <width>607</width>
+             <height>346</height>
             </rect>
            </property>
            <attribute name="label">
@@ -802,8 +802,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>896</width>
-             <height>550</height>
+             <width>863</width>
+             <height>248</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1173,9 +1173,17 @@
     <property name="title">
      <string>封装</string>
     </property>
+    <widget class="QMenu" name="menu_6">
+     <property name="title">
+      <string>封装组件</string>
+     </property>
+     <addaction name="actionBuildEngine"/>
+     <addaction name="actionBuildLibrary"/>
+     <addaction name="actionBuildDictionary"/>
+    </widget>
     <addaction name="actionFiles"/>
     <addaction name="actionSign"/>
-    <addaction name="actionBuild"/>
+    <addaction name="menu_6"/>
    </widget>
    <widget class="QMenu" name="menu_4">
     <property name="title">
@@ -1196,10 +1204,17 @@
     <addaction name="separator"/>
     <addaction name="actionAutoC"/>
    </widget>
+   <widget class="QMenu" name="menu_7">
+    <property name="title">
+     <string>工具</string>
+    </property>
+    <addaction name="actionCheckSign"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
    <addaction name="menu_5"/>
    <addaction name="menu_3"/>
+   <addaction name="menu_7"/>
    <addaction name="menu_4"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -1231,11 +1246,6 @@
   <action name="actionSave_as_2">
    <property name="text">
     <string>保存信息表</string>
-   </property>
-  </action>
-  <action name="actionBuild">
-   <property name="text">
-    <string>封装组件</string>
    </property>
   </action>
   <action name="actionAbout">
@@ -1284,6 +1294,26 @@
   <action name="actionAutoC">
    <property name="text">
     <string>识别辅音开头的发音并设置默认CP</string>
+   </property>
+  </action>
+  <action name="actionBuildEngine">
+   <property name="text">
+    <string>封装引擎</string>
+   </property>
+  </action>
+  <action name="actionBuildLibrary">
+   <property name="text">
+    <string>封装声库</string>
+   </property>
+  </action>
+  <action name="actionBuildDictionary">
+   <property name="text">
+    <string>封装字典</string>
+   </property>
+  </action>
+  <action name="actionCheckSign">
+   <property name="text">
+    <string>校验签名</string>
    </property>
   </action>
  </widget>

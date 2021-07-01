@@ -8,4 +8,10 @@
     <qresource prefix="/other">
         <file>developer.json</file>
     </qresource>
+    <qresource prefix="/keys">
+        <file>keys/1.pri.key</file>
+        <file>keys/1.pub.key</file>
+        <file>keys/2.pri.key</file>
+        <file>keys/2.pub.key</file>
+    </qresource>
 </RCC>

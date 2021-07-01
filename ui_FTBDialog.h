@@ -33,7 +33,7 @@ public:
     QLineEdit *rootpath;
     QPushButton *selectpath;
     QSpacerItem *horizontalSpacer_2;
-    QPushButton *scan;
+    QPushButton *startscan;
     QSpacerItem *horizontalSpacer_3;
     QGroupBox *groupBox_2;
     QGridLayout *gridLayout_2;
@@ -92,12 +92,12 @@ public:
 
         gridLayout->addItem(horizontalSpacer_2, 1, 0, 1, 2);
 
-        scan = new QPushButton(groupBox);
-        scan->setObjectName(QString::fromUtf8("scan"));
-        sizePolicy2.setHeightForWidth(scan->sizePolicy().hasHeightForWidth());
-        scan->setSizePolicy(sizePolicy2);
+        startscan = new QPushButton(groupBox);
+        startscan->setObjectName(QString::fromUtf8("startscan"));
+        sizePolicy2.setHeightForWidth(startscan->sizePolicy().hasHeightForWidth());
+        startscan->setSizePolicy(sizePolicy2);
 
-        gridLayout->addWidget(scan, 1, 2, 1, 1);
+        gridLayout->addWidget(startscan, 1, 2, 1, 1);
 
         horizontalSpacer_3 = new QSpacerItem(282, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -114,6 +114,7 @@ public:
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         results = new QPlainTextEdit(groupBox_2);
         results->setObjectName(QString::fromUtf8("results"));
+        results->setReadOnly(true);
 
         gridLayout_2->addWidget(results, 0, 0, 1, 1);
 
@@ -136,8 +137,9 @@ public:
         label->setText(QCoreApplication::translate("FTBDialog", "\347\273\204\344\273\266\347\233\256\345\275\225", nullptr));
         rootpath->setPlaceholderText(QCoreApplication::translate("FTBDialog", "\350\257\267\351\200\211\346\213\251\350\246\201\346\211\223\345\214\205\347\232\204\347\273\204\344\273\266\346\211\200\345\234\250\347\232\204\347\233\256\345\275\225\350\277\233\350\241\214\346\211\253\346\217\217", nullptr));
         selectpath->setText(QCoreApplication::translate("FTBDialog", "\346\265\217\350\247\210", nullptr));
-        scan->setText(QCoreApplication::translate("FTBDialog", "\346\211\253\346\217\217\345\271\266\346\240\207\350\256\260", nullptr));
+        startscan->setText(QCoreApplication::translate("FTBDialog", "\346\211\253\346\217\217\345\271\266\344\277\235\345\255\230\347\273\223\346\236\234", nullptr));
         groupBox_2->setTitle(QCoreApplication::translate("FTBDialog", "\346\211\253\346\217\217\347\273\223\346\236\234", nullptr));
+        results->setPlaceholderText(QCoreApplication::translate("FTBDialog", "\346\227\240\347\273\223\346\236\234", nullptr));
     } // retranslateUi
 
 };

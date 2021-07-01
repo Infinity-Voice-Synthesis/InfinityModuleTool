@@ -111,6 +111,15 @@
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <SubSystem>Windows</SubSystem>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <StackReserveSize>
+      </StackReserveSize>
+      <StackCommitSize>
+      </StackCommitSize>
+      <LargeAddressAware>true</LargeAddressAware>
+      <HeapReserveSize>
+      </HeapReserveSize>
+      <HeapCommitSize>
+      </HeapCommitSize>
     </Link>
     <Midl>
       <DefaultCharType>Unsigned</DefaultCharType>

@@ -26,5 +26,5 @@ private:
 	QString path;
 	QStringList result;
 signals:
-	void finished();
+	void finished(QStringList result, QString path);
 };

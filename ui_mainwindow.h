@@ -48,7 +48,6 @@ public:
     QAction *actionNew_2;
     QAction *actionOpen_2;
     QAction *actionSave_as_2;
-    QAction *actionBuild;
     QAction *actionAbout;
     QAction *actionDeveloper;
     QAction *actionFiles;
@@ -58,6 +57,10 @@ public:
     QAction *actionFrom_cedict;
     QAction *actionSign;
     QAction *actionAutoC;
+    QAction *actionBuildEngine;
+    QAction *actionBuildLibrary;
+    QAction *actionBuildDictionary;
+    QAction *actionCheckSign;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -170,8 +173,10 @@ public:
     QMenu *menu;
     QMenu *menu_2;
     QMenu *menu_3;
+    QMenu *menu_6;
     QMenu *menu_4;
     QMenu *menu_5;
+    QMenu *menu_7;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -194,8 +199,6 @@ public:
         actionOpen_2->setObjectName(QString::fromUtf8("actionOpen_2"));
         actionSave_as_2 = new QAction(MainWindow);
         actionSave_as_2->setObjectName(QString::fromUtf8("actionSave_as_2"));
-        actionBuild = new QAction(MainWindow);
-        actionBuild->setObjectName(QString::fromUtf8("actionBuild"));
         actionAbout = new QAction(MainWindow);
         actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
         actionDeveloper = new QAction(MainWindow);
@@ -215,6 +218,14 @@ public:
         actionSign->setEnabled(false);
         actionAutoC = new QAction(MainWindow);
         actionAutoC->setObjectName(QString::fromUtf8("actionAutoC"));
+        actionBuildEngine = new QAction(MainWindow);
+        actionBuildEngine->setObjectName(QString::fromUtf8("actionBuildEngine"));
+        actionBuildLibrary = new QAction(MainWindow);
+        actionBuildLibrary->setObjectName(QString::fromUtf8("actionBuildLibrary"));
+        actionBuildDictionary = new QAction(MainWindow);
+        actionBuildDictionary->setObjectName(QString::fromUtf8("actionBuildDictionary"));
+        actionCheckSign = new QAction(MainWindow);
+        actionCheckSign->setObjectName(QString::fromUtf8("actionCheckSign"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -502,7 +513,7 @@ public:
         toolBox_2->setSizePolicy(sizePolicy);
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 896, 550));
+        page_4->setGeometry(QRect(0, 0, 607, 346));
         gridLayout_11 = new QGridLayout(page_4);
         gridLayout_11->setObjectName(QString::fromUtf8("gridLayout_11"));
         groupBox_5 = new QGroupBox(page_4);
@@ -642,7 +653,7 @@ public:
         toolBox_2->addItem(page_4, QString::fromUtf8("\345\243\260\345\272\223\344\277\241\346\201\257"));
         page_5 = new QWidget();
         page_5->setObjectName(QString::fromUtf8("page_5"));
-        page_5->setGeometry(QRect(0, 0, 896, 550));
+        page_5->setGeometry(QRect(0, 0, 863, 248));
         gridLayout_14 = new QGridLayout(page_5);
         gridLayout_14->setObjectName(QString::fromUtf8("gridLayout_14"));
         groupBox_7 = new QGroupBox(page_5);
@@ -843,10 +854,14 @@ public:
         menu_2->setObjectName(QString::fromUtf8("menu_2"));
         menu_3 = new QMenu(menubar);
         menu_3->setObjectName(QString::fromUtf8("menu_3"));
+        menu_6 = new QMenu(menu_3);
+        menu_6->setObjectName(QString::fromUtf8("menu_6"));
         menu_4 = new QMenu(menubar);
         menu_4->setObjectName(QString::fromUtf8("menu_4"));
         menu_5 = new QMenu(menubar);
         menu_5->setObjectName(QString::fromUtf8("menu_5"));
+        menu_7 = new QMenu(menubar);
+        menu_7->setObjectName(QString::fromUtf8("menu_7"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -871,6 +886,7 @@ public:
         menubar->addAction(menu_2->menuAction());
         menubar->addAction(menu_5->menuAction());
         menubar->addAction(menu_3->menuAction());
+        menubar->addAction(menu_7->menuAction());
         menubar->addAction(menu_4->menuAction());
         menu->addAction(actionNew);
         menu->addAction(actionOpen);
@@ -880,7 +896,10 @@ public:
         menu_2->addAction(actionSave_as_2);
         menu_3->addAction(actionFiles);
         menu_3->addAction(actionSign);
-        menu_3->addAction(actionBuild);
+        menu_3->addAction(menu_6->menuAction());
+        menu_6->addAction(actionBuildEngine);
+        menu_6->addAction(actionBuildLibrary);
+        menu_6->addAction(actionBuildDictionary);
         menu_4->addAction(actionAbout);
         menu_4->addAction(actionDeveloper);
         menu_5->addAction(actionNew_dic);
@@ -890,6 +909,7 @@ public:
         menu_5->addAction(actionFrom_cedict);
         menu_5->addSeparator();
         menu_5->addAction(actionAutoC);
+        menu_7->addAction(actionCheckSign);
 
         retranslateUi(MainWindow);
 
@@ -910,7 +930,6 @@ public:
         actionNew_2->setText(QCoreApplication::translate("MainWindow", "\346\226\260\344\277\241\346\201\257\350\241\250", nullptr));
         actionOpen_2->setText(QCoreApplication::translate("MainWindow", "\350\257\273\345\217\226\344\277\241\346\201\257\350\241\250", nullptr));
         actionSave_as_2->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\344\277\241\346\201\257\350\241\250", nullptr));
-        actionBuild->setText(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\347\273\204\344\273\266", nullptr));
         actionAbout->setText(QCoreApplication::translate("MainWindow", "\345\205\263\344\272\216", nullptr));
         actionDeveloper->setText(QCoreApplication::translate("MainWindow", "\351\252\214\350\257\201\345\274\200\345\217\221\350\200\205\350\272\253\344\273\275", nullptr));
         actionFiles->setText(QCoreApplication::translate("MainWindow", "\347\224\237\346\210\220\346\226\207\344\273\266\346\240\221", nullptr));
@@ -920,6 +939,10 @@ public:
         actionFrom_cedict->setText(QCoreApplication::translate("MainWindow", "\344\273\216cedict\345\255\227\345\205\270\345\257\274\345\205\245", nullptr));
         actionSign->setText(QCoreApplication::translate("MainWindow", "\347\255\276\345\220\215", nullptr));
         actionAutoC->setText(QCoreApplication::translate("MainWindow", "\350\257\206\345\210\253\350\276\205\351\237\263\345\274\200\345\244\264\347\232\204\345\217\221\351\237\263\345\271\266\350\256\276\347\275\256\351\273\230\350\256\244CP", nullptr));
+        actionBuildEngine->setText(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\345\274\225\346\223\216", nullptr));
+        actionBuildLibrary->setText(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\345\243\260\345\272\223", nullptr));
+        actionBuildDictionary->setText(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\345\255\227\345\205\270", nullptr));
+        actionCheckSign->setText(QCoreApplication::translate("MainWindow", "\346\240\241\351\252\214\347\255\276\345\220\215", nullptr));
         groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "\345\237\272\347\241\200\344\277\241\346\201\257", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "\345\274\225\346\223\216\345\220\215\347\247\260", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\345\274\225\346\223\216\344\270\273\346\250\241\345\235\227", nullptr));
@@ -1023,8 +1046,10 @@ public:
         menu->setTitle(QCoreApplication::translate("MainWindow", "\345\274\225\346\223\216", nullptr));
         menu_2->setTitle(QCoreApplication::translate("MainWindow", "\345\243\260\345\272\223", nullptr));
         menu_3->setTitle(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205", nullptr));
+        menu_6->setTitle(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\347\273\204\344\273\266", nullptr));
         menu_4->setTitle(QCoreApplication::translate("MainWindow", "\345\205\263\344\272\216", nullptr));
         menu_5->setTitle(QCoreApplication::translate("MainWindow", "\345\255\227\345\205\270", nullptr));
+        menu_7->setTitle(QCoreApplication::translate("MainWindow", "\345\267\245\345\205\267", nullptr));
     } // retranslateUi
 
 };

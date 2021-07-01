@@ -21,7 +21,7 @@ void FSThread::run()
 {
 	result.clear();
 	result = FileScaner::Search(path);
-	emit finished();
+	emit finished(result, path);
 	quit();
 	return;
 }

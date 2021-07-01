@@ -23,7 +23,9 @@ void FileScaner::DFS(QStringList* filelist, QString path)
 
 		dir.setFilter(QDir::Dirs);
 		for (uint i = 0; i < dir.count(); i++) {
-			FileScaner::DFS(filelist, path + "/" + dir[i]);
+			if (dir[i] != "." && dir[i] != "..") {
+				FileScaner::DFS(filelist, path + "/" + dir[i]);
+			}
 		}
 	}
 }

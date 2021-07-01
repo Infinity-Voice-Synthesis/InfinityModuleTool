@@ -32,6 +32,9 @@
 #include <QListWidgetItem>
 #include "SLDialog.h"
 #include "FTBDialog.h"
+#include <QCryptographicHash>
+#include "rsasignature.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -114,5 +117,7 @@ private slots:
 	void on_actionOpen_2_triggered();
 	void on_actionSave_as_2_triggered();
 	void on_actionFiles_triggered();
+	void on_actionSign_triggered();
+	void on_actionCheckSign_triggered();
 };
 #endif // MAINWINDOW_H

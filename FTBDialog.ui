@@ -86,7 +86,7 @@
        </spacer>
       </item>
       <item row="1" column="2">
-       <widget class="QPushButton" name="scan">
+       <widget class="QPushButton" name="startscan">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -94,7 +94,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>扫描并标记</string>
+         <string>扫描并保存结果</string>
         </property>
        </widget>
       </item>
@@ -121,7 +121,14 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QPlainTextEdit" name="results"/>
+       <widget class="QPlainTextEdit" name="results">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="placeholderText">
+         <string>无结果</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
