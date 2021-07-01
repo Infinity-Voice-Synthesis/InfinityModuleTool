@@ -34,6 +34,7 @@
 #include "FTBDialog.h"
 #include <QCryptographicHash>
 #include "rsasignature.h"
+#include "IIDialog.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -119,5 +120,6 @@ private slots:
 	void on_actionFiles_triggered();
 	void on_actionSign_triggered();
 	void on_actionCheckSign_triggered();
+	void on_actionAbout_triggered();
 };
 #endif // MAINWINDOW_H

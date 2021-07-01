@@ -1703,3 +1703,11 @@ void MainWindow::on_actionCheckSign_triggered()
 		}
 	}
 }
+
+
+void MainWindow::on_actionAbout_triggered()
+{
+	IIDialog iid(this);
+	iid.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+	iid.exec();
+}

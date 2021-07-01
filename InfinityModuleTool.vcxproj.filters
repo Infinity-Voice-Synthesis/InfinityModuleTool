@@ -83,6 +83,9 @@
     <ClCompile Include="FSThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IIDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="chareditdialog.h">
@@ -115,6 +118,9 @@
     <QtMoc Include="FSThread.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="IIDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="chareditdialog.ui">
@@ -139,6 +145,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="FTBDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="IIDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
