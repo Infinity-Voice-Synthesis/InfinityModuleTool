@@ -13,6 +13,8 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCalendarWidget>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QFormLayout>
@@ -32,6 +34,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTableWidget>
+#include <QtWidgets/QTimeEdit>
 #include <QtWidgets/QToolBox>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -111,6 +114,22 @@ public:
     QPushButton *enpdel;
     QPushButton *enpup;
     QPushButton *enpdown;
+    QWidget *page_6;
+    QGridLayout *gridLayout_18;
+    QGroupBox *groupBox_11;
+    QGridLayout *gridLayout_17;
+    QPlainTextEdit *engineeula;
+    QGroupBox *groupBox_9;
+    QGridLayout *gridLayout_16;
+    QSpacerItem *horizontalSpacer_11;
+    QLabel *label_14;
+    QSpacerItem *horizontalSpacer_10;
+    QComboBox *enginecheckmethod;
+    QCheckBox *engineautocheck;
+    QGroupBox *groupBox_10;
+    QGridLayout *gridLayout_15;
+    QCalendarWidget *enginewarrantdate;
+    QTimeEdit *enginewarranttime;
     QWidget *database;
     QGridLayout *gridLayout_7;
     QToolBox *toolBox_2;
@@ -162,6 +181,22 @@ public:
     QPushButton *lldel;
     QPushButton *llup;
     QPushButton *lldown;
+    QWidget *page_7;
+    QGridLayout *gridLayout_22;
+    QGroupBox *groupBox_14;
+    QGridLayout *gridLayout_21;
+    QLabel *label_15;
+    QComboBox *librarycheckmethod;
+    QSpacerItem *horizontalSpacer_12;
+    QCheckBox *libraryautocheck;
+    QSpacerItem *horizontalSpacer_13;
+    QGroupBox *groupBox_12;
+    QGridLayout *gridLayout_19;
+    QCalendarWidget *librarywarrantdate;
+    QTimeEdit *librarywarranttime;
+    QGroupBox *groupBox_13;
+    QGridLayout *gridLayout_20;
+    QPlainTextEdit *libraryeula;
     QWidget *dictionary;
     QFormLayout *formLayout;
     QLabel *label;
@@ -183,10 +218,11 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(946, 733);
+        MainWindow->resize(952, 713);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/pic/icon/LOGO.png"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
+        MainWindow->setStyleSheet(QString::fromUtf8(""));
         actionNew = new QAction(MainWindow);
         actionNew->setObjectName(QString::fromUtf8("actionNew"));
         actionOpen = new QAction(MainWindow);
@@ -245,7 +281,7 @@ public:
         toolBox->setSizePolicy(sizePolicy);
         page = new QWidget();
         page->setObjectName(QString::fromUtf8("page"));
-        page->setGeometry(QRect(0, 0, 896, 520));
+        page->setGeometry(QRect(0, 0, 902, 470));
         verticalLayout = new QVBoxLayout(page);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         groupBox_2 = new QGroupBox(page);
@@ -499,6 +535,88 @@ public:
         gridLayout_6->addWidget(enpdown, 1, 4, 1, 1);
 
         toolBox->addItem(page_3, QString::fromUtf8("\351\237\263\347\254\246\345\217\202\346\225\260"));
+        page_6 = new QWidget();
+        page_6->setObjectName(QString::fromUtf8("page_6"));
+        page_6->setGeometry(QRect(0, 0, 557, 328));
+        gridLayout_18 = new QGridLayout(page_6);
+        gridLayout_18->setObjectName(QString::fromUtf8("gridLayout_18"));
+        groupBox_11 = new QGroupBox(page_6);
+        groupBox_11->setObjectName(QString::fromUtf8("groupBox_11"));
+        gridLayout_17 = new QGridLayout(groupBox_11);
+        gridLayout_17->setObjectName(QString::fromUtf8("gridLayout_17"));
+        engineeula = new QPlainTextEdit(groupBox_11);
+        engineeula->setObjectName(QString::fromUtf8("engineeula"));
+
+        gridLayout_17->addWidget(engineeula, 0, 0, 1, 1);
+
+
+        gridLayout_18->addWidget(groupBox_11, 1, 0, 1, 1);
+
+        groupBox_9 = new QGroupBox(page_6);
+        groupBox_9->setObjectName(QString::fromUtf8("groupBox_9"));
+        gridLayout_16 = new QGridLayout(groupBox_9);
+        gridLayout_16->setObjectName(QString::fromUtf8("gridLayout_16"));
+        horizontalSpacer_11 = new QSpacerItem(138, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_16->addItem(horizontalSpacer_11, 1, 2, 1, 1);
+
+        label_14 = new QLabel(groupBox_9);
+        label_14->setObjectName(QString::fromUtf8("label_14"));
+
+        gridLayout_16->addWidget(label_14, 0, 0, 1, 1);
+
+        horizontalSpacer_10 = new QSpacerItem(138, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_16->addItem(horizontalSpacer_10, 1, 0, 1, 1);
+
+        enginecheckmethod = new QComboBox(groupBox_9);
+        enginecheckmethod->addItem(QString());
+        enginecheckmethod->addItem(QString());
+        enginecheckmethod->addItem(QString());
+        enginecheckmethod->setObjectName(QString::fromUtf8("enginecheckmethod"));
+        QSizePolicy sizePolicy4(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(enginecheckmethod->sizePolicy().hasHeightForWidth());
+        enginecheckmethod->setSizePolicy(sizePolicy4);
+
+        gridLayout_16->addWidget(enginecheckmethod, 0, 1, 1, 2);
+
+        engineautocheck = new QCheckBox(groupBox_9);
+        engineautocheck->setObjectName(QString::fromUtf8("engineautocheck"));
+        engineautocheck->setChecked(true);
+        engineautocheck->setAutoRepeat(false);
+
+        gridLayout_16->addWidget(engineautocheck, 1, 1, 1, 1);
+
+
+        gridLayout_18->addWidget(groupBox_9, 0, 0, 1, 1);
+
+        groupBox_10 = new QGroupBox(page_6);
+        groupBox_10->setObjectName(QString::fromUtf8("groupBox_10"));
+        gridLayout_15 = new QGridLayout(groupBox_10);
+        gridLayout_15->setObjectName(QString::fromUtf8("gridLayout_15"));
+        enginewarrantdate = new QCalendarWidget(groupBox_10);
+        enginewarrantdate->setObjectName(QString::fromUtf8("enginewarrantdate"));
+        enginewarrantdate->setGridVisible(false);
+        enginewarrantdate->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
+        enginewarrantdate->setNavigationBarVisible(true);
+        enginewarrantdate->setDateEditEnabled(true);
+
+        gridLayout_15->addWidget(enginewarrantdate, 0, 0, 1, 1);
+
+        enginewarranttime = new QTimeEdit(groupBox_10);
+        enginewarranttime->setObjectName(QString::fromUtf8("enginewarranttime"));
+        enginewarranttime->setCalendarPopup(false);
+        enginewarranttime->setTimeSpec(Qt::LocalTime);
+        enginewarranttime->setTime(QTime(0, 0, 0));
+
+        gridLayout_15->addWidget(enginewarranttime, 1, 0, 1, 1);
+
+
+        gridLayout_18->addWidget(groupBox_10, 0, 1, 2, 1);
+
+        toolBox->addItem(page_6, QString::fromUtf8("\346\216\210\346\235\203\344\277\241\346\201\257"));
 
         formLayout_2->setWidget(0, QFormLayout::SpanningRole, toolBox);
 
@@ -622,11 +740,11 @@ public:
 
         groupBox_4 = new QGroupBox(page_4);
         groupBox_4->setObjectName(QString::fromUtf8("groupBox_4"));
-        QSizePolicy sizePolicy4(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(groupBox_4->sizePolicy().hasHeightForWidth());
-        groupBox_4->setSizePolicy(sizePolicy4);
+        QSizePolicy sizePolicy5(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(groupBox_4->sizePolicy().hasHeightForWidth());
+        groupBox_4->setSizePolicy(sizePolicy5);
         gridLayout_8 = new QGridLayout(groupBox_4);
         gridLayout_8->setObjectName(QString::fromUtf8("gridLayout_8"));
         libraryiconname = new QLineEdit(groupBox_4);
@@ -714,8 +832,8 @@ public:
 
         groupBox_8 = new QGroupBox(page_5);
         groupBox_8->setObjectName(QString::fromUtf8("groupBox_8"));
-        sizePolicy4.setHeightForWidth(groupBox_8->sizePolicy().hasHeightForWidth());
-        groupBox_8->setSizePolicy(sizePolicy4);
+        sizePolicy5.setHeightForWidth(groupBox_8->sizePolicy().hasHeightForWidth());
+        groupBox_8->setSizePolicy(sizePolicy5);
         gridLayout_13 = new QGridLayout(groupBox_8);
         gridLayout_13->setObjectName(QString::fromUtf8("gridLayout_13"));
         lsdlink = new QTableWidget(groupBox_8);
@@ -767,6 +885,85 @@ public:
         gridLayout_14->addWidget(groupBox_8, 0, 1, 1, 1);
 
         toolBox_2->addItem(page_5, QString::fromUtf8("\351\237\263\351\230\266\351\205\215\347\275\256"));
+        page_7 = new QWidget();
+        page_7->setObjectName(QString::fromUtf8("page_7"));
+        page_7->setGeometry(QRect(0, 0, 557, 328));
+        gridLayout_22 = new QGridLayout(page_7);
+        gridLayout_22->setObjectName(QString::fromUtf8("gridLayout_22"));
+        groupBox_14 = new QGroupBox(page_7);
+        groupBox_14->setObjectName(QString::fromUtf8("groupBox_14"));
+        gridLayout_21 = new QGridLayout(groupBox_14);
+        gridLayout_21->setObjectName(QString::fromUtf8("gridLayout_21"));
+        label_15 = new QLabel(groupBox_14);
+        label_15->setObjectName(QString::fromUtf8("label_15"));
+
+        gridLayout_21->addWidget(label_15, 0, 0, 1, 1);
+
+        librarycheckmethod = new QComboBox(groupBox_14);
+        librarycheckmethod->addItem(QString());
+        librarycheckmethod->addItem(QString());
+        librarycheckmethod->addItem(QString());
+        librarycheckmethod->setObjectName(QString::fromUtf8("librarycheckmethod"));
+        sizePolicy4.setHeightForWidth(librarycheckmethod->sizePolicy().hasHeightForWidth());
+        librarycheckmethod->setSizePolicy(sizePolicy4);
+
+        gridLayout_21->addWidget(librarycheckmethod, 0, 1, 1, 2);
+
+        horizontalSpacer_12 = new QSpacerItem(138, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_21->addItem(horizontalSpacer_12, 1, 0, 1, 1);
+
+        libraryautocheck = new QCheckBox(groupBox_14);
+        libraryautocheck->setObjectName(QString::fromUtf8("libraryautocheck"));
+        libraryautocheck->setChecked(true);
+        libraryautocheck->setAutoRepeat(false);
+
+        gridLayout_21->addWidget(libraryautocheck, 1, 1, 1, 1);
+
+        horizontalSpacer_13 = new QSpacerItem(138, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_21->addItem(horizontalSpacer_13, 1, 2, 1, 1);
+
+
+        gridLayout_22->addWidget(groupBox_14, 0, 0, 1, 1);
+
+        groupBox_12 = new QGroupBox(page_7);
+        groupBox_12->setObjectName(QString::fromUtf8("groupBox_12"));
+        gridLayout_19 = new QGridLayout(groupBox_12);
+        gridLayout_19->setObjectName(QString::fromUtf8("gridLayout_19"));
+        librarywarrantdate = new QCalendarWidget(groupBox_12);
+        librarywarrantdate->setObjectName(QString::fromUtf8("librarywarrantdate"));
+        librarywarrantdate->setGridVisible(false);
+        librarywarrantdate->setVerticalHeaderFormat(QCalendarWidget::NoVerticalHeader);
+        librarywarrantdate->setNavigationBarVisible(true);
+        librarywarrantdate->setDateEditEnabled(true);
+
+        gridLayout_19->addWidget(librarywarrantdate, 0, 0, 1, 1);
+
+        librarywarranttime = new QTimeEdit(groupBox_12);
+        librarywarranttime->setObjectName(QString::fromUtf8("librarywarranttime"));
+        librarywarranttime->setCalendarPopup(false);
+        librarywarranttime->setTimeSpec(Qt::LocalTime);
+        librarywarranttime->setTime(QTime(0, 0, 0));
+
+        gridLayout_19->addWidget(librarywarranttime, 1, 0, 1, 1);
+
+
+        gridLayout_22->addWidget(groupBox_12, 0, 1, 2, 1);
+
+        groupBox_13 = new QGroupBox(page_7);
+        groupBox_13->setObjectName(QString::fromUtf8("groupBox_13"));
+        gridLayout_20 = new QGridLayout(groupBox_13);
+        gridLayout_20->setObjectName(QString::fromUtf8("gridLayout_20"));
+        libraryeula = new QPlainTextEdit(groupBox_13);
+        libraryeula->setObjectName(QString::fromUtf8("libraryeula"));
+
+        gridLayout_20->addWidget(libraryeula, 0, 0, 1, 1);
+
+
+        gridLayout_22->addWidget(groupBox_13, 1, 0, 1, 1);
+
+        toolBox_2->addItem(page_7, QString::fromUtf8("\346\216\210\346\235\203\344\277\241\346\201\257"));
 
         gridLayout_7->addWidget(toolBox_2, 0, 0, 1, 1);
 
@@ -847,7 +1044,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 946, 26));
+        menubar->setGeometry(QRect(0, 0, 952, 26));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
         menu_2 = new QMenu(menubar);
@@ -872,6 +1069,7 @@ public:
         label_3->setBuddy(engineauthor);
         label_5->setBuddy(engineversion);
         label_6->setBuddy(engineinfor);
+        label_14->setBuddy(enginecheckmethod);
         label_7->setBuddy(libraryname);
         label_8->setBuddy(libraryengine);
         label_9->setBuddy(librarydictionary);
@@ -879,6 +1077,7 @@ public:
         label_11->setBuddy(engineversion);
         label_12->setBuddy(engineinfor);
         label_13->setBuddy(lsddefault);
+        label_15->setBuddy(enginecheckmethod);
         label->setBuddy(dicname);
 #endif // QT_CONFIG(shortcut)
 
@@ -987,6 +1186,18 @@ public:
         enpup->setText(QCoreApplication::translate("MainWindow", "\344\270\212\347\247\273", nullptr));
         enpdown->setText(QCoreApplication::translate("MainWindow", "\344\270\213\347\247\273", nullptr));
         toolBox->setItemText(toolBox->indexOf(page_3), QCoreApplication::translate("MainWindow", "\351\237\263\347\254\246\345\217\202\346\225\260", nullptr));
+        groupBox_11->setTitle(QCoreApplication::translate("MainWindow", "EULA", nullptr));
+        engineeula->setPlaceholderText(QCoreApplication::translate("MainWindow", "\350\276\223\345\205\245\346\234\200\347\273\210\347\224\250\346\210\267\350\256\270\345\217\257\345\215\217\350\256\256", nullptr));
+        groupBox_9->setTitle(QCoreApplication::translate("MainWindow", "\346\216\210\346\235\203\346\240\241\351\252\214", nullptr));
+        label_14->setText(QCoreApplication::translate("MainWindow", "\346\216\210\346\235\203\346\240\241\351\252\214\346\226\271\345\274\217", nullptr));
+        enginecheckmethod->setItemText(0, QCoreApplication::translate("MainWindow", "\347\246\273\347\272\277\346\240\241\351\252\214", nullptr));
+        enginecheckmethod->setItemText(1, QCoreApplication::translate("MainWindow", "\350\201\224\347\275\221\346\240\241\351\252\214", nullptr));
+        enginecheckmethod->setItemText(2, QCoreApplication::translate("MainWindow", "\346\267\267\345\220\210\346\240\241\351\252\214", nullptr));
+
+        engineautocheck->setText(QCoreApplication::translate("MainWindow", "\345\255\243\345\272\246\344\276\213\350\241\214\346\240\241\351\252\214", nullptr));
+        groupBox_10->setTitle(QCoreApplication::translate("MainWindow", "\346\216\210\346\235\203\347\273\223\346\235\237\346\227\266\351\227\264", nullptr));
+        enginewarranttime->setDisplayFormat(QCoreApplication::translate("MainWindow", "HH:mm:ss", nullptr));
+        toolBox->setItemText(toolBox->indexOf(page_6), QCoreApplication::translate("MainWindow", "\346\216\210\346\235\203\344\277\241\346\201\257", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(engine), QCoreApplication::translate("MainWindow", "\345\274\225\346\223\216", nullptr));
         groupBox_5->setTitle(QCoreApplication::translate("MainWindow", "\345\237\272\347\241\200\344\277\241\346\201\257", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "\345\243\260\345\272\223\345\220\215\347\247\260", nullptr));
@@ -1025,6 +1236,18 @@ public:
         llup->setText(QCoreApplication::translate("MainWindow", "\344\270\212\347\247\273", nullptr));
         lldown->setText(QCoreApplication::translate("MainWindow", "\344\270\213\347\247\273", nullptr));
         toolBox_2->setItemText(toolBox_2->indexOf(page_5), QCoreApplication::translate("MainWindow", "\351\237\263\351\230\266\351\205\215\347\275\256", nullptr));
+        groupBox_14->setTitle(QCoreApplication::translate("MainWindow", "\346\216\210\346\235\203\346\240\241\351\252\214", nullptr));
+        label_15->setText(QCoreApplication::translate("MainWindow", "\346\216\210\346\235\203\346\240\241\351\252\214\346\226\271\345\274\217", nullptr));
+        librarycheckmethod->setItemText(0, QCoreApplication::translate("MainWindow", "\347\246\273\347\272\277\346\240\241\351\252\214", nullptr));
+        librarycheckmethod->setItemText(1, QCoreApplication::translate("MainWindow", "\350\201\224\347\275\221\346\240\241\351\252\214", nullptr));
+        librarycheckmethod->setItemText(2, QCoreApplication::translate("MainWindow", "\346\267\267\345\220\210\346\240\241\351\252\214", nullptr));
+
+        libraryautocheck->setText(QCoreApplication::translate("MainWindow", "\345\255\243\345\272\246\344\276\213\350\241\214\346\240\241\351\252\214", nullptr));
+        groupBox_12->setTitle(QCoreApplication::translate("MainWindow", "\346\216\210\346\235\203\347\273\223\346\235\237\346\227\266\351\227\264", nullptr));
+        librarywarranttime->setDisplayFormat(QCoreApplication::translate("MainWindow", "HH:mm:ss", nullptr));
+        groupBox_13->setTitle(QCoreApplication::translate("MainWindow", "EULA", nullptr));
+        libraryeula->setPlaceholderText(QCoreApplication::translate("MainWindow", "\350\276\223\345\205\245\346\234\200\347\273\210\347\224\250\346\210\267\350\256\270\345\217\257\345\215\217\350\256\256", nullptr));
+        toolBox_2->setItemText(toolBox_2->indexOf(page_7), QCoreApplication::translate("MainWindow", "\346\216\210\346\235\203\344\277\241\346\201\257", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(database), QCoreApplication::translate("MainWindow", "\345\243\260\345\272\223", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "\345\255\227\345\205\270\345\220\215\347\247\260", nullptr));
         dicname->setPlaceholderText(QCoreApplication::translate("MainWindow", "\350\257\267\350\276\223\345\205\245\345\255\227\345\205\270\345\220\215\347\247\260", nullptr));

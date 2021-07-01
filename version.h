@@ -5,6 +5,6 @@
 #pragma execution_character_set("utf-8")
 #endif
 
-extern constexpr double _IMT_Version = 0.1;
+extern constexpr double _IMT_Version = 0.2;
 
 #endif // !VERSION_H_INCLUDED

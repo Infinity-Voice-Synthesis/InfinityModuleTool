@@ -32,6 +32,13 @@ MainWindow::MainWindow(QWidget* parent)
 	QAction* act_trans_del = new QAction("删除", this);
 	connect(act_trans_del, &QAction::triggered, this, &MainWindow::ontd);
 	transmenu->addAction(act_trans_del);
+
+	ui->enginewarrantdate->setMinimumDate(QDate::currentDate().addDays(1));
+	ui->librarywarrantdate->setMinimumDate(QDate::currentDate().addDays(1));
+	ui->enginewarrantdate->setSelectedDate(QDate::currentDate().addDays(1));
+	ui->librarywarrantdate->setSelectedDate(QDate::currentDate().addDays(1));
+	ui->enginewarranttime->setTime(QTime::fromString("00:00:00", "hh:mm:ss"));
+	ui->librarywarranttime->setTime(QTime::fromString("00:00:00", "hh:mm:ss"));
 }
 
 MainWindow::~MainWindow()
@@ -75,6 +82,14 @@ void MainWindow::paintEvent(QPaintEvent* event)
 		}
 		else {
 			painter.drawText(QPointF(0.05 * width(), i * (double)((double)height() / (double)50)), "time:" + times);
+		}
+	}
+	for (int i = 0; i < 50; i++) {
+		if (i % 2) {
+			painter.drawText(QPointF(0.55 * width(), i * (double)((double)height() / (double)50)), "name:" + Developername);
+		}
+		else {
+			painter.drawText(QPointF(0.55 * width(), i * (double)((double)height() / (double)50)), "time:" + times);
 		}
 	}
 	QWidget::paintEvent(event);
@@ -906,6 +921,11 @@ void MainWindow::on_actionNew_triggered()
 	while (ui->enplist->rowCount() > 0) {
 		ui->enplist->removeRow(0);
 	}
+	ui->enginecheckmethod->setCurrentIndex(0);
+	ui->engineautocheck->setChecked(true);
+	ui->engineeula->clear();
+	ui->enginewarrantdate->setSelectedDate(QDate::currentDate().addDays(1));
+	ui->enginewarranttime->setTime(QTime::fromString("00:00:00", "hh:mm:ss"));
 	ui->tabWidget->setCurrentIndex(0);
 	ui->toolBox->setCurrentIndex(0);
 }
@@ -970,6 +990,12 @@ void MainWindow::on_actionOpen_triggered()
 							sjo.find("default")->toDouble()
 						);
 					}
+
+					ui->enginecheckmethod->setCurrentIndex(jo.find("checkmethod")->toInt());
+					ui->engineautocheck->setChecked(jo.find("autocheck")->toBool());
+					ui->engineeula->setPlainText(jo.find("eula")->toString());
+					ui->enginewarrantdate->setSelectedDate(QDate::fromString(jo.find("warrantdate")->toString(), "yyyy-MM-dd"));
+					ui->enginewarranttime->setTime(QTime::fromString(jo.find("warranttime")->toString(), "hh:mm:ss"));
 				}
 				else {
 					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
@@ -1028,6 +1054,12 @@ void MainWindow::on_actionSave_as_triggered()
 
 			jo.insert("ewp", ewpa);
 			jo.insert("enp", enpa);
+
+			jo.insert("checkmethod", ui->enginecheckmethod->currentIndex());
+			jo.insert("autocheck", ui->engineautocheck->isChecked());
+			jo.insert("eula", ui->engineeula->toPlainText());
+			jo.insert("warrantdate", ui->enginewarrantdate->selectedDate().toString("yyyy-MM-dd"));
+			jo.insert("warranttime", ui->enginewarranttime->time().toString("hh:mm:ss"));
 
 			QJsonDocument jd;
 			jd.setObject(jo);
@@ -1386,6 +1418,11 @@ void MainWindow::on_actionNew_2_triggered()
 	while (ui->lsdlink->rowCount() > 0) {
 		ui->lsdlink->removeRow(0);
 	}
+	ui->librarycheckmethod->setCurrentIndex(0);
+	ui->libraryautocheck->setChecked(true);
+	ui->libraryeula->clear();
+	ui->librarywarrantdate->setSelectedDate(QDate::currentDate().addDays(1));
+	ui->librarywarranttime->setTime(QTime::fromString("00:00:00", "hh:mm:ss"));
 	ui->tabWidget->setCurrentIndex(1);
 	ui->toolBox_2->setCurrentIndex(0);
 }
@@ -1445,6 +1482,12 @@ void MainWindow::on_actionOpen_2_triggered()
 							sjo.find("sdb")->toString()
 						);
 					}
+
+					ui->librarycheckmethod->setCurrentIndex(jo.find("checkmethod")->toInt());
+					ui->libraryautocheck->setChecked(jo.find("autocheck")->toBool());
+					ui->libraryeula->setPlainText(jo.find("eula")->toString());
+					ui->librarywarrantdate->setSelectedDate(QDate::fromString(jo.find("warrantdate")->toString(), "yyyy-MM-dd"));
+					ui->librarywarranttime->setTime(QTime::fromString(jo.find("warranttime")->toString(), "hh:mm:ss"));
 				}
 				else {
 					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
@@ -1499,6 +1542,12 @@ void MainWindow::on_actionSave_as_2_triggered()
 				jo.insert("sdbdefault", ui->lsddefault->currentText());
 				jo.insert("sdblist", sdblista);
 				jo.insert("sdblink", sdblinka);
+
+				jo.insert("checkmethod", ui->librarycheckmethod->currentIndex());
+				jo.insert("autocheck", ui->libraryautocheck->isChecked());
+				jo.insert("eula", ui->libraryeula->toPlainText());
+				jo.insert("warrantdate", ui->librarywarrantdate->selectedDate().toString("yyyy-MM-dd"));
+				jo.insert("warranttime", ui->librarywarranttime->time().toString("hh:mm:ss"));
 
 				QJsonDocument jd;
 				jd.setObject(jo);
