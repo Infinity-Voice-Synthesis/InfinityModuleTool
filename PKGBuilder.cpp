@@ -206,16 +206,16 @@ QString PKGBuilder::getPosPath(int type, QString filepath, QString rootpath, QSt
 	QString fpt = filepath;
 	if (fpt.startsWith(rootpath)) {
 		fpt = fpt.left(fpt.size() - rootpath.size());
-		if (type = 0) {
+		if (type == 0) {
 			fpt.prepend("<enginePath>" + QString("/") + pkgname);
 		}
-		if (type = 1) {
+		if (type == 1) {
 			fpt.prepend("<libraryPath>" + QString("/") + pkgname);
 		}
-		if (type = 2) {
+		if (type == 2) {
 			fpt.prepend("<dictionaryPath>" + QString("/") + pkgname);
 		}
-		if (type = 3) {
+		if (type == 3) {
 			fpt.prepend("<scriptPath>");
 		}
 	}
@@ -251,4 +251,21 @@ QByteArray PKGBuilder::BuildListChunk(int type, QStringList filelist, QString ro
 	}
 	char listhead[4] = { 'L','I','S','T' };
 	return BuildChunk(listhead, listdata);
+}
+
+QByteArray PKGBuilder::Pack(PKGTask task)
+{
+	QByteArray listchunk = BuildListChunk(task.type, task.files, task.root, task.name);
+	QByteArray inforchunk = BuildInformationChunk(
+		task.type,
+		task.IMT_Ver,
+		task.version,
+		task.name,
+		task.icon,
+		task.author,
+		task.EULA,
+		task.wdate,
+		task.wtime
+	);
+	return BuildPack(inforchunk, listchunk);
 }

@@ -21,6 +21,7 @@ public:
 	{
 		int type;
 		double IMT_Ver;
+		double version;
 		QString name;
 		QByteArray icon;
 		QString author;
@@ -39,4 +40,5 @@ public:
 	static QByteArray BuildPack(QByteArray inforchunk, QByteArray filechunk);
 	static QString getPosPath(int type, QString filepath, QString rootpath, QString pkgname);
 	static QByteArray BuildListChunk(int type, QStringList filelist, QString rootpath, QString pkgname);
+	static QByteArray Pack(PKGTask task);
 };
