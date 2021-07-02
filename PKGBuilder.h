@@ -9,6 +9,7 @@
 #include <QCryptographicHash>
 #include "rsasignature.h"
 #include <QStringList>
+#include "version.h"
 
 typedef unsigned long RIFF_SIZE;
 
@@ -41,4 +42,8 @@ public:
 	static QString getPosPath(int type, QString filepath, QString rootpath, QString pkgname);
 	static QByteArray BuildListChunk(int type, QStringList filelist, QString rootpath, QString pkgname);
 	static QByteArray Pack(PKGTask task);
+	static bool checkFileList(QStringList filelist);
+	static QStringList getInforList(QStringList filelist, QString rootpath, int type);
+	static bool checkSign(QString filename);
+	static bool checkSignature(QStringList inforfilelist);
 };

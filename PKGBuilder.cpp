@@ -269,3 +269,88 @@ QByteArray PKGBuilder::Pack(PKGTask task)
 	);
 	return BuildPack(inforchunk, listchunk);
 }
+
+bool PKGBuilder::checkFileList(QStringList filelist)
+{
+	bool ok = true;
+	for (int i = 0; i < filelist.size(); i++) {
+		QFile file(filelist.at(i));
+		if (!file.exists()) {
+			ok = false;
+			break;
+		}
+	}
+	return ok;
+}
+
+QStringList PKGBuilder::getInforList(QStringList filelist, QString rootpath, int type)
+{
+	QStringList list;
+	for (int i = 0; i < filelist.size(); i++) {
+		QString stemp = filelist.at(i);
+		if (stemp.startsWith(rootpath)) {
+			stemp = stemp.right(stemp.size() - rootpath.size() - 1);
+			if (!stemp.contains("/")) {
+				if (stemp.endsWith(".ifteinfor") && type == 0) {
+					list.append(rootpath + "/" + stemp);
+				}
+				if (stemp.endsWith(".iftlinfor") && type == 1) {
+					list.append(rootpath + "/" + stemp);
+				}
+			}
+		}
+	}
+	return list;
+}
+
+bool PKGBuilder::checkSign(QString filename)
+{
+	QFile file(filename);
+	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QString data = file.readAll();
+		QJsonDocument jd = QJsonDocument::fromJson(data.toUtf8());
+		file.close();
+		if (jd.isObject()) {
+			QJsonObject jo = jd.object();
+
+			if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+
+				QFile publicfile(":/keys/keys/1.pub.key");
+				if (publicfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+					QString pubkey = publicfile.readAll();
+					publicfile.close();
+
+					QCryptographicHash hash(QCryptographicHash::Sha512);
+					hash.addData(data.toLatin1().data());
+					QString datahash = hash.result().toHex().toLower();
+
+					QFile signfile(filename + ".signature");
+					if (signfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+						QString signdata = signfile.readAll();
+						signfile.close();
+
+						QString datadecrypted;
+						RSASignature::public_decrypt(signdata, pubkey, datadecrypted);
+
+						if (datadecrypted == datahash) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool PKGBuilder::checkSignature(QStringList inforfilelist)
+{
+	bool ok = true;
+	for (int i = 0; i < inforfilelist.size(); i++) {
+		if (!checkSign(inforfilelist.at(i))) {
+			ok = false;
+			break;
+		}
+	}
+	return ok;
+}
