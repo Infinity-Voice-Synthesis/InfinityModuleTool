@@ -86,6 +86,9 @@
     <ClCompile Include="IIDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PKGBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="chareditdialog.h">
@@ -174,6 +177,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileScaner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PKGBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

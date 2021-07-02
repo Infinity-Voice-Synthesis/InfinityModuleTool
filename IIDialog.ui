@@ -24,30 +24,10 @@
       <string>关于Infinity组件工具</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="5" column="0" colspan="2">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Infinity歌声合成团队保留所有权利</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QLabel" name="comt">
         <property name="text">
          <string>编译时间：</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Infinity歌声合成团队版权所有</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -67,10 +47,10 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="version">
+      <item row="5" column="0" colspan="2">
+       <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>版本：</string>
+         <string>任何未经许可的对此程序的修改、改编、逆向编译、反汇编、反编译行为都将被视为非法</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -87,10 +67,10 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0" colspan="2">
-       <widget class="QLabel" name="label_4">
+      <item row="1" column="1">
+       <widget class="QLabel" name="version">
         <property name="text">
-         <string>任何未经许可的对此程序的修改、改编、逆向编译、反汇编、反编译行为都将被视为非法</string>
+         <string>版本：</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -107,6 +87,29 @@ background-color: rgba(255, 255, 255, 0);</string>
          <string>Qt库版本：</string>
         </property>
        </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Infinity歌声合成团队保留所有权利</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>

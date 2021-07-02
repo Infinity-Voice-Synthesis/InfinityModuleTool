@@ -1093,8 +1093,8 @@ public:
         menu_2->addAction(actionNew_2);
         menu_2->addAction(actionOpen_2);
         menu_2->addAction(actionSave_as_2);
-        menu_3->addAction(actionFiles);
         menu_3->addAction(actionSign);
+        menu_3->addAction(actionFiles);
         menu_3->addAction(menu_6->menuAction());
         menu_6->addAction(actionBuildEngine);
         menu_6->addAction(actionBuildLibrary);
@@ -1131,12 +1131,12 @@ public:
         actionSave_as_2->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\344\277\241\346\201\257\350\241\250", nullptr));
         actionAbout->setText(QCoreApplication::translate("MainWindow", "\345\205\263\344\272\216", nullptr));
         actionDeveloper->setText(QCoreApplication::translate("MainWindow", "\351\252\214\350\257\201\345\274\200\345\217\221\350\200\205\350\272\253\344\273\275", nullptr));
-        actionFiles->setText(QCoreApplication::translate("MainWindow", "\347\224\237\346\210\220\346\226\207\344\273\266\346\240\221", nullptr));
+        actionFiles->setText(QCoreApplication::translate("MainWindow", "2.\347\224\237\346\210\220\346\226\207\344\273\266\346\240\221", nullptr));
         actionNew_dic->setText(QCoreApplication::translate("MainWindow", "\346\226\260\345\255\227\345\205\270", nullptr));
         actionOpen_dic->setText(QCoreApplication::translate("MainWindow", "\350\257\273\345\217\226\345\255\227\345\205\270", nullptr));
         actionSave_dic->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\345\255\227\345\205\270", nullptr));
         actionFrom_cedict->setText(QCoreApplication::translate("MainWindow", "\344\273\216cedict\345\255\227\345\205\270\345\257\274\345\205\245", nullptr));
-        actionSign->setText(QCoreApplication::translate("MainWindow", "\347\255\276\345\220\215", nullptr));
+        actionSign->setText(QCoreApplication::translate("MainWindow", "1.\347\255\276\345\220\215", nullptr));
         actionAutoC->setText(QCoreApplication::translate("MainWindow", "\350\257\206\345\210\253\350\276\205\351\237\263\345\274\200\345\244\264\347\232\204\345\217\221\351\237\263\345\271\266\350\256\276\347\275\256\351\273\230\350\256\244CP", nullptr));
         actionBuildEngine->setText(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\345\274\225\346\223\216", nullptr));
         actionBuildLibrary->setText(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\345\243\260\345\272\223", nullptr));
@@ -1269,7 +1269,7 @@ public:
         menu->setTitle(QCoreApplication::translate("MainWindow", "\345\274\225\346\223\216", nullptr));
         menu_2->setTitle(QCoreApplication::translate("MainWindow", "\345\243\260\345\272\223", nullptr));
         menu_3->setTitle(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205", nullptr));
-        menu_6->setTitle(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\347\273\204\344\273\266", nullptr));
+        menu_6->setTitle(QCoreApplication::translate("MainWindow", "3.\345\260\201\350\243\205\347\273\204\344\273\266", nullptr));
         menu_4->setTitle(QCoreApplication::translate("MainWindow", "\345\205\263\344\272\216", nullptr));
         menu_5->setTitle(QCoreApplication::translate("MainWindow", "\345\255\227\345\205\270", nullptr));
         menu_7->setTitle(QCoreApplication::translate("MainWindow", "\345\267\245\345\205\267", nullptr));

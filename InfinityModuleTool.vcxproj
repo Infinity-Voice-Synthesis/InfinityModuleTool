@@ -222,6 +222,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="ParamDialog.cpp" />
+    <ClCompile Include="PKGBuilder.cpp" />
     <ClCompile Include="QIconWidget.cpp" />
     <ClCompile Include="rsasignature.cpp" />
     <ClCompile Include="SLDialog.cpp" />
@@ -235,6 +236,7 @@
     <QtMoc Include="FTBDialog.h" />
     <QtMoc Include="FSThread.h" />
     <QtMoc Include="IIDialog.h" />
+    <ClInclude Include="PKGBuilder.h" />
     <ClInclude Include="version.h" />
     <QtMoc Include="chareditdialog.h">
     </QtMoc>
