@@ -35,6 +35,7 @@
 #include <QCryptographicHash>
 #include "rsasignature.h"
 #include "IIDialog.h"
+#include "PKGBuilder.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -121,5 +122,8 @@ private slots:
 	void on_actionSign_triggered();
 	void on_actionCheckSign_triggered();
 	void on_actionAbout_triggered();
+	void on_actionBuildEngine_triggered();
+	void on_actionBuildLibrary_triggered();
+	void on_actionBuildDictionary_triggered();
 };
 #endif // MAINWINDOW_H

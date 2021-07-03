@@ -90,6 +90,10 @@ void PKGBuilder::appendFile(QByteArray* chunkdata, QByteArray filedata, QString 
 *	...
 *	==========
 *	==========
+*	'A''B''O''T'(size)
+*	...
+*	==========
+*	==========
 *	'E''U''L''A'(size)
 *	...
 *	==========
@@ -103,15 +107,16 @@ void PKGBuilder::appendFile(QByteArray* chunkdata, QByteArray filedata, QString 
 *	==========
 * ==========
 */
-QByteArray PKGBuilder::BuildInformationChunk(int type, double IMT_Ver, double Ver, QString name, QByteArray icon, QString author, QString EULA, QString wdate, QString wtime)
+QByteArray PKGBuilder::BuildInformationChunk(int type, double IMT_Ver, double Ver, QString name, QByteArray icon, QString author, QString about, QString EULA, QString wdate, QString wtime)
 {
 	QByteArray inforchunk, infordata;
 
-	QByteArray namedata, authordata, EULAdata, wdatedata, wtimedata;
-	QByteArray namechunk, iconchunk, authorchunk, EULAchunk, wdatechunk, wtimechunk;
+	QByteArray namedata, authordata, aboutdata, EULAdata, wdatedata, wtimedata;
+	QByteArray namechunk, iconchunk, authorchunk, aboutchunk, EULAchunk, wdatechunk, wtimechunk;
 
 	namedata = name.toUtf8();
 	authordata = author.toUtf8();
+	aboutdata = about.toUtf8();
 	EULAdata = EULA.toUtf8();
 	wdatedata = wdate.toUtf8();
 	wtimedata = wtime.toUtf8();
@@ -124,6 +129,7 @@ QByteArray PKGBuilder::BuildInformationChunk(int type, double IMT_Ver, double Ve
 	char namehead[4] = { 'N','A','M','E' };
 	char iconhead[4] = { 'I','C','O','N' };
 	char authorhead[4] = { 'A','T','H','R' };
+	char abouthead[4] = { 'A','B','O','T' };
 	char EULAhead[4] = { 'E','U','L','A' };
 	char wdatehead[4] = { 'D','A','T','E' };
 	char wtimehead[4] = { 'T','I','M','E' };
@@ -131,6 +137,7 @@ QByteArray PKGBuilder::BuildInformationChunk(int type, double IMT_Ver, double Ve
 	namechunk = BuildChunk(namehead, namedata);
 	iconchunk = BuildChunk(iconhead, icon);
 	authorchunk = BuildChunk(authorhead, authordata);
+	aboutchunk = BuildChunk(abouthead, aboutdata);
 	EULAchunk = BuildChunk(EULAhead, EULAdata);
 	wdatechunk = BuildChunk(wdatehead, wdatedata);
 	wtimechunk = BuildChunk(wtimehead, wtimedata);
@@ -138,6 +145,7 @@ QByteArray PKGBuilder::BuildInformationChunk(int type, double IMT_Ver, double Ve
 	infordata.append(namechunk);
 	infordata.append(iconchunk);
 	infordata.append(authorchunk);
+	infordata.append(aboutchunk);
 	infordata.append(EULAchunk);
 	infordata.append(wdatechunk);
 	infordata.append(wtimechunk);
@@ -263,6 +271,7 @@ QByteArray PKGBuilder::Pack(PKGTask task)
 		task.name,
 		task.icon,
 		task.author,
+		task.about,
 		task.EULA,
 		task.wdate,
 		task.wtime
@@ -353,4 +362,17 @@ bool PKGBuilder::checkSignature(QStringList inforfilelist)
 		}
 	}
 	return ok;
+}
+
+QStringList PKGBuilder::getInforNameList(QStringList inforfilelist, QString rootpath)
+{
+	QStringList list;
+	for (int i = 0; i < inforfilelist.size(); i++) {
+		QString stemp = inforfilelist.at(i);
+		if (stemp.startsWith(rootpath)) {
+			stemp = stemp.right(stemp.size() - rootpath.size() - 1);
+			list.append(stemp);
+		}
+	}
+	return list;
 }

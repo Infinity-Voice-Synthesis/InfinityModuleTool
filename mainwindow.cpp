@@ -1711,3 +1711,124 @@ void MainWindow::on_actionAbout_triggered()
 	iid.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
 	iid.exec();
 }
+
+void MainWindow::on_actionBuildEngine_triggered()
+{
+	QString filen = QFileDialog::getExistingDirectory(this, "选择要打包的文件所在目录", QDir::currentPath());
+	if (!filen.isEmpty()) {
+		QDir::setCurrent(filen);
+
+		QFile listfile(filen + "/.Infinity.MT.Filelist.raw");
+		if (listfile.exists()) {
+			if (listfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+				QStringList filelist = QString(listfile.readAll()).split("\n", QString::SkipEmptyParts);
+				listfile.close();
+
+				if (PKGBuilder::checkFileList(filelist)) {
+					QStringList inforlist = PKGBuilder::getInforList(filelist, filen, 0);
+					if (inforlist.size() > 0) {
+						if (PKGBuilder::checkSignature(inforlist)) {
+							QString defaultInforFile = QInputDialog::getItem(
+								this,
+								"选择打包时使用的信息表",
+								"请选择一个信息表并将其中的信息用于打包",
+								PKGBuilder::getInforNameList(inforlist, filen),
+								0,
+								false,
+								nullptr,
+								Qt::Dialog | Qt::WindowCloseButtonHint
+							);
+							if (!defaultInforFile.isEmpty()) {
+								QString inforname = filen + "/" + defaultInforFile;
+
+								QFile file(inforname);
+								if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+									QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+									file.close();
+									if (jd.isObject()) {
+										QJsonObject jo = jd.object();
+
+										if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+
+											PKGBuilder::PKGTask task;
+
+											task.type = 0;
+											task.name = jo.find("name")->toString();
+											task.IMT_Ver = ::_IMT_Version;
+											task.icon = jo.find("icon")->toString().toLocal8Bit();
+											task.author = jo.find("author")->toString();
+											task.version = jo.find("version")->toDouble();
+											task.about = jo.find("infor")->toString();
+											task.EULA = jo.find("eula")->toString();
+											task.wdate = jo.find("warrantdate")->toString();
+											task.wtime = jo.find("warranttime")->toString();
+											task.files = filelist;
+											task.root = filen;
+
+											QString packfilen = QFileDialog::getSaveFileName(this, "选择包文件生成目标", QDir::currentPath(), "Infinity组件包(*.iftpack)");
+											if (!packfilen.isEmpty()) {
+												QFileInfo filei(packfilen);
+												QDir::setCurrent(filei.absolutePath());
+
+												QFile packfile(packfilen);
+												if (packfile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+													QByteArray packdata = PKGBuilder::Pack(task);
+													packfile.write(packdata);
+													packfile.close();
+													QMessageBox::information(this, "打包", "打包完成");
+												}
+												else {
+													QMessageBox::warning(this, "出错", "无法打开文件：" + packfilen);
+												}
+											}
+											else {
+												QMessageBox::warning(this, "出错", "未选择包文件生成目标，已取消打包");
+											}
+										}
+										else {
+											QMessageBox::warning(this, "出错", "不支持的文件版本：" + inforname);
+										}
+									}
+									else {
+										QMessageBox::warning(this, "出错", "文件格式损坏：" + inforname);
+									}
+								}
+								else {
+									QMessageBox::warning(this, "出错", "无法打开文件：" + inforname);
+								}
+							}
+							else {
+								QMessageBox::warning(this, "出错", "未选择打包时使用的信息表，已取消打包");
+							}
+						}
+						else {
+							QMessageBox::warning(this, "出错", "文件树根目录中有签名无效的信息表文件");
+						}
+					}
+					else {
+						QMessageBox::warning(this, "出错", "文件树根目录中不存在信息表文件");
+					}
+				}
+				else {
+					QMessageBox::warning(this, "出错", "文件树中有文件不存在");
+				}
+			}
+			else {
+				QMessageBox::warning(this, "出错", "无法打开文件树");
+			}
+		}
+		else {
+			QMessageBox::warning(this, "出错", "目录内没有找到文件树");
+		}
+	}
+}
+
+void MainWindow::on_actionBuildLibrary_triggered()
+{
+
+}
+
+void MainWindow::on_actionBuildDictionary_triggered()
+{
+
+}

@@ -20,3 +20,8 @@ void IIDialog::on_QVersion_clicked()
 {
 	QMessageBox::aboutQt(this, "关于Qt库");
 }
+
+void IIDialog::on_openssl_clicked()
+{
+	QDesktopServices::openUrl(QUrl("https://www.openssl.org/source/license-openssl-ssleay.txt"));
+}
