@@ -10,6 +10,7 @@
 #include "rsasignature.h"
 #include <QStringList>
 #include "version.h"
+#include <QDir>
 
 typedef unsigned long RIFF_SIZE;
 
@@ -48,4 +49,11 @@ public:
 	static bool checkSign(QString filename);
 	static bool checkSignature(QStringList inforfilelist);
 	static QStringList getInforNameList(QStringList inforfilelist, QString rootpath);
+
+	static void prepareTempory(QString TemporyDir);
+	static void cleanTempory(QString TemporyDir);
+	static void tempFileChunk(QString TemporyDir, QString FileName, QString FilePos);
+	static RIFF_SIZE getTempSize(QString TemporyDir);
+	static void linkTempFile(QDataStream* stream, QString TemporyDir);
+	static void Pack_D(PKGTask task, QString packfile);
 };

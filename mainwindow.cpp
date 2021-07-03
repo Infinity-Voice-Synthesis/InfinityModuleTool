@@ -1770,16 +1770,8 @@ void MainWindow::on_actionBuildEngine_triggered()
 												QFileInfo filei(packfilen);
 												QDir::setCurrent(filei.absolutePath());
 
-												QFile packfile(packfilen);
-												if (packfile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-													QByteArray packdata = PKGBuilder::Pack(task);
-													packfile.write(packdata);
-													packfile.close();
-													QMessageBox::information(this, "打包", "打包完成");
-												}
-												else {
-													QMessageBox::warning(this, "出错", "无法打开文件：" + packfilen);
-												}
+												PKGBuilder::Pack_D(task, packfilen);
+												QMessageBox::information(this, "打包", "打包完成");
 											}
 											else {
 												QMessageBox::warning(this, "出错", "未选择包文件生成目标，已取消打包");

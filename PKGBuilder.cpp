@@ -175,45 +175,29 @@ QByteArray PKGBuilder::SignChunk(QByteArray chunkdata)
 }
 /*
 * ==========
-* 'R''I''F''F'(size)
+* 'P''A''C''K'(size)
 *	==========
-*	'S''I''G''N'(size)
+*	'I''F''M''T'(size)
 *	...
 *	==========
 *	==========
-*	'P''A''C''K'(size)
-*		==========
-*		'I''F''M''T'(size)
-*		...
-*		==========
-*		==========
-*		'L''I''S''T'(size)
-*		...
-*		==========
+*	'L''I''S''T'(size)
+*	...
 *	==========
 * ==========
 */
 QByteArray PKGBuilder::BuildPack(QByteArray inforchunk, QByteArray filechunk)
 {
-	QByteArray packchunk;
-
 	char packhead[4] = { 'P','A','C','K' };
-	char signhead[4] = { 'S','I','G','N' };
-	char riffhead[4] = { 'R','I','F','F' };
 
-	packchunk = BuildChunk(packhead, inforchunk + filechunk);
-
-	QByteArray packsign = SignChunk(packchunk);
-	QByteArray signchunk = BuildChunk(signhead, packsign);
-
-	return BuildChunk(riffhead, signchunk + packchunk);
+	return BuildChunk(packhead, inforchunk + filechunk);
 }
 
 QString PKGBuilder::getPosPath(int type, QString filepath, QString rootpath, QString pkgname)
 {
 	QString fpt = filepath;
 	if (fpt.startsWith(rootpath)) {
-		fpt = fpt.left(fpt.size() - rootpath.size());
+		fpt = fpt.right(fpt.size() - rootpath.size());
 		if (type == 0) {
 			fpt.prepend("<enginePath>" + QString("/") + pkgname);
 		}
@@ -375,4 +359,213 @@ QStringList PKGBuilder::getInforNameList(QStringList inforfilelist, QString root
 		}
 	}
 	return list;
+}
+
+void PKGBuilder::prepareTempory(QString TemporyDir)
+{
+	QDir dir(TemporyDir);
+	if (dir.exists()) {
+		dir.removeRecursively();
+	}
+	dir.mkpath(TemporyDir);
+	QFile countfile(TemporyDir + "/.files");
+	if (countfile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+		countfile.close();
+	}
+}
+
+void PKGBuilder::cleanTempory(QString TemporyDir)
+{
+	QDir dir(TemporyDir);
+	if (dir.exists()) {
+		dir.removeRecursively();
+	}
+}
+/*
+* ==========
+* 'F''I''L''E'(size)
+*	==========
+*	'H''E''A''D'(size)
+*		==========
+*		'M''D''5''\0'(size)
+*		...
+*		==========
+*		==========
+*		'P''S''P''T'(size)
+*		...
+*		==========
+*	==========
+*	==========
+*	'D''A''T''A'(size)
+*	...
+*	==========
+* ==========
+*/
+void PKGBuilder::tempFileChunk(QString TemporyDir, QString FileName, QString FilePos)
+{
+	QString tfns = FilePos;
+	tfns.replace("/", "_");
+	tfns.replace(" ", "_");
+	tfns.replace("<", "_");
+	tfns.replace(">", "_");
+	tfns.replace(".", "_");
+	QString tempfilename = TemporyDir + "/" + tfns;
+	QFile listfile(TemporyDir + "/.files"), tempfile(tempfilename), sourcefile(FileName);
+	if (tempfile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+		if (sourcefile.open(QIODevice::ReadOnly)) {
+			QDataStream tempstream(&tempfile);
+
+			QByteArray sourcedata = sourcefile.readAll();
+
+			QCryptographicHash* hash = new QCryptographicHash(QCryptographicHash::Md5);
+			hash->addData(sourcedata);
+			QByteArray md5data = hash->result();
+			delete hash;
+
+			QByteArray posdata = FilePos.toUtf8();
+
+			RIFF_SIZE md5_size = md5data.size() + sizeof(RIFF_SIZE) + 4;
+			RIFF_SIZE pos_size = posdata.size() + sizeof(RIFF_SIZE) + 4;
+
+			RIFF_SIZE head_size = md5_size + pos_size + sizeof(RIFF_SIZE) + 4;
+
+			RIFF_SIZE data_size = sourcedata.size() + sizeof(RIFF_SIZE) + 4;
+
+			RIFF_SIZE wmd5_size = md5data.size();
+			RIFF_SIZE wpos_size = posdata.size();
+			RIFF_SIZE whead_size = md5_size + pos_size;
+			RIFF_SIZE wdata_size = sourcedata.size();
+			RIFF_SIZE wfile_size = head_size + data_size;
+
+			char md5head[4] = { 'M','D','5','\0' };
+			char poshead[4] = { 'P','S','P','T' };
+			char fhhead[4] = { 'H','E','A','D' };
+			char fdatahead[4] = { 'D','A','T','A' };
+			char filehead[4] = { 'F','I','L','E' };
+
+			tempstream.writeRawData((char*)filehead, 4);
+			tempstream.writeRawData((char*)&wfile_size, sizeof(RIFF_SIZE));
+			tempstream.writeRawData((char*)fhhead, 4);
+			tempstream.writeRawData((char*)&whead_size, sizeof(RIFF_SIZE));
+			tempstream.writeRawData((char*)md5head, 4);
+			tempstream.writeRawData((char*)&wmd5_size, sizeof(RIFF_SIZE));
+			tempstream.writeRawData((char*)md5data.constData(), md5data.size());
+			tempstream.writeRawData((char*)poshead, 4);
+			tempstream.writeRawData((char*)&wpos_size, sizeof(RIFF_SIZE));
+			tempstream.writeRawData((char*)posdata.constData(), posdata.size());
+			tempstream.writeRawData((char*)fdatahead, 4);
+			tempstream.writeRawData((char*)&wdata_size, sizeof(RIFF_SIZE));
+			tempstream.writeRawData((char*)sourcedata.constData(), sourcedata.size());
+			sourcedata.clear();
+
+			sourcefile.close();
+		}
+		tempfile.close();
+
+		if (listfile.open(QIODevice::ReadWrite | QIODevice::Append)) {
+			listfile.write(QString(tfns + "\n").toUtf8());
+			listfile.close();
+		}
+	}
+}
+
+RIFF_SIZE PKGBuilder::getTempSize(QString TemporyDir)
+{
+	RIFF_SIZE count = 0;
+	QFile listfile(TemporyDir + "/.files");
+	if (listfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QString filelistdata = listfile.readAll();
+		listfile.close();
+		if (!filelistdata.isEmpty()) {
+			QStringList TempList = filelistdata.split("\n", QString::SkipEmptyParts);
+
+			for (int i = 0; i < TempList.size(); i++) {
+				QFile file(TemporyDir + "/" + TempList.at(i));
+				count += file.size();
+			}
+		}
+
+	}
+	return count;
+}
+
+void PKGBuilder::linkTempFile(QDataStream* stream, QString TemporyDir)
+{
+	QFile listfile(TemporyDir + "/.files");
+	if (listfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		QString filelistdata = listfile.readAll();
+		listfile.close();
+		if (!filelistdata.isEmpty()) {
+			QStringList TempList = filelistdata.split("\n", QString::SkipEmptyParts);
+
+			for (int i = 0; i < TempList.size(); i++) {
+				QFile file(TemporyDir + "/" + TempList.at(i));
+				if (file.open(QIODevice::ReadOnly)) {
+					QByteArray tempdata = file.readAll();
+					file.close();
+					stream->writeRawData((char*)tempdata.constData(), tempdata.size());
+					tempdata.clear();
+				}
+			}
+		}
+
+	}
+}
+/*
+* ==========
+* 'P''A''C''K'(size)
+*	==========
+*	'I''F''M''T'(size)
+*	...
+*	==========
+*	==========
+*	'L''I''S''T'(size)
+*	...
+*	==========
+* ==========
+*/
+void PKGBuilder::Pack_D(PKGTask task, QString packfile)
+{
+	char packhead[4] = { 'P','A','C','K' };
+	char listhead[4] = { 'L','I','S','T' };
+
+	QFile file(packfile);
+	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+		QDataStream packstream(&file);
+
+		QByteArray infordata = BuildInformationChunk(
+			task.type,
+			task.IMT_Ver,
+			task.version,
+			task.name,
+			task.icon,
+			task.author,
+			task.about,
+			task.EULA,
+			task.wdate,
+			task.wtime
+		);
+
+		QString tempdir = task.root + "/.IMT.build";
+		prepareTempory(tempdir);
+
+		for (int i = 0; i < task.files.size(); i++) {
+			tempFileChunk(tempdir, task.files.at(i), getPosPath(task.type, task.files.at(i), task.root, task.name));
+		}
+
+		RIFF_SIZE wlist_size = getTempSize(tempdir);
+		RIFF_SIZE list_size = wlist_size + sizeof(RIFF_SIZE) + 4;
+		RIFF_SIZE infor_size = infordata.size();
+		RIFF_SIZE wpack_size = infor_size + list_size;
+
+		packstream.writeRawData((char*)packhead, 4);
+		packstream.writeRawData((char*)&wpack_size, sizeof(RIFF_SIZE));
+		packstream.writeRawData((char*)infordata.constData(), infordata.size());
+		packstream.writeRawData((char*)listhead, 4);
+		packstream.writeRawData((char*)&wlist_size, sizeof(RIFF_SIZE));
+		linkTempFile(&packstream, tempdir);
+
+		cleanTempory(tempdir);
+		file.close();
+	}
 }
