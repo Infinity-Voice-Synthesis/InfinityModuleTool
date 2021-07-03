@@ -36,6 +36,8 @@
 #include "rsasignature.h"
 #include "IIDialog.h"
 #include "PKGBuilder.h"
+#include "BuildThread.h"
+#include <QLabel>
 
 
 QT_BEGIN_NAMESPACE
@@ -66,6 +68,9 @@ private:
 	QStringList getCharListfromTrans(QMap<QString, QString> trans);
 
 	QMenu* charmenu, * transmenu;
+	BuildThread buildt;
+
+	QLabel* stlabel = new QLabel(this);
 protected:
 	void paintEvent(QPaintEvent* event);
 private slots:
@@ -125,5 +130,6 @@ private slots:
 	void on_actionBuildEngine_triggered();
 	void on_actionBuildLibrary_triggered();
 	void on_actionBuildDictionary_triggered();
+	void on_buildt_finished();
 };
 #endif // MAINWINDOW_H

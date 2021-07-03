@@ -89,6 +89,9 @@
     <ClCompile Include="PKGBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BuildThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="chareditdialog.h">
@@ -122,6 +125,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="IIDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="BuildThread.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

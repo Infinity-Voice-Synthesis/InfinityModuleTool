@@ -213,6 +213,7 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BuildThread.cpp" />
     <ClCompile Include="chareditdialog.cpp" />
     <ClCompile Include="developerdialog.cpp" />
     <ClCompile Include="FileScaner.cpp" />
@@ -232,6 +233,7 @@
     <QtMoc Include="QIconWidget.h" />
     <QtMoc Include="ParamDialog.h" />
     <QtMoc Include="SLDialog.h" />
+    <QtMoc Include="BuildThread.h" />
     <ClInclude Include="FileScaner.h" />
     <QtMoc Include="FTBDialog.h" />
     <QtMoc Include="FSThread.h" />
