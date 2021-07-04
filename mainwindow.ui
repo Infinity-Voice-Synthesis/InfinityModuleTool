@@ -710,8 +710,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>607</width>
-             <height>346</height>
+             <width>902</width>
+             <height>500</height>
             </rect>
            </property>
            <attribute name="label">
@@ -785,7 +785,7 @@
                <item row="2" column="2">
                 <widget class="QPushButton" name="loadlibrarydictionary">
                  <property name="text">
-                  <string>从声库载入</string>
+                  <string>从字典载入</string>
                  </property>
                 </widget>
                </item>

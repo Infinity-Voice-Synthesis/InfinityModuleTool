@@ -631,7 +631,7 @@ public:
         toolBox_2->setSizePolicy(sizePolicy);
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 607, 346));
+        page_4->setGeometry(QRect(0, 0, 902, 500));
         gridLayout_11 = new QGridLayout(page_4);
         gridLayout_11->setObjectName(QString::fromUtf8("gridLayout_11"));
         groupBox_5 = new QGroupBox(page_4);
@@ -1207,7 +1207,7 @@ public:
         loadlibraryengine->setText(QCoreApplication::translate("MainWindow", "\344\273\216\344\277\241\346\201\257\350\241\250\350\275\275\345\205\245", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "\345\255\227\345\205\270\345\220\215\347\247\260", nullptr));
         librarydictionary->setPlaceholderText(QCoreApplication::translate("MainWindow", "\350\256\276\347\275\256\345\243\260\345\272\223\344\275\277\347\224\250\347\232\204\345\255\227\345\205\270", nullptr));
-        loadlibrarydictionary->setText(QCoreApplication::translate("MainWindow", "\344\273\216\345\243\260\345\272\223\350\275\275\345\205\245", nullptr));
+        loadlibrarydictionary->setText(QCoreApplication::translate("MainWindow", "\344\273\216\345\255\227\345\205\270\350\275\275\345\205\245", nullptr));
         groupBox_6->setTitle(QCoreApplication::translate("MainWindow", "\351\231\204\345\212\240\344\277\241\346\201\257", nullptr));
         label_10->setText(QCoreApplication::translate("MainWindow", "\345\243\260\345\272\223\344\275\234\350\200\205", nullptr));
         libraryauthor->setPlaceholderText(QCoreApplication::translate("MainWindow", "\350\257\267\350\276\223\345\205\245\344\275\234\350\200\205", nullptr));
