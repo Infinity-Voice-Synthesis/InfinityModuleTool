@@ -1940,7 +1940,70 @@ void MainWindow::on_actionBuildLibrary_triggered()
 
 void MainWindow::on_actionBuildDictionary_triggered()
 {
+	QString filen = QFileDialog::getExistingDirectory(this, "选择要打包的字典目录", QDir::currentPath());
+	if (!filen.isEmpty()) {
+		QDir::setCurrent(filen);
 
+		QStringList filelist;
+		filelist.append(filen + "/dictionary.json");
+		filelist.append(filen + "/character.raw");
+		filelist.append(filen + "/translate.raw");
+
+		if (PKGBuilder::checkFileList(filelist)) {
+
+			QString inforname = filen + "/dictionary.json";
+
+			QFile file(inforname);
+			if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+				QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+				file.close();
+				if (jd.isObject()) {
+					QJsonObject jo = jd.object();
+
+					if (jo.find("version")->toDouble() <= ::_IMT_Version) {
+
+						PKGBuilder::PKGTask task;
+
+						task.type = 2;
+						task.name = jo.find("name")->toString();
+						task.IMT_Ver = ::_IMT_Version;
+						task.files = filelist;
+						task.root = filen;
+
+						QString packfilen = QFileDialog::getSaveFileName(this, "选择包文件生成目标", QDir::currentPath(), "Infinity组件包(*.iftpack)");
+						if (!packfilen.isEmpty()) {
+							QFileInfo filei(packfilen);
+							QDir::setCurrent(filei.absolutePath());
+
+							if (buildt.isRunning()) {
+								buildt.terminate();
+								buildt.wait();
+							}
+							buildt.setTask(packfilen, task);
+							buildt.start();
+							ui->menu_6->setEnabled(false);
+							stlabel->setText("打包正在执行...");
+						}
+						else {
+							QMessageBox::warning(this, "出错", "未选择包文件生成目标，已取消打包");
+						}
+					}
+					else {
+						QMessageBox::warning(this, "出错", "不支持的文件版本：" + inforname);
+					}
+				}
+				else {
+					QMessageBox::warning(this, "出错", "文件格式损坏：" + inforname);
+				}
+			}
+			else {
+				QMessageBox::warning(this, "出错", "无法打开文件：" + inforname);
+			}
+		}
+		else {
+			QMessageBox::warning(this, "出错", "文件树中有文件不存在");
+		}
+	}
 }
 
 void MainWindow::on_buildt_finished()
