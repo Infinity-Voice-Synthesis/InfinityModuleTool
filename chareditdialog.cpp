@@ -17,28 +17,22 @@ CharEditDialog::~CharEditDialog()
 	delete ui;
 }
 
-void CharEditDialog::setchar(QString name, double CP, double PP, double VSP, double VEP)
+void CharEditDialog::setchar(QString name, bool consonant, QString x_sampa)
 {
 	ui->name->setText(name);
-	ui->CP->setValue(CP);
-	ui->PP->setValue(PP);
-	ui->VSP->setValue(VSP);
-	ui->VEP->setValue(VEP);
+	ui->consonant->setChecked(consonant);
+	ui->x_sampa->setText(x_sampa);
 	this->name = name;
-	this->CP = CP;
-	this->PP = PP;
-	this->VSP = VSP;
-	this->VEP = VEP;
+	this->consonant = consonant;
+	this->x_sampa = x_sampa;
 }
 
 void CharEditDialog::on_buttonBox_accepted()
 {
-	if (ui->PP->value() >= (-ui->CP->value()) && ui->VSP->value() >= ui->PP->value() && ui->VEP->value() >= ui->VSP->value() && (!ui->name->text().isEmpty())) {
+	if ((!ui->name->text().isEmpty()) && (!ui->x_sampa->text().isEmpty())) {
 		this->name = ui->name->text();
-		this->CP = ui->CP->value();
-		this->PP = ui->PP->value();
-		this->VSP = ui->VSP->value();
-		this->VEP = ui->VEP->value();
+		this->consonant = ui->consonant->isChecked();
+		this->x_sampa = ui->x_sampa->text();
 	}
 	else {
 		QMessageBox::warning(this, "出错", "设置有误");

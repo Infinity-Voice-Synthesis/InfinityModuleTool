@@ -42,6 +42,8 @@ MainWindow::MainWindow(QWidget* parent)
 	ui->statusbar->addPermanentWidget(stlabel);
 	stlabel->setText("就绪");
 	connect(&buildt, &BuildThread::finished, this, &MainWindow::on_buildt_finished, Qt::UniqueConnection);
+	ui->charactertable->insertRow(0);
+	this->setcharrow(0, "a", false, "a");
 }
 
 MainWindow::~MainWindow()
@@ -172,7 +174,7 @@ void MainWindow::oncn()
 		}
 		if (ok) {
 			ui->charactertable->insertRow(0);
-			this->setcharrow(0, ced.name, ced.CP, ced.PP, ced.VSP, ced.VEP);
+			this->setcharrow(0, ced.name, ced.consonant, ced.x_sampa);
 		}
 		else {
 			QMessageBox::warning(this, "出错", "重复的项目！");
@@ -186,10 +188,8 @@ void MainWindow::once()
 	ced.setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
 	ced.setchar(
 		ui->charactertable->item(ui->charactertable->currentRow(), 0)->text(),
-		ui->charactertable->item(ui->charactertable->currentRow(), 1)->text().toDouble(),
-		ui->charactertable->item(ui->charactertable->currentRow(), 2)->text().toDouble(),
-		ui->charactertable->item(ui->charactertable->currentRow(), 3)->text().toDouble(),
-		ui->charactertable->item(ui->charactertable->currentRow(), 4)->text().toDouble()
+		((QCheckBox*)ui->charactertable->cellWidget(ui->charactertable->currentRow(), 1))->isChecked(),
+		ui->charactertable->item(ui->charactertable->currentRow(), 2)->text()
 	);
 	ced.exec();
 	if (!ced.name.isEmpty()) {
@@ -203,7 +203,7 @@ void MainWindow::once()
 			}
 		}
 		if (ok) {
-			this->setcharrow(ui->charactertable->currentRow(), ced.name, ced.CP, ced.PP, ced.VSP, ced.VEP);
+			this->setcharrow(ui->charactertable->currentRow(), ced.name, ced.consonant, ced.x_sampa);
 		}
 		else {
 			QMessageBox::warning(this, "出错", "重复的项目！");
@@ -272,24 +272,20 @@ void MainWindow::ontd()
 	ui->translatetable->removeRow(ui->translatetable->currentRow());
 }
 
-void MainWindow::setcharrow(int row, QString name, double CP, double PP, double VSP, double VEP)
+void MainWindow::setcharrow(int row, QString name, bool consonant, QString x_sampa)
 {
 	QTableWidgetItem* item;
 
 	item = new QTableWidgetItem(name);
 	ui->charactertable->setItem(row, 0, item);
 
-	item = new QTableWidgetItem(QString::number(CP));
-	ui->charactertable->setItem(row, 1, item);
+	QCheckBox* checkbox = new QCheckBox(ui->charactertable);
+	checkbox->setText("头部含有辅音");
+	checkbox->setChecked(consonant);
+	ui->charactertable->setCellWidget(row, 1, checkbox);
 
-	item = new QTableWidgetItem(QString::number(PP));
+	item = new QTableWidgetItem(x_sampa);
 	ui->charactertable->setItem(row, 2, item);
-
-	item = new QTableWidgetItem(QString::number(VSP));
-	ui->charactertable->setItem(row, 3, item);
-
-	item = new QTableWidgetItem(QString::number(VEP));
-	ui->charactertable->setItem(row, 4, item);
 }
 
 void MainWindow::settransrow(int row, QString name, QString phoneme)
@@ -359,6 +355,8 @@ void MainWindow::on_actionNew_dic_triggered()
 	while (ui->translatetable->rowCount() > 0) {
 		ui->translatetable->removeRow(0);
 	}
+	ui->charactertable->insertRow(0);
+	this->setcharrow(0, "a", false, "a");
 	ui->tabWidget->setCurrentIndex(2);
 }
 
@@ -393,14 +391,19 @@ void MainWindow::on_actionOpen_dic_triggered()
 						for (int i = 0; i < clist.size(); i++) {
 							QString sdata = clist.at(i);
 							QStringList slist = sdata.split(" ", QString::SkipEmptyParts);
-							if (slist.size() == 5) {
+							if (slist.size() >= 3) {
+								QString x_sampa;
+								for (int j = 2; j < slist.size(); j++) {
+									x_sampa += slist.at(j);
+									if (j < slist.size() - 1) {
+										x_sampa += " ";
+									}
+								}
 								ui->charactertable->insertRow(0);
 								this->setcharrow(0,
 									slist.at(0),
-									slist.at(1).toDouble(),
-									slist.at(2).toDouble(),
-									slist.at(3).toDouble(),
-									slist.at(4).toDouble());
+									slist.at(1).toInt(),
+									x_sampa);
 
 							}
 						}
@@ -456,71 +459,79 @@ void MainWindow::on_actionOpen_dic_triggered()
 void MainWindow::on_actionSave_dic_triggered()
 {
 	if (!ui->dicname->text().isEmpty()) {
-		QString filen = QFileDialog::getExistingDirectory(this, "保存字典", QDir::currentPath() + "/" + ui->dicname->text());
-		if (!filen.isEmpty()) {
-			QDir::setCurrent(filen);
-
-			QJsonObject jo;
-			jo.insert("name", ui->dicname->text());
-			jo.insert("version", ::_IMT_Version);
-
-			QJsonDocument jd;
-			jd.setObject(jo);
-
-			QByteArray data = jd.toJson(QJsonDocument::Indented);
-			QFile file(filen + "/dictionary.json");
-			if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-				file.write(data);
-				file.close();
+		bool havedefault = false;
+		for (int i = 0; i < ui->charactertable->rowCount(); i++) {
+			if (ui->charactertable->item(i, 0)->text() == "a") {
+				havedefault = true;
+				break;
 			}
-			else {
-				QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/dictionary.json");
-			}
+		}
+		if (havedefault) {
+			QString filen = QFileDialog::getExistingDirectory(this, "保存字典", QDir::currentPath() + "/" + ui->dicname->text());
+			if (!filen.isEmpty()) {
+				QDir::setCurrent(filen);
 
-			QString datac, datat;
-			QStringList datacl, datatl;
+				QJsonObject jo;
+				jo.insert("name", ui->dicname->text());
+				jo.insert("version", ::_IMT_Version);
 
-			for (int i = 0; i < ui->charactertable->rowCount(); i++) {
-				if (!datacl.contains(ui->charactertable->item(i, 0)->text())) {
-					datacl.append(ui->charactertable->item(i, 0)->text());
-					datac += ui->charactertable->item(i, 0)->text();
-					datac += " ";
-					datac += ui->charactertable->item(i, 1)->text();
-					datac += " ";
-					datac += ui->charactertable->item(i, 2)->text();
-					datac += " ";
-					datac += ui->charactertable->item(i, 3)->text();
-					datac += " ";
-					datac += ui->charactertable->item(i, 4)->text();
-					datac += "\n";
+				QJsonDocument jd;
+				jd.setObject(jo);
+
+				QByteArray data = jd.toJson(QJsonDocument::Indented);
+				QFile file(filen + "/dictionary.json");
+				if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+					file.write(data);
+					file.close();
+				}
+				else {
+					QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/dictionary.json");
+				}
+
+				QString datac, datat;
+				QStringList datacl, datatl;
+
+				for (int i = 0; i < ui->charactertable->rowCount(); i++) {
+					if (!datacl.contains(ui->charactertable->item(i, 0)->text())) {
+						datacl.append(ui->charactertable->item(i, 0)->text());
+						datac += ui->charactertable->item(i, 0)->text();
+						datac += " ";
+						datac += QString::number((int)((QCheckBox*)ui->charactertable->cellWidget(i, 1))->isChecked());
+						datac += " ";
+						datac += ui->charactertable->item(i, 2)->text();
+						datac += "\n";
+					}
+				}
+				for (int i = 0; i < ui->translatetable->rowCount(); i++) {
+					if (!datatl.contains(ui->translatetable->item(i, 0)->text())) {
+						datatl.append(ui->translatetable->item(i, 0)->text());
+						datat += ui->translatetable->item(i, 0)->text();
+						datat += " ";
+						datat += ui->translatetable->item(i, 1)->text();
+						datat += "\n";
+					}
+				}
+				QFile filec(filen + "/character.raw");
+				if (filec.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+					filec.write(datac.toUtf8());
+					filec.close();
+				}
+				else {
+					QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/character.raw");
+				}
+				QFile filet(filen + "/translate.raw");
+				if (filet.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+					filet.write(datat.toUtf8());
+					filet.close();
+					QMessageBox::information(this, "保存", "已保存字典：" + filen);
+				}
+				else {
+					QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/translate.raw");
 				}
 			}
-			for (int i = 0; i < ui->translatetable->rowCount(); i++) {
-				if (!datatl.contains(ui->translatetable->item(i, 0)->text())) {
-					datatl.append(ui->translatetable->item(i, 0)->text());
-					datat += ui->translatetable->item(i, 0)->text();
-					datat += " ";
-					datat += ui->translatetable->item(i, 1)->text();
-					datat += "\n";
-				}
-			}
-			QFile filec(filen + "/character.raw");
-			if (filec.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-				filec.write(datac.toUtf8());
-				filec.close();
-			}
-			else {
-				QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/character.raw");
-			}
-			QFile filet(filen + "/translate.raw");
-			if (filet.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-				filet.write(datat.toUtf8());
-				filet.close();
-				QMessageBox::information(this, "保存", "已保存字典：" + filen);
-			}
-			else {
-				QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/translate.raw");
-			}
+		}
+		else {
+			QMessageBox::warning(this, "出错", "未找到默认发音\"a\"");
 		}
 	}
 	else {
@@ -553,7 +564,7 @@ void MainWindow::on_actionFrom_cedict_triggered()
 
 			for (int i = 0; i < charl.size(); i++) {
 				ui->charactertable->insertRow(0);
-				this->setcharrow(0, charl.at(i));
+				this->setcharrow(0, charl.at(i), false, "a");
 			}
 			for (int i = 0; i < trans.size(); i++) {
 				ui->translatetable->insertRow(0);
@@ -618,19 +629,13 @@ QStringList MainWindow::getCharListfromTrans(QMap<QString, QString> trans)
 
 void MainWindow::on_actionAutoC_triggered()
 {
-	QString cdata = QInputDialog::getText(this, "输入辅音", "用空格分隔辅音");
+	QString cdata = QInputDialog::getText(this, "输入辅音", "用空格分隔辅音", QLineEdit::Normal, QString(), nullptr, Qt::Dialog | Qt::WindowCloseButtonHint);
 	QStringList cdatalist = cdata.split(" ", QString::SkipEmptyParts);
 	for (int j = 0; j < ui->charactertable->rowCount(); j++) {
-		ui->charactertable->item(j, 1)->setText(ui->charactertable->item(j, 2)->text());
+		((QCheckBox*)ui->charactertable->cellWidget(j, 1))->setChecked(false);
 		for (int i = 0; i < cdatalist.size(); i++) {
 			if (ui->charactertable->item(j, 0)->text().startsWith(cdatalist.at(i))) {
-				qDebug() << cdatalist.at(i) << ":" << ui->charactertable->item(j, 0)->text();
-				if (ui->charactertable->item(j, 2)->text().toDouble() > -0.3) {
-					ui->charactertable->item(j, 1)->setText("0.3");
-				}
-				else {
-					ui->charactertable->item(j, 1)->setText(QString::number(-ui->charactertable->item(j, 2)->text().toDouble() + 0.3));
-				}
+				((QCheckBox*)ui->charactertable->cellWidget(j, 1))->setChecked(true);
 				break;
 			}
 		}
@@ -2011,4 +2016,63 @@ void MainWindow::on_buildt_finished()
 	QMessageBox::information(this, "打包", "打包完成");
 	ui->menu_6->setEnabled(true);
 	stlabel->setText("就绪");
+}
+
+void MainWindow::on_actionFrom_x_sampa_triggered()
+{
+	QString filen = QFileDialog::getOpenFileName(this, "读取x-sampa字典", QDir::currentPath(), "x-sampa字典(*.txt);;所有文件(*)");
+	if (!filen.isEmpty()) {
+		QFileInfo filei(filen);
+		QDir::setCurrent(filei.absolutePath());
+
+		QFile file(filen);
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QString data = file.readAll();
+			file.close();
+
+			QStringList sl = data.split("\n", QString::SkipEmptyParts);
+			QMap<QString, QString> linkmap;
+			for (int i = 0; i < sl.size(); i++) {
+				QString slit = sl.at(i);
+				QStringList slil = slit.split(" ", QString::SkipEmptyParts);
+				if (slil.size() >= 2) {
+					QString x_sampa;
+					for (int j = 1; j < slil.size(); j++) {
+						x_sampa += slil.at(j);
+						if (j < slil.size() - 1) {
+							x_sampa += " ";
+						}
+					}
+					linkmap.insert(slil.at(0), x_sampa);
+				}
+			}
+
+			for (int i = 0; i < ui->charactertable->rowCount(); i++) {
+				if (linkmap.contains(ui->charactertable->item(i, 0)->text())) {
+					ui->charactertable->item(i, 2)->setText(linkmap[ui->charactertable->item(i, 0)->text()]);
+				}
+			}
+		}
+		else {
+			QMessageBox::warning(this, "出错", "无法打开文件：" + filen);
+		}
+	}
+	ui->tabWidget->setCurrentIndex(2);
+}
+
+void MainWindow::on_actionAutoC_X_triggered()
+{
+	QString cdata = QInputDialog::getText(this, "输入x-sampa辅音音素", "用空格分隔辅音音素", QLineEdit::Normal, QString(), nullptr, Qt::Dialog | Qt::WindowCloseButtonHint);
+	QStringList cdatalist = cdata.split(" ", QString::SkipEmptyParts);
+	for (int j = 0; j < ui->charactertable->rowCount(); j++) {
+		((QCheckBox*)ui->charactertable->cellWidget(j, 1))->setChecked(false);
+		for (int i = 0; i < cdatalist.size(); i++) {
+			QStringList xlist = ui->charactertable->item(j, 2)->text().split(" ", QString::SkipEmptyParts);
+			if (cdatalist.at(i) == xlist.at(0)) {
+				((QCheckBox*)ui->charactertable->cellWidget(j, 1))->setChecked(true);
+				break;
+			}
+		}
+	}
+	ui->tabWidget->setCurrentIndex(2);
 }

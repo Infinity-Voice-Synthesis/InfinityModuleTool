@@ -59,7 +59,7 @@ private:
 
 	void getDeve();
 	void devetrue();
-	void setcharrow(int row, QString name, double CP = 0, double PP = 0, double VSP = 0.2, double VEP = 0.8);
+	void setcharrow(int row, QString name, bool consonant, QString x_sampa);
 	void settransrow(int row, QString name, QString phoneme);
 	void setllrow(int row, QString pitch, QString sdb);
 	void setewprow(int row, QString name, double max, double min, double def);
@@ -131,5 +131,7 @@ private slots:
 	void on_actionBuildLibrary_triggered();
 	void on_actionBuildDictionary_triggered();
 	void on_buildt_finished();
+	void on_actionFrom_x_sampa_triggered();
+	void on_actionAutoC_X_triggered();
 };
 #endif // MAINWINDOW_H

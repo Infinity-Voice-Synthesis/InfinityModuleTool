@@ -19,12 +19,10 @@ class CharEditDialog : public QDialog
 public:
 	explicit CharEditDialog(QWidget* parent = nullptr);
 	~CharEditDialog();
-	void setchar(QString name, double CP = 0, double PP = 0, double VSP = 0.2, double VEP = 0.8);
+	void setchar(QString name, bool consonant, QString x_sampa);
 	QString name;
-	double CP = 0;
-	double PP = 0;
-	double VSP = 0.2;
-	double VEP = 0.8;
+	bool consonant;
+	QString x_sampa;
 private slots:
 	void on_buttonBox_accepted();
 	void on_buttonBox_rejected();

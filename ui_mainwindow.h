@@ -64,6 +64,8 @@ public:
     QAction *actionBuildLibrary;
     QAction *actionBuildDictionary;
     QAction *actionCheckSign;
+    QAction *actionFrom_x_sampa;
+    QAction *actionAutoC_X;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -262,6 +264,10 @@ public:
         actionBuildDictionary->setObjectName(QString::fromUtf8("actionBuildDictionary"));
         actionCheckSign = new QAction(MainWindow);
         actionCheckSign->setObjectName(QString::fromUtf8("actionCheckSign"));
+        actionFrom_x_sampa = new QAction(MainWindow);
+        actionFrom_x_sampa->setObjectName(QString::fromUtf8("actionFrom_x_sampa"));
+        actionAutoC_X = new QAction(MainWindow);
+        actionAutoC_X->setObjectName(QString::fromUtf8("actionAutoC_X"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -631,7 +637,7 @@ public:
         toolBox_2->setSizePolicy(sizePolicy);
         page_4 = new QWidget();
         page_4->setObjectName(QString::fromUtf8("page_4"));
-        page_4->setGeometry(QRect(0, 0, 902, 500));
+        page_4->setGeometry(QRect(0, 0, 607, 346));
         gridLayout_11 = new QGridLayout(page_4);
         gridLayout_11->setObjectName(QString::fromUtf8("gridLayout_11"));
         groupBox_5 = new QGroupBox(page_4);
@@ -987,18 +993,14 @@ public:
         splitter->setObjectName(QString::fromUtf8("splitter"));
         splitter->setOrientation(Qt::Vertical);
         charactertable = new QTableWidget(splitter);
-        if (charactertable->columnCount() < 5)
-            charactertable->setColumnCount(5);
+        if (charactertable->columnCount() < 3)
+            charactertable->setColumnCount(3);
         QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
         charactertable->setHorizontalHeaderItem(0, __qtablewidgetitem10);
         QTableWidgetItem *__qtablewidgetitem11 = new QTableWidgetItem();
         charactertable->setHorizontalHeaderItem(1, __qtablewidgetitem11);
         QTableWidgetItem *__qtablewidgetitem12 = new QTableWidgetItem();
         charactertable->setHorizontalHeaderItem(2, __qtablewidgetitem12);
-        QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
-        charactertable->setHorizontalHeaderItem(3, __qtablewidgetitem13);
-        QTableWidgetItem *__qtablewidgetitem14 = new QTableWidgetItem();
-        charactertable->setHorizontalHeaderItem(4, __qtablewidgetitem14);
         charactertable->setObjectName(QString::fromUtf8("charactertable"));
         charactertable->setContextMenuPolicy(Qt::CustomContextMenu);
         charactertable->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -1016,10 +1018,10 @@ public:
         translatetable = new QTableWidget(splitter);
         if (translatetable->columnCount() < 2)
             translatetable->setColumnCount(2);
-        QTableWidgetItem *__qtablewidgetitem15 = new QTableWidgetItem();
-        translatetable->setHorizontalHeaderItem(0, __qtablewidgetitem15);
-        QTableWidgetItem *__qtablewidgetitem16 = new QTableWidgetItem();
-        translatetable->setHorizontalHeaderItem(1, __qtablewidgetitem16);
+        QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
+        translatetable->setHorizontalHeaderItem(0, __qtablewidgetitem13);
+        QTableWidgetItem *__qtablewidgetitem14 = new QTableWidgetItem();
+        translatetable->setHorizontalHeaderItem(1, __qtablewidgetitem14);
         translatetable->setObjectName(QString::fromUtf8("translatetable"));
         translatetable->setContextMenuPolicy(Qt::CustomContextMenu);
         translatetable->setEditTriggers(QAbstractItemView::DoubleClicked);
@@ -1106,8 +1108,10 @@ public:
         menu_5->addAction(actionSave_dic);
         menu_5->addSeparator();
         menu_5->addAction(actionFrom_cedict);
+        menu_5->addAction(actionFrom_x_sampa);
         menu_5->addSeparator();
         menu_5->addAction(actionAutoC);
+        menu_5->addAction(actionAutoC_X);
         menu_7->addAction(actionCheckSign);
 
         retranslateUi(MainWindow);
@@ -1135,13 +1139,15 @@ public:
         actionNew_dic->setText(QCoreApplication::translate("MainWindow", "\346\226\260\345\255\227\345\205\270", nullptr));
         actionOpen_dic->setText(QCoreApplication::translate("MainWindow", "\350\257\273\345\217\226\345\255\227\345\205\270", nullptr));
         actionSave_dic->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\345\255\227\345\205\270", nullptr));
-        actionFrom_cedict->setText(QCoreApplication::translate("MainWindow", "\344\273\216cedict\345\255\227\345\205\270\345\257\274\345\205\245", nullptr));
+        actionFrom_cedict->setText(QCoreApplication::translate("MainWindow", "\344\273\216cedict\345\255\227\345\205\270\345\257\274\345\205\245\345\217\221\351\237\263\344\270\216\347\277\273\350\257\221(SynthV\346\240\274\345\274\217)", nullptr));
         actionSign->setText(QCoreApplication::translate("MainWindow", "1.\347\255\276\345\220\215", nullptr));
-        actionAutoC->setText(QCoreApplication::translate("MainWindow", "\350\257\206\345\210\253\350\276\205\351\237\263\345\274\200\345\244\264\347\232\204\345\217\221\351\237\263\345\271\266\350\256\276\347\275\256\351\273\230\350\256\244CP", nullptr));
+        actionAutoC->setText(QCoreApplication::translate("MainWindow", "\350\257\206\345\210\253\350\276\205\351\237\263\345\274\200\345\244\264\347\232\204\345\217\221\351\237\263", nullptr));
         actionBuildEngine->setText(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\345\274\225\346\223\216", nullptr));
         actionBuildLibrary->setText(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\345\243\260\345\272\223", nullptr));
         actionBuildDictionary->setText(QCoreApplication::translate("MainWindow", "\345\260\201\350\243\205\345\255\227\345\205\270", nullptr));
         actionCheckSign->setText(QCoreApplication::translate("MainWindow", "\346\240\241\351\252\214\347\255\276\345\220\215", nullptr));
+        actionFrom_x_sampa->setText(QCoreApplication::translate("MainWindow", "\344\273\216x-sampa\345\255\227\345\205\270\345\257\274\345\205\245\351\237\263\347\264\240(SynthV\346\240\274\345\274\217)", nullptr));
+        actionAutoC_X->setText(QCoreApplication::translate("MainWindow", "\346\240\271\346\215\256\351\237\263\347\264\240\350\257\206\345\210\253\350\276\205\351\237\263\345\274\200\345\244\264\347\232\204\345\217\221\351\237\263", nullptr));
         groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "\345\237\272\347\241\200\344\277\241\346\201\257", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "\345\274\225\346\223\216\345\220\215\347\247\260", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\345\274\225\346\223\216\344\270\273\346\250\241\345\235\227", nullptr));
@@ -1254,17 +1260,13 @@ public:
         QTableWidgetItem *___qtablewidgetitem10 = charactertable->horizontalHeaderItem(0);
         ___qtablewidgetitem10->setText(QCoreApplication::translate("MainWindow", "name", nullptr));
         QTableWidgetItem *___qtablewidgetitem11 = charactertable->horizontalHeaderItem(1);
-        ___qtablewidgetitem11->setText(QCoreApplication::translate("MainWindow", "CP", nullptr));
+        ___qtablewidgetitem11->setText(QCoreApplication::translate("MainWindow", "consonant", nullptr));
         QTableWidgetItem *___qtablewidgetitem12 = charactertable->horizontalHeaderItem(2);
-        ___qtablewidgetitem12->setText(QCoreApplication::translate("MainWindow", "PP", nullptr));
-        QTableWidgetItem *___qtablewidgetitem13 = charactertable->horizontalHeaderItem(3);
-        ___qtablewidgetitem13->setText(QCoreApplication::translate("MainWindow", "VSP", nullptr));
-        QTableWidgetItem *___qtablewidgetitem14 = charactertable->horizontalHeaderItem(4);
-        ___qtablewidgetitem14->setText(QCoreApplication::translate("MainWindow", "VEP", nullptr));
-        QTableWidgetItem *___qtablewidgetitem15 = translatetable->horizontalHeaderItem(0);
-        ___qtablewidgetitem15->setText(QCoreApplication::translate("MainWindow", "\345\255\227", nullptr));
-        QTableWidgetItem *___qtablewidgetitem16 = translatetable->horizontalHeaderItem(1);
-        ___qtablewidgetitem16->setText(QCoreApplication::translate("MainWindow", "\345\217\221\351\237\263", nullptr));
+        ___qtablewidgetitem12->setText(QCoreApplication::translate("MainWindow", "x-sampa", nullptr));
+        QTableWidgetItem *___qtablewidgetitem13 = translatetable->horizontalHeaderItem(0);
+        ___qtablewidgetitem13->setText(QCoreApplication::translate("MainWindow", "\345\255\227", nullptr));
+        QTableWidgetItem *___qtablewidgetitem14 = translatetable->horizontalHeaderItem(1);
+        ___qtablewidgetitem14->setText(QCoreApplication::translate("MainWindow", "\345\217\221\351\237\263", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(dictionary), QCoreApplication::translate("MainWindow", "\345\255\227\345\205\270", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\345\274\225\346\223\216", nullptr));
         menu_2->setTitle(QCoreApplication::translate("MainWindow", "\345\243\260\345\272\223", nullptr));
