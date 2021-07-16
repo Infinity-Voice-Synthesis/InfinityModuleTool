@@ -1513,6 +1513,7 @@
     <addaction name="separator"/>
     <addaction name="actionFrom_cedict"/>
     <addaction name="actionFrom_x_sampa"/>
+    <addaction name="actionLoadDic"/>
     <addaction name="separator"/>
     <addaction name="actionAutoC"/>
     <addaction name="actionAutoC_X"/>
@@ -1637,6 +1638,11 @@
   <action name="actionAutoC_X">
    <property name="text">
     <string>根据音素识别辅音开头的发音</string>
+   </property>
+  </action>
+  <action name="actionLoadDic">
+   <property name="text">
+    <string>从音素映射直接加载字典(SynthV格式)</string>
    </property>
   </action>
  </widget>

@@ -477,7 +477,7 @@ RIFF_SIZE PKGBuilder::getTempSize(QString TemporyDir)
 		QString filelistdata = listfile.readAll();
 		listfile.close();
 		if (!filelistdata.isEmpty()) {
-			QStringList TempList = filelistdata.split("\n", QString::SkipEmptyParts);
+			QStringList TempList = filelistdata.split("\n", Qt::SkipEmptyParts);
 
 			for (int i = 0; i < TempList.size(); i++) {
 				QFile file(TemporyDir + "/" + TempList.at(i));
@@ -496,7 +496,7 @@ void PKGBuilder::linkTempFile(QDataStream* stream, QString TemporyDir)
 		QString filelistdata = listfile.readAll();
 		listfile.close();
 		if (!filelistdata.isEmpty()) {
-			QStringList TempList = filelistdata.split("\n", QString::SkipEmptyParts);
+			QStringList TempList = filelistdata.split("\n", Qt::SkipEmptyParts);
 
 			for (int i = 0; i < TempList.size(); i++) {
 				QFile file(TemporyDir + "/" + TempList.at(i));

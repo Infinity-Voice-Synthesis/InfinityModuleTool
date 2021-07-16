@@ -66,6 +66,7 @@ private:
 	void setenprow(int row, QString name, double max, double min, double def);
 	QMap<QString, QString> getTransFromCedict(QString data);
 	QStringList getCharListfromTrans(QMap<QString, QString> trans);
+	QMap<QString, QString> getCharFromCedict(QString data);
 
 	QMenu* charmenu, * transmenu;
 	BuildThread buildt;
@@ -133,5 +134,6 @@ private slots:
 	void on_buildt_finished();
 	void on_actionFrom_x_sampa_triggered();
 	void on_actionAutoC_X_triggered();
+	void on_actionLoadDic_triggered();
 };
 #endif // MAINWINDOW_H

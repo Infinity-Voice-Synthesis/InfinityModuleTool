@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'chareditdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.14.2
+** Created by: Qt User Interface Compiler version 6.1.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
@@ -118,8 +119,8 @@ public:
 #endif // QT_CONFIG(shortcut)
 
         retranslateUi(CharEditDialog);
-        QObject::connect(buttonBox, SIGNAL(accepted()), CharEditDialog, SLOT(accept()));
-        QObject::connect(buttonBox, SIGNAL(rejected()), CharEditDialog, SLOT(reject()));
+        QObject::connect(buttonBox, &QDialogButtonBox::accepted, CharEditDialog, qOverload<>(&QDialog::accept));
+        QObject::connect(buttonBox, &QDialogButtonBox::rejected, CharEditDialog, qOverload<>(&QDialog::reject));
 
         QMetaObject::connectSlotsByName(CharEditDialog);
     } // setupUi

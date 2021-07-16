@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'transeditdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.14.2
+** Created by: Qt User Interface Compiler version 6.1.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
+#include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
@@ -85,8 +86,8 @@ public:
 #endif // QT_CONFIG(shortcut)
 
         retranslateUi(TransEditDialog);
-        QObject::connect(buttonBox, SIGNAL(accepted()), TransEditDialog, SLOT(accept()));
-        QObject::connect(buttonBox, SIGNAL(rejected()), TransEditDialog, SLOT(reject()));
+        QObject::connect(buttonBox, &QDialogButtonBox::accepted, TransEditDialog, qOverload<>(&QDialog::accept));
+        QObject::connect(buttonBox, &QDialogButtonBox::rejected, TransEditDialog, qOverload<>(&QDialog::reject));
 
         QMetaObject::connectSlotsByName(TransEditDialog);
     } // setupUi

@@ -382,7 +382,7 @@ void MainWindow::on_actionOpen_dic_triggered()
 						QString cdata = filec.readAll();
 						filec.close();
 
-						QStringList clist = cdata.split("\n", QString::SkipEmptyParts);
+						QStringList clist = cdata.split("\n", Qt::SkipEmptyParts);
 
 						while (ui->charactertable->rowCount() > 0) {
 							ui->charactertable->removeRow(0);
@@ -390,7 +390,7 @@ void MainWindow::on_actionOpen_dic_triggered()
 
 						for (int i = 0; i < clist.size(); i++) {
 							QString sdata = clist.at(i);
-							QStringList slist = sdata.split(" ", QString::SkipEmptyParts);
+							QStringList slist = sdata.split(" ", Qt::SkipEmptyParts);
 							if (slist.size() >= 3) {
 								QString x_sampa;
 								for (int j = 2; j < slist.size(); j++) {
@@ -416,7 +416,7 @@ void MainWindow::on_actionOpen_dic_triggered()
 						QString tdata = filet.readAll();
 						filet.close();
 
-						QStringList tlist = tdata.split("\n", QString::SkipEmptyParts);
+						QStringList tlist = tdata.split("\n", Qt::SkipEmptyParts);
 
 						while (ui->translatetable->rowCount() > 0) {
 							ui->translatetable->removeRow(0);
@@ -424,7 +424,7 @@ void MainWindow::on_actionOpen_dic_triggered()
 
 						for (int i = 0; i < tlist.size(); i++) {
 							QString sdata = tlist.at(i);
-							QStringList slist = sdata.split(" ", QString::SkipEmptyParts);
+							QStringList slist = sdata.split(" ", Qt::SkipEmptyParts);
 							if (slist.size() == 2) {
 								ui->translatetable->insertRow(0);
 								this->settransrow(0,
@@ -565,10 +565,12 @@ void MainWindow::on_actionFrom_cedict_triggered()
 			for (int i = 0; i < charl.size(); i++) {
 				ui->charactertable->insertRow(0);
 				this->setcharrow(0, charl.at(i), false, "a");
+				QCoreApplication::processEvents();
 			}
 			for (int i = 0; i < trans.size(); i++) {
 				ui->translatetable->insertRow(0);
 				this->settransrow(0, trans.keys().at(i), trans.values().at(i));
+				QCoreApplication::processEvents();
 			}
 
 		}
@@ -582,7 +584,7 @@ void MainWindow::on_actionFrom_cedict_triggered()
 QMap<QString, QString> MainWindow::getTransFromCedict(QString data)
 {
 	QMap<QString, QString> out;
-	QStringList lines = data.split("\n", QString::SkipEmptyParts);
+	QStringList lines = data.split("\n", Qt::SkipEmptyParts);
 	int _line_count = 0;
 	while (_line_count < lines.size()) {
 		if (lines.at(_line_count).isEmpty()) {
@@ -597,14 +599,14 @@ QMap<QString, QString> MainWindow::getTransFromCedict(QString data)
 	}
 	for (int i = 0; i < lines.size(); i++) {
 		QString subs = lines.at(i);
-		QStringList subsl = subs.split(" ", QString::SkipEmptyParts);
+		QStringList subsl = subs.split(" ", Qt::SkipEmptyParts);
 		if (subsl.size() == 3) {
 			if (subsl.at(0).size() == 1 && subsl.at(1).size() == 1) {
 				QString subs3 = subsl.at(2);
 				if (subs3.size() >= 4) {
 					subs3.remove(0, 1);
 					subs3.remove(subs3.size() - 1, 1);
-					if (subs3.split(" ", QString::SkipEmptyParts).size() == 1) {
+					if (subs3.split(" ", Qt::SkipEmptyParts).size() == 1) {
 						subs3.remove(subs3.size() - 1, 1);
 						out.insert(subsl.at(0), subs3);
 						out.insert(subsl.at(1), subs3);
@@ -630,7 +632,7 @@ QStringList MainWindow::getCharListfromTrans(QMap<QString, QString> trans)
 void MainWindow::on_actionAutoC_triggered()
 {
 	QString cdata = QInputDialog::getText(this, "输入辅音", "用空格分隔辅音", QLineEdit::Normal, QString(), nullptr, Qt::Dialog | Qt::WindowCloseButtonHint);
-	QStringList cdatalist = cdata.split(" ", QString::SkipEmptyParts);
+	QStringList cdatalist = cdata.split(" ", Qt::SkipEmptyParts);
 	for (int j = 0; j < ui->charactertable->rowCount(); j++) {
 		((QCheckBox*)ui->charactertable->cellWidget(j, 1))->setChecked(false);
 		for (int i = 0; i < cdatalist.size(); i++) {
@@ -1734,7 +1736,7 @@ void MainWindow::on_actionBuildEngine_triggered()
 		QFile listfile(filen + "/.Infinity.MT.Filelist.raw");
 		if (listfile.exists()) {
 			if (listfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				QStringList filelist = QString(listfile.readAll()).split("\n", QString::SkipEmptyParts);
+				QStringList filelist = QString(listfile.readAll()).split("\n", Qt::SkipEmptyParts);
 				listfile.close();
 
 				if (PKGBuilder::checkFileList(filelist)) {
@@ -1843,7 +1845,7 @@ void MainWindow::on_actionBuildLibrary_triggered()
 		QFile listfile(filen + "/.Infinity.MT.Filelist.raw");
 		if (listfile.exists()) {
 			if (listfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				QStringList filelist = QString(listfile.readAll()).split("\n", QString::SkipEmptyParts);
+				QStringList filelist = QString(listfile.readAll()).split("\n", Qt::SkipEmptyParts);
 				listfile.close();
 
 				if (PKGBuilder::checkFileList(filelist)) {
@@ -2030,11 +2032,11 @@ void MainWindow::on_actionFrom_x_sampa_triggered()
 			QString data = file.readAll();
 			file.close();
 
-			QStringList sl = data.split("\n", QString::SkipEmptyParts);
+			QStringList sl = data.split("\n", Qt::SkipEmptyParts);
 			QMap<QString, QString> linkmap;
 			for (int i = 0; i < sl.size(); i++) {
 				QString slit = sl.at(i);
-				QStringList slil = slit.split(" ", QString::SkipEmptyParts);
+				QStringList slil = slit.split(" ", Qt::SkipEmptyParts);
 				if (slil.size() >= 2) {
 					QString x_sampa;
 					for (int j = 1; j < slil.size(); j++) {
@@ -2063,11 +2065,11 @@ void MainWindow::on_actionFrom_x_sampa_triggered()
 void MainWindow::on_actionAutoC_X_triggered()
 {
 	QString cdata = QInputDialog::getText(this, "输入x-sampa辅音音素", "用空格分隔辅音音素", QLineEdit::Normal, QString(), nullptr, Qt::Dialog | Qt::WindowCloseButtonHint);
-	QStringList cdatalist = cdata.split(" ", QString::SkipEmptyParts);
+	QStringList cdatalist = cdata.split(" ", Qt::SkipEmptyParts);
 	for (int j = 0; j < ui->charactertable->rowCount(); j++) {
 		((QCheckBox*)ui->charactertable->cellWidget(j, 1))->setChecked(false);
 		for (int i = 0; i < cdatalist.size(); i++) {
-			QStringList xlist = ui->charactertable->item(j, 2)->text().split(" ", QString::SkipEmptyParts);
+			QStringList xlist = ui->charactertable->item(j, 2)->text().split(" ", Qt::SkipEmptyParts);
 			if (cdatalist.at(i) == xlist.at(0)) {
 				((QCheckBox*)ui->charactertable->cellWidget(j, 1))->setChecked(true);
 				break;
@@ -2075,4 +2077,70 @@ void MainWindow::on_actionAutoC_X_triggered()
 		}
 	}
 	ui->tabWidget->setCurrentIndex(2);
+}
+
+void MainWindow::on_actionLoadDic_triggered()
+{
+	QString filen = QFileDialog::getOpenFileName(this, "读取音素映射", QDir::currentPath(), "音素映射表(*.txt);;所有文件(*)");
+	if (!filen.isEmpty()) {
+		QFileInfo filei(filen);
+		QDir::setCurrent(filei.absolutePath());
+
+		QFile file(filen);
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QString data = file.readAll();
+			file.close();
+
+			QMap<QString, QString> charl = getCharFromCedict(data);
+
+			while (ui->charactertable->rowCount() > 0) {
+				ui->charactertable->removeRow(0);
+			}
+
+			for (int i = 0; i < charl.size(); i++) {
+				ui->charactertable->insertRow(0);
+				this->setcharrow(0, charl.keys().at(i), false, charl.values().at(i));
+				QCoreApplication::processEvents();
+			}
+
+		}
+		else {
+			QMessageBox::warning(this, "出错", "无法打开文件：" + filen);
+		}
+	}
+	ui->tabWidget->setCurrentIndex(2);
+}
+
+QMap<QString, QString> MainWindow::getCharFromCedict(QString data)
+{
+	QMap<QString, QString> out;
+
+	QStringList linlist = data.split("\n", Qt::SkipEmptyParts);
+	for (int i = 0; i < linlist.size();) {
+		if (linlist.at(i).startsWith(";;;")) {
+			linlist.removeAt(i);
+		}
+		else {
+			i++;
+		}
+	}
+
+	for (int i = 0; i < linlist.size(); i++) {
+		QString linet = linlist.at(i);
+		QStringList linesl = linet.split(" ", Qt::SkipEmptyParts);
+		if (linesl.size() >= 2) {
+			QString x_sampa;
+			for (int j = 1; j < linesl.size(); j++) {
+				x_sampa += linesl.at(j);
+				if (j < linesl.size() - 1) {
+					x_sampa += " ";
+				}
+			}
+			if (!out.contains(linesl.at(0))) {
+				out.insert(linesl.at(0), x_sampa);
+			}
+		}
+	}
+
+	return out;
 }

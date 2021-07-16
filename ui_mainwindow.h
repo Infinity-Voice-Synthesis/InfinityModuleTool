@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.14.2
+** Created by: Qt User Interface Compiler version 6.1.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,8 +10,8 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QAction>
 #include <QtGui/QIcon>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCalendarWidget>
 #include <QtWidgets/QCheckBox>
@@ -66,6 +66,7 @@ public:
     QAction *actionCheckSign;
     QAction *actionFrom_x_sampa;
     QAction *actionAutoC_X;
+    QAction *actionLoadDic;
     QWidget *centralwidget;
     QGridLayout *gridLayout;
     QTabWidget *tabWidget;
@@ -268,6 +269,8 @@ public:
         actionFrom_x_sampa->setObjectName(QString::fromUtf8("actionFrom_x_sampa"));
         actionAutoC_X = new QAction(MainWindow);
         actionAutoC_X->setObjectName(QString::fromUtf8("actionAutoC_X"));
+        actionLoadDic = new QAction(MainWindow);
+        actionLoadDic->setObjectName(QString::fromUtf8("actionLoadDic"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         gridLayout = new QGridLayout(centralwidget);
@@ -1109,6 +1112,7 @@ public:
         menu_5->addSeparator();
         menu_5->addAction(actionFrom_cedict);
         menu_5->addAction(actionFrom_x_sampa);
+        menu_5->addAction(actionLoadDic);
         menu_5->addSeparator();
         menu_5->addAction(actionAutoC);
         menu_5->addAction(actionAutoC_X);
@@ -1148,6 +1152,7 @@ public:
         actionCheckSign->setText(QCoreApplication::translate("MainWindow", "\346\240\241\351\252\214\347\255\276\345\220\215", nullptr));
         actionFrom_x_sampa->setText(QCoreApplication::translate("MainWindow", "\344\273\216x-sampa\345\255\227\345\205\270\345\257\274\345\205\245\351\237\263\347\264\240(SynthV\346\240\274\345\274\217)", nullptr));
         actionAutoC_X->setText(QCoreApplication::translate("MainWindow", "\346\240\271\346\215\256\351\237\263\347\264\240\350\257\206\345\210\253\350\276\205\351\237\263\345\274\200\345\244\264\347\232\204\345\217\221\351\237\263", nullptr));
+        actionLoadDic->setText(QCoreApplication::translate("MainWindow", "\344\273\216\351\237\263\347\264\240\346\230\240\345\260\204\347\233\264\346\216\245\345\212\240\350\275\275\345\255\227\345\205\270(SynthV\346\240\274\345\274\217)", nullptr));
         groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "\345\237\272\347\241\200\344\277\241\346\201\257", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "\345\274\225\346\223\216\345\220\215\347\247\260", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\345\274\225\346\223\216\344\270\273\346\250\241\345\235\227", nullptr));

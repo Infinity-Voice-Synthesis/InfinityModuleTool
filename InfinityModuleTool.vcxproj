@@ -71,7 +71,7 @@
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtInstall>5.14.2_msvc2017_64</QtInstall>
+    <QtInstall>6.1.2_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtDeploy>true</QtDeploy>
   </PropertyGroup>
@@ -98,6 +98,8 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level3</WarningLevel>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <AdditionalDependencies>.\openssl\libssl.lib;.\openssl\openssl.lib;.\openssl\libcrypto.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
