@@ -1092,20 +1092,19 @@ void MainWindow::on_actionSave_as_triggered()
 
 void MainWindow::on_loadlibraryengine_clicked()
 {
-	QString filen = QFileDialog::getOpenFileName(this, "选择引擎信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor)");
+	QString filen = QFileDialog::getOpenFileName(this, "选择引擎信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor2)");
 	if (!filen.isEmpty()) {
 		QFileInfo filei(filen);
 		QDir::setCurrent(filei.absolutePath());
 
 		QFile file(filen);
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+			QByteArray data = file.readAll();
 			file.close();
-			if (jd.isObject()) {
-				QJsonObject jo = jd.object();
-
-				if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
-					ui->libraryengine->setText(jo.find("name")->toString());
+			infinity::module::engine::Engine engine;
+			if (engine.ParseFromArray(data.data(), data.size())) {
+				if (engine.imt_version() <= ::_IMT_Version && engine.imt_version() > 0.3) {
+					ui->libraryengine->setText(QString::fromStdString(engine.name()));
 				}
 				else {
 					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
@@ -1126,15 +1125,14 @@ void MainWindow::on_loadlibrarydictionary_clicked()
 	QString filen = QFileDialog::getExistingDirectory(this, "选择字典", QDir::currentPath());
 	if (!filen.isEmpty()) {
 		QDir::setCurrent(filen);
-		QFile file(filen + "/dictionary.json");
+		QFile file(filen + "/dictionary.iftdinfor2");
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+			QByteArray data = file.readAll();
 			file.close();
-			if (jd.isObject()) {
-				QJsonObject jo = jd.object();
-
-				if (jo.find("version")->toDouble() <= ::_IMT_Version) {
-					ui->librarydictionary->setText(jo.find("name")->toString());
+			infinity::module::dictionary::Dictionary dictionaray;
+			if (dictionaray.ParseFromArray(data.data(), data.size())) {
+				if (dictionaray.imt_version() <= ::_IMT_Version && dictionaray.imt_version() > 0.3) {
+					ui->librarydictionary->setText(QString::fromStdString(dictionaray.name()));
 				}
 				else {
 					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen + "/dictionary.json");
