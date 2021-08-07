@@ -81,6 +81,12 @@
     <Filter Include="Source Files\google\protobuf\util\internal">
       <UniqueIdentifier>{b1d9f621-f0e7-4825-8738-b9dd16d32e07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\proto">
+      <UniqueIdentifier>{eca6e342-7391-45ce-9fdc-d436651fd5e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\proto">
+      <UniqueIdentifier>{d7819f89-b0d2-4198-ada2-080cb47505fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="chareditdialog.cpp">
@@ -364,6 +370,15 @@
     </ClCompile>
     <ClCompile Include="google\protobuf\stubs\time.cc">
       <Filter>Source Files\google\protobuf\stubs</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\engine.pb.cc">
+      <Filter>Source Files\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\dictionary.pb.cc">
+      <Filter>Source Files\proto</Filter>
+    </ClCompile>
+    <ClCompile Include="proto\library.pb.cc">
+      <Filter>Source Files\proto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -820,6 +835,15 @@
     </ClInclude>
     <ClInclude Include="google\protobuf\stubs\time.h">
       <Filter>Header Files\google\protobuf\stubs</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\engine.pb.h">
+      <Filter>Header Files\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\dictionary.pb.h">
+      <Filter>Header Files\proto</Filter>
+    </ClInclude>
+    <ClInclude Include="proto\library.pb.h">
+      <Filter>Header Files\proto</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

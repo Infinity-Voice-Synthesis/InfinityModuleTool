@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package infinity.module.dictionary;
+
+message Dictionary {
+    double IMT_Version=1;
+    string name=2;
+}

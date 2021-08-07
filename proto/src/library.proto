@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package infinity.module.library;
+
+message Library {
+    double IMT_Version=1;
+    
+    string name=2;
+    string engine=3;
+    string dictionary=4;
+
+    string icon=5;
+
+    string author=6;
+    double version=7;
+    string infor=8;
+
+    repeated string sdblist=9;
+    string sdbdefault=10;
+
+    message link {
+        string pitch=1;
+        string sdb=2;
+    }
+
+    repeated link sdblink=11;
+
+    uint32 checkMethod=12;
+    bool autoCheck=13;
+    string eula=14;
+    string warrantDate=15;
+    string warrantTime=16;
+}

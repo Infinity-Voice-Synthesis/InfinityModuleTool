@@ -84,7 +84,7 @@
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -Zc:__cplusplus -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4577;4467;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExceptionHandling>Sync</ExceptionHandling>
       <ObjectFileName>release\</ObjectFileName>
@@ -106,7 +106,7 @@
       <AdditionalLibraryDirectories>.\openssl;C:\openssl\lib;C:\Utils\my_sql\mysql-5.7.25-winx64\lib;C:\Utils\postgresql\pgsql\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>"/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" %(AdditionalOptions)</AdditionalOptions>
       <DataExecutionPrevention>true</DataExecutionPrevention>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreImportLibrary>true</IgnoreImportLibrary>
       <LinkIncremental>false</LinkIncremental>
       <OptimizeReferences>true</OptimizeReferences>
@@ -306,6 +306,9 @@
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="ParamDialog.cpp" />
     <ClCompile Include="PKGBuilder.cpp" />
+    <ClCompile Include="proto\dictionary.pb.cc" />
+    <ClCompile Include="proto\engine.pb.cc" />
+    <ClCompile Include="proto\library.pb.cc" />
     <ClCompile Include="QIconWidget.cpp" />
     <ClCompile Include="rsasignature.cpp" />
     <ClCompile Include="SLDialog.cpp" />
@@ -438,6 +441,9 @@
     <ClInclude Include="google\protobuf\wire_format_lite.h" />
     <ClInclude Include="google\protobuf\wrappers.pb.h" />
     <ClInclude Include="PKGBuilder.h" />
+    <ClInclude Include="proto\dictionary.pb.h" />
+    <ClInclude Include="proto\engine.pb.h" />
+    <ClInclude Include="proto\library.pb.h" />
     <ClInclude Include="version.h" />
     <QtMoc Include="chareditdialog.h">
     </QtMoc>

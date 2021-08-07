@@ -471,21 +471,19 @@ void MainWindow::on_actionSave_dic_triggered()
 			if (!filen.isEmpty()) {
 				QDir::setCurrent(filen);
 
-				QJsonObject jo;
-				jo.insert("name", ui->dicname->text());
-				jo.insert("version", ::_IMT_Version);
+				infinity::module::dictionary::Dictionary dictionary;
+				dictionary.set_imt_version(::_IMT_Version);
+				dictionary.set_name(ui->dicname->text().toStdString());
 
-				QJsonDocument jd;
-				jd.setObject(jo);
-
-				QByteArray data = jd.toJson(QJsonDocument::Indented);
-				QFile file(filen + "/dictionary.json");
+				QByteArray data = QByteArray(dictionary.ByteSize(), 0);
+				dictionary.SerializeToArray(data.data(), dictionary.ByteSize());
+				QFile file(filen + "/dictionary.iftdinfor2");
 				if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
 					file.write(data);
 					file.close();
 				}
 				else {
-					QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/dictionary.json");
+					QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/dictionary.iftdinfor2");
 				}
 
 				QString datac, datat;
@@ -925,6 +923,7 @@ void MainWindow::on_actionNew_triggered()
 {
 	ui->enginename->clear();
 	ui->enginemain->clear();
+	ui->enginegroup->setChecked(false);
 	ui->engineiconname->clear();
 	ui->engineicon->setPix(QPixmap());
 	ui->engineauthor->clear();
@@ -1031,55 +1030,47 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_as_triggered()
 {
 	if (!ui->enginename->text().isEmpty()) {
-		QString filen = QFileDialog::getSaveFileName(this, "保存引擎信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor)");
+		QString filen = QFileDialog::getSaveFileName(this, "保存引擎信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor2)");
 		if (!filen.isEmpty()) {
 			QFileInfo filei(filen);
 			QDir::setCurrent(filei.absolutePath());
 
-			QJsonObject jo;
-			jo.insert("IMT_Version", ::_IMT_Version);
-			jo.insert("name", ui->enginename->text());
-			jo.insert("main", ui->enginemain->text());
+			infinity::module::engine::Engine engine;
+			engine.set_imt_version(::_IMT_Version);
+			engine.set_name(ui->enginename->text().toStdString());
+			engine.set_main(ui->enginemain->text().toStdString());
+			engine.set_splitgroup(ui->enginegroup->isChecked());
 			QByteArray icondata;
 			QBuffer iconbuffer(&icondata);
 			ui->engineicon->getPix().save(&iconbuffer, "PNG");
-			jo.insert("icon", QString::fromLocal8Bit(icondata.toBase64()));
-			jo.insert("author", ui->engineauthor->text());
-			jo.insert("version", ui->engineversion->value());
-			jo.insert("infor", ui->engineinfor->toPlainText());
-
-			QJsonArray ewpa, enpa;
+			engine.set_icon(QString::fromLocal8Bit(icondata.toBase64()).toStdString());
+			engine.set_author(ui->engineauthor->text().toStdString());
+			engine.set_version(ui->engineversion->value());
+			engine.set_infor(ui->engineinfor->toPlainText().toStdString());
 
 			for (int i = 0; i < ui->ewplist->rowCount(); i++) {
-				QJsonObject sjo;
-				sjo.insert("name", ui->ewplist->item(i, 0)->text());
-				sjo.insert("max", ui->ewplist->item(i, 1)->text().toDouble());
-				sjo.insert("min", ui->ewplist->item(i, 2)->text().toDouble());
-				sjo.insert("default", ui->ewplist->item(i, 3)->text().toDouble());
-				ewpa.append(sjo);
+				infinity::module::engine::Engine::parameter* param = engine.add_trackparams();
+				param->set_name(ui->ewplist->item(i, 0)->text().toStdString());
+				param->set_max(ui->ewplist->item(i, 1)->text().toDouble());
+				param->set_min(ui->ewplist->item(i, 2)->text().toDouble());
+				param->set_default_(ui->ewplist->item(i, 3)->text().toDouble());
 			}
 			for (int i = 0; i < ui->enplist->rowCount(); i++) {
-				QJsonObject sjo;
-				sjo.insert("name", ui->enplist->item(i, 0)->text());
-				sjo.insert("max", ui->enplist->item(i, 1)->text().toDouble());
-				sjo.insert("min", ui->enplist->item(i, 2)->text().toDouble());
-				sjo.insert("default", ui->enplist->item(i, 3)->text().toDouble());
-				enpa.append(sjo);
+				infinity::module::engine::Engine::parameter* param = engine.add_noteparams();
+				param->set_name(ui->enplist->item(i, 0)->text().toStdString());
+				param->set_max(ui->enplist->item(i, 1)->text().toDouble());
+				param->set_min(ui->enplist->item(i, 2)->text().toDouble());
+				param->set_default_(ui->enplist->item(i, 3)->text().toDouble());
 			}
 
-			jo.insert("ewp", ewpa);
-			jo.insert("enp", enpa);
+			engine.set_checkmethod(ui->enginecheckmethod->currentIndex());
+			engine.set_autocheck(ui->engineautocheck->isChecked());
+			engine.set_eula(ui->engineeula->toPlainText().toStdString());
+			engine.set_warrantdate(ui->enginewarrantdate->selectedDate().toString("yyyy-MM-dd").toStdString());
+			engine.set_warranttime(ui->enginewarranttime->time().toString("hh:mm:ss").toStdString());
 
-			jo.insert("checkmethod", ui->enginecheckmethod->currentIndex());
-			jo.insert("autocheck", ui->engineautocheck->isChecked());
-			jo.insert("eula", ui->engineeula->toPlainText());
-			jo.insert("warrantdate", ui->enginewarrantdate->selectedDate().toString("yyyy-MM-dd"));
-			jo.insert("warranttime", ui->enginewarranttime->time().toString("hh:mm:ss"));
-
-			QJsonDocument jd;
-			jd.setObject(jo);
-
-			QByteArray data = jd.toJson(QJsonDocument::Indented);
+			QByteArray data = QByteArray(engine.ByteSize(), 0);
+			engine.SerializeToArray(data.data(), engine.ByteSize());
 
 			QFile file(filen);
 			if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
@@ -1517,57 +1508,51 @@ void MainWindow::on_actionOpen_2_triggered()
 		}
 	}
 	ui->tabWidget->setCurrentIndex(1);
-	ui->toolBox->setCurrentIndex(0);
+	ui->toolBox_2->setCurrentIndex(0);
 }
 
 void MainWindow::on_actionSave_as_2_triggered()
 {
 	if (!ui->libraryname->text().isEmpty()) {
 		if (ui->lsddefault->count() > 0) {
-			QString filen = QFileDialog::getSaveFileName(this, "保存声库信息表", QDir::currentPath(), "Infinity声库信息表(*.iftlinfor)");
+			QString filen = QFileDialog::getSaveFileName(this, "保存声库信息表", QDir::currentPath(), "Infinity声库信息表(*.iftlinfor2)");
 			if (!filen.isEmpty()) {
 				QFileInfo filei(filen);
 				QDir::setCurrent(filei.absolutePath());
 
-				QJsonObject jo;
-				jo.insert("IMT_Version", ::_IMT_Version);
-				jo.insert("name", ui->libraryname->text());
-				jo.insert("engine", ui->libraryengine->text());
-				jo.insert("dictionary", ui->librarydictionary->text());
+				infinity::module::library::Library library;
+				library.set_imt_version(::_IMT_Version);
+				library.set_name(ui->libraryname->text().toStdString());
+				library.set_engine(ui->libraryengine->text().toStdString());
+				library.set_dictionary(ui->librarydictionary->text().toStdString());
 				QByteArray icondata;
 				QBuffer iconbuffer(&icondata);
 				ui->libraryicon->getPix().save(&iconbuffer, "PNG");
-				jo.insert("icon", QString::fromLocal8Bit(icondata.toBase64()));
-				jo.insert("author", ui->libraryauthor->text());
-				jo.insert("version", ui->libraryversion->value());
-				jo.insert("infor", ui->libraryinfor->toPlainText());
-
-				QJsonArray sdblista, sdblinka;
+				library.set_icon(QString::fromLocal8Bit(icondata.toBase64()).toStdString());
+				library.set_author(ui->libraryauthor->text().toStdString());
+				library.set_version(ui->libraryversion->value());
+				library.set_infor(ui->libraryinfor->toPlainText().toStdString());
 
 				for (int i = 0; i < ui->lsdlist->count(); i++) {
-					sdblista.append(ui->lsdlist->item(i)->text());
+					std::string* item = library.add_sdblist();
+					*item = ui->lsdlist->item(i)->text().toStdString();
 				}
 
 				for (int i = 0; i < ui->lsdlink->rowCount(); i++) {
-					QJsonObject sjo;
-					sjo.insert("pitch", ui->lsdlink->item(i, 0)->text());
-					sjo.insert("sdb", ui->lsdlink->item(i, 1)->text());
-					sdblinka.append(sjo);
+					infinity::module::library::Library::link* link = library.add_sdblink();
+					link->set_pitch(ui->lsdlink->item(i, 0)->text().toStdString());
+					link->set_sdb(ui->lsdlink->item(i, 1)->text().toStdString());
 				}
-				jo.insert("sdbdefault", ui->lsddefault->currentText());
-				jo.insert("sdblist", sdblista);
-				jo.insert("sdblink", sdblinka);
+				library.set_sdbdefault(ui->lsddefault->currentText().toStdString());
 
-				jo.insert("checkmethod", ui->librarycheckmethod->currentIndex());
-				jo.insert("autocheck", ui->libraryautocheck->isChecked());
-				jo.insert("eula", ui->libraryeula->toPlainText());
-				jo.insert("warrantdate", ui->librarywarrantdate->selectedDate().toString("yyyy-MM-dd"));
-				jo.insert("warranttime", ui->librarywarranttime->time().toString("hh:mm:ss"));
+				library.set_checkmethod(ui->librarycheckmethod->currentIndex());
+				library.set_autocheck(ui->libraryautocheck->isChecked());
+				library.set_eula(ui->libraryeula->toPlainText().toStdString());
+				library.set_warrantdate(ui->librarywarrantdate->selectedDate().toString("yyyy-MM-dd").toStdString());
+				library.set_warranttime(ui->librarywarranttime->time().toString("hh:mm:ss").toStdString());
 
-				QJsonDocument jd;
-				jd.setObject(jo);
-
-				QByteArray data = jd.toJson(QJsonDocument::Indented);
+				QByteArray data = QByteArray(library.ByteSize(), 0);
+				library.SerializeToArray(data.data(), library.ByteSize());
 
 				QFile file(filen);
 				if (file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
@@ -1588,7 +1573,7 @@ void MainWindow::on_actionSave_as_2_triggered()
 		QMessageBox::warning(this, "出错", "未设置声库名称");
 	}
 	ui->tabWidget->setCurrentIndex(1);
-	ui->toolBox->setCurrentIndex(0);
+	ui->toolBox_2->setCurrentIndex(0);
 }
 
 
@@ -1601,53 +1586,69 @@ void MainWindow::on_actionFiles_triggered()
 
 void MainWindow::on_actionSign_triggered()
 {
-	QString filen = QFileDialog::getOpenFileName(this, "选择要签名的信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor);;Infinity声库信息表(*.iftlinfor)");
+	QString filen = QFileDialog::getOpenFileName(this, "选择要签名的信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor2);;Infinity声库信息表(*.iftlinfor2)");
 	if (!filen.isEmpty()) {
 		QFileInfo filei(filen);
 		QDir::setCurrent(filei.absolutePath());
 
 		QFile file(filen);
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			QString data = file.readAll();
-			QJsonDocument jd = QJsonDocument::fromJson(data.toUtf8());
+			QByteArray data = file.readAll();
 			file.close();
-			if (jd.isObject()) {
-				QJsonObject jo = jd.object();
 
-				if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+			double imtversion = 0;
 
-					QFile prikeyfile(":/keys/keys/1.pri.key");
-					if (prikeyfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-						QString prikey = prikeyfile.readAll();
-						prikeyfile.close();
-
-						QCryptographicHash hash(QCryptographicHash::Sha512);
-						hash.addData(data.toLatin1().data());
-						QString datahash = hash.result().toHex().toLower();
-
-						QString datasign;
-						RSASignature::private_encrypt(datahash, prikey, datasign);
-
-						QFile signfile(filen + ".signature");
-						if (signfile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
-							signfile.write(datasign.toUtf8());
-							signfile.close();
-							QMessageBox::information(this, "签名", "已对信息表签名：" + filen);
-						}
-						else {
-							QMessageBox::warning(this, "出错", "无法写入签名文件！");
-						}
-					}
-					else {
-						QMessageBox::warning(this, "出错", "无法载入私钥！");
-					}
+			if (filen.endsWith(".ifteinfor2")) {
+				infinity::module::engine::Engine engine;
+				if (engine.ParseFromArray(data.data(), data.size())) {
+					imtversion = engine.imt_version();
 				}
 				else {
-					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
+					QMessageBox::warning(this, "出错", "文件格式损坏：" + filen);
+					return;
 				}
 			}
 			else {
-				QMessageBox::warning(this, "出错", "文件格式损坏：" + filen);
+				infinity::module::library::Library library;
+				if (library.ParseFromArray(data.data(), data.size())) {
+					imtversion = library.imt_version();
+				}
+				else {
+					QMessageBox::warning(this, "出错", "文件格式损坏：" + filen);
+					return;
+				}
+			}
+
+			if (imtversion <= ::_IMT_Version && imtversion > 0.3) {
+
+				QFile prikeyfile(":/keys/keys/1.pri.key");
+				if (prikeyfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+					QString prikey = prikeyfile.readAll();
+					prikeyfile.close();
+
+					QCryptographicHash hash(QCryptographicHash::Sha512);
+					hash.addData(QString(data).toLatin1().data());
+					QString datahash = hash.result().toHex().toLower();
+
+					QString datasign;
+					RSASignature::private_encrypt(datahash, prikey, datasign);
+
+					QFile signfile(filen + ".signature");
+					if (signfile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+						signfile.write(datasign.toUtf8());
+						signfile.close();
+						QMessageBox::information(this, "签名", "已对信息表签名：" + filen);
+					}
+					else {
+						QMessageBox::warning(this, "出错", "无法写入签名文件！");
+					}
+				}
+				else {
+					QMessageBox::warning(this, "出错", "无法载入私钥！");
+				}
+			}
+			else {
+				QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
 			}
 		}
 		else {
@@ -1658,59 +1659,75 @@ void MainWindow::on_actionSign_triggered()
 
 void MainWindow::on_actionCheckSign_triggered()
 {
-	QString filen = QFileDialog::getOpenFileName(this, "选择要校验签名的信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor);;Infinity声库信息表(*.iftlinfor)");
+	QString filen = QFileDialog::getOpenFileName(this, "选择要校验签名的信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor2);;Infinity声库信息表(*.iftlinfor2)");
 	if (!filen.isEmpty()) {
 		QFileInfo filei(filen);
 		QDir::setCurrent(filei.absolutePath());
 
 		QFile file(filen);
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-			QString data = file.readAll();
-			QJsonDocument jd = QJsonDocument::fromJson(data.toUtf8());
+			QByteArray data = file.readAll();
 			file.close();
-			if (jd.isObject()) {
-				QJsonObject jo = jd.object();
 
-				if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+			double imtversion = 0;
 
-					QFile publicfile(":/keys/keys/1.pub.key");
-					if (publicfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-						QString pubkey = publicfile.readAll();
-						publicfile.close();
-
-						QCryptographicHash hash(QCryptographicHash::Sha512);
-						hash.addData(data.toLatin1().data());
-						QString datahash = hash.result().toHex().toLower();
-
-						QFile signfile(filen + ".signature");
-						if (signfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-							QString signdata = signfile.readAll();
-							signfile.close();
-
-							QString datadecrypted;
-							RSASignature::public_decrypt(signdata, pubkey, datadecrypted);
-
-							if (datadecrypted == datahash) {
-								QMessageBox::information(this, "签名校验", "信息表的指纹与签名相符：" + filen);
-							}
-							else {
-								QMessageBox::warning(this, "签名校验", "信息表的指纹与签名不符：" + filen);
-							}
-						}
-						else {
-							QMessageBox::warning(this, "出错", "签名文件丢失或无法读取！");
-						}
-					}
-					else {
-						QMessageBox::warning(this, "出错", "无法载入私钥！");
-					}
+			if (filen.endsWith(".ifteinfor2")) {
+				infinity::module::engine::Engine engine;
+				if (engine.ParseFromArray(data.data(), data.size())) {
+					imtversion = engine.imt_version();
 				}
 				else {
-					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
+					QMessageBox::warning(this, "出错", "文件格式损坏：" + filen);
+					return;
 				}
 			}
 			else {
-				QMessageBox::warning(this, "出错", "文件格式损坏：" + filen);
+				infinity::module::library::Library library;
+				if (library.ParseFromArray(data.data(), data.size())) {
+					imtversion = library.imt_version();
+				}
+				else {
+					QMessageBox::warning(this, "出错", "文件格式损坏：" + filen);
+					return;
+				}
+			}
+
+			if (imtversion <= ::_IMT_Version && imtversion > 0.3) {
+
+				QFile publicfile(":/keys/keys/1.pub.key");
+				if (publicfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+					QString pubkey = publicfile.readAll();
+					publicfile.close();
+
+					QCryptographicHash hash(QCryptographicHash::Sha512);
+					hash.addData(QString(data).toLatin1().data());
+					QString datahash = hash.result().toHex().toLower();
+
+					QFile signfile(filen + ".signature");
+					if (signfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+						QString signdata = signfile.readAll();
+						signfile.close();
+
+						QString datadecrypted;
+						RSASignature::public_decrypt(signdata, pubkey, datadecrypted);
+
+						if (datadecrypted == datahash) {
+							QMessageBox::information(this, "签名校验", "信息表的指纹与签名相符：" + filen);
+						}
+						else {
+							QMessageBox::warning(this, "签名校验", "信息表的指纹与签名不符：" + filen);
+						}
+					}
+					else {
+						QMessageBox::warning(this, "出错", "签名文件丢失或无法读取！");
+					}
+				}
+				else {
+					QMessageBox::warning(this, "出错", "无法载入私钥！");
+				}
+			}
+			else {
+				QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
 			}
 		}
 		else {
@@ -1758,25 +1775,24 @@ void MainWindow::on_actionBuildEngine_triggered()
 
 								QFile file(inforname);
 								if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-									QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+									QByteArray data = file.readAll();
 									file.close();
-									if (jd.isObject()) {
-										QJsonObject jo = jd.object();
-
-										if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+									infinity::module::engine::Engine engine;
+									if (engine.ParseFromArray(data.data(), data.size())) {
+										if (engine.imt_version() <= ::_IMT_Version && engine.imt_version() > 0.3) {
 
 											PKGBuilder::PKGTask task;
 
 											task.type = 0;
-											task.name = jo.find("name")->toString();
+											task.name = QString::fromStdString(engine.name());
 											task.IMT_Ver = ::_IMT_Version;
-											task.icon = jo.find("icon")->toString().toLocal8Bit();
-											task.author = jo.find("author")->toString();
-											task.version = jo.find("version")->toDouble();
-											task.about = jo.find("infor")->toString();
-											task.EULA = jo.find("eula")->toString();
-											task.wdate = jo.find("warrantdate")->toString();
-											task.wtime = jo.find("warranttime")->toString();
+											task.icon = QString::fromStdString(engine.icon()).toUtf8();
+											task.author = QString::fromStdString(engine.author());
+											task.version = engine.version();
+											task.about = QString::fromStdString(engine.infor());
+											task.EULA = QString::fromStdString(engine.eula());
+											task.wdate = QString::fromStdString(engine.warrantdate());
+											task.wtime = QString::fromStdString(engine.warranttime());
 											task.files = filelist;
 											task.root = filen;
 
@@ -1867,25 +1883,24 @@ void MainWindow::on_actionBuildLibrary_triggered()
 
 								QFile file(inforname);
 								if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-									QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+									QByteArray data = file.readAll();
 									file.close();
-									if (jd.isObject()) {
-										QJsonObject jo = jd.object();
-
-										if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+									infinity::module::library::Library library;
+									if (library.ParseFromArray(data.data(), data.size())) {
+										if (library.imt_version() <= ::_IMT_Version && library.imt_version() > 0.3) {
 
 											PKGBuilder::PKGTask task;
 
-											task.type = 1;
-											task.name = jo.find("name")->toString();
+											task.type = 0;
+											task.name = QString::fromStdString(library.name());
 											task.IMT_Ver = ::_IMT_Version;
-											task.icon = jo.find("icon")->toString().toLocal8Bit();
-											task.author = jo.find("author")->toString();
-											task.version = jo.find("version")->toDouble();
-											task.about = jo.find("infor")->toString();
-											task.EULA = jo.find("eula")->toString();
-											task.wdate = jo.find("warrantdate")->toString();
-											task.wtime = jo.find("warranttime")->toString();
+											task.icon = QString::fromStdString(library.icon()).toUtf8();
+											task.author = QString::fromStdString(library.author());
+											task.version = library.version();
+											task.about = QString::fromStdString(library.infor());
+											task.EULA = QString::fromStdString(library.eula());
+											task.wdate = QString::fromStdString(library.warrantdate());
+											task.wtime = QString::fromStdString(library.warranttime());
 											task.files = filelist;
 											task.root = filen;
 
@@ -1952,27 +1967,26 @@ void MainWindow::on_actionBuildDictionary_triggered()
 		QDir::setCurrent(filen);
 
 		QStringList filelist;
-		filelist.append(filen + "/dictionary.json");
+		filelist.append(filen + "/dictionary.iftdinfor2");
 		filelist.append(filen + "/character.raw");
 		filelist.append(filen + "/translate.raw");
 
 		if (PKGBuilder::checkFileList(filelist)) {
 
-			QString inforname = filen + "/dictionary.json";
+			QString inforname = filen + "/dictionary.iftdinfor2";
 
 			QFile file(inforname);
 			if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				QJsonDocument jd = QJsonDocument::fromJson(file.readAll());
+				QByteArray data = file.readAll();
 				file.close();
-				if (jd.isObject()) {
-					QJsonObject jo = jd.object();
-
-					if (jo.find("version")->toDouble() <= ::_IMT_Version) {
+				infinity::module::dictionary::Dictionary dictionary;
+				if (dictionary.ParseFromArray(data.data(), data.size())) {
+					if (dictionary.imt_version() <= ::_IMT_Version && dictionary.imt_version() > 0.3) {
 
 						PKGBuilder::PKGTask task;
 
 						task.type = 2;
-						task.name = jo.find("name")->toString();
+						task.name = QString::fromStdString(dictionary.name());
 						task.IMT_Ver = ::_IMT_Version;
 						task.files = filelist;
 						task.root = filen;
@@ -2143,4 +2157,261 @@ QMap<QString, QString> MainWindow::getCharFromCedict(QString data)
 	}
 
 	return out;
+}
+
+void  MainWindow::on_actionOpenNew_triggered()
+{
+	QString filen = QFileDialog::getOpenFileName(this, "读取引擎信息表", QDir::currentPath(), "Infinity引擎信息表(*.ifteinfor2)");
+	if (!filen.isEmpty()) {
+		QFileInfo filei(filen);
+		QDir::setCurrent(filei.absolutePath());
+
+		QFile file(filen);
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QByteArray data = file.readAll();
+
+			file.close();
+
+			infinity::module::engine::Engine engine;
+			if (engine.ParseFromArray(data.data(), data.size())) {
+				if (engine.imt_version() <= ::_IMT_Version && engine.imt_version() > 0.3) {
+					ui->enginename->setText(QString::fromStdString(engine.name()));
+					ui->enginemain->setText(QString::fromStdString(engine.main()));
+					ui->enginegroup->setChecked(engine.splitgroup());
+					ui->engineiconname->setText("从信息表读取");
+					QPixmap pix;
+					pix.loadFromData(QByteArray::fromBase64(QString::fromStdString(engine.icon()).toUtf8()));
+					ui->engineicon->setPix(pix);
+					ui->engineauthor->setText(QString::fromStdString(engine.author()));
+					ui->engineversion->setValue(engine.version());
+					ui->engineinfor->setPlainText(QString::fromStdString(engine.infor()));
+
+					while (ui->ewplist->rowCount() > 0) {
+						ui->ewplist->removeRow(0);
+					}
+					while (ui->enplist->rowCount() > 0) {
+						ui->enplist->removeRow(0);
+					}
+
+					int ewpcount = engine.trackparams_size();
+					int enpcount = engine.noteparams_size();
+
+					for (int i = 0; i < ewpcount; i++) {
+						infinity::module::engine::Engine::parameter param = engine.trackparams().Get(i);
+						int index = ui->ewplist->rowCount();
+						ui->ewplist->insertRow(index);
+						this->setewprow(
+							index,
+							QString::fromStdString(param.name()),
+							param.max(),
+							param.min(),
+							param.default_()
+						);
+					}
+					for (int i = 0; i < enpcount; i++) {
+						infinity::module::engine::Engine::parameter param = engine.noteparams().Get(i);
+						int index = ui->enplist->rowCount();
+						ui->enplist->insertRow(index);
+						this->setenprow(
+							index,
+							QString::fromStdString(param.name()),
+							param.max(),
+							param.min(),
+							param.default_()
+						);
+					}
+
+					ui->enginecheckmethod->setCurrentIndex(engine.checkmethod());
+					ui->engineautocheck->setChecked(engine.autocheck());
+					ui->engineeula->setPlainText(QString::fromStdString(engine.eula()));
+					ui->enginewarrantdate->setSelectedDate(QDate::fromString(QString::fromStdString(engine.warrantdate()), "yyyy-MM-dd"));
+					ui->enginewarranttime->setTime(QTime::fromString(QString::fromStdString(engine.warranttime()), "hh:mm:ss"));
+				}
+				else {
+					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
+				}
+			}
+			else {
+				QMessageBox::warning(this, "出错", "文件格式损坏：" + filen);
+			}
+		}
+		else {
+			QMessageBox::warning(this, "出错", "无法打开文件：" + filen);
+		}
+	}
+	ui->tabWidget->setCurrentIndex(0);
+	ui->toolBox->setCurrentIndex(0);
+}
+
+void MainWindow::on_actionOpenNew_2_triggered()
+{
+	QString filen = QFileDialog::getOpenFileName(this, "读取声库信息表", QDir::currentPath(), "Infinity声库信息表(*.iftlinfor2)");
+	if (!filen.isEmpty()) {
+		QFileInfo filei(filen);
+		QDir::setCurrent(filei.absolutePath());
+
+		QFile file(filen);
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QByteArray data = file.readAll();
+			file.close();
+
+			infinity::module::library::Library library;
+			if (library.ParseFromArray(data.data(), data.size())) {
+
+				if (library.imt_version() <= ::_IMT_Version && library.imt_version() > 0.3) {
+					ui->libraryname->setText(QString::fromStdString(library.name()));
+					ui->libraryengine->setText(QString::fromStdString(library.engine()));
+					ui->librarydictionary->setText(QString::fromStdString(library.dictionary()));
+					ui->libraryiconname->setText("从信息表读取");
+					QPixmap pix;
+					pix.loadFromData(QByteArray::fromBase64(QString::fromStdString(library.icon()).toLocal8Bit()));
+					ui->libraryicon->setPix(pix);
+					ui->libraryauthor->setText(QString::fromStdString(library.author()));
+					ui->libraryversion->setValue(library.version());
+					ui->libraryinfor->setPlainText(QString::fromStdString(library.infor()));
+
+					int slistsize = library.sdblist_size(), slinksize = library.sdblink_size();
+
+					while (ui->lsdlist->count() > 0) {
+						delete ui->lsdlist->takeItem(0);
+					}
+					ui->lsddefault->clear();
+					while (ui->lsdlink->rowCount() > 0) {
+						ui->lsdlink->removeRow(0);
+					}
+
+					for (int i = 0; i < slistsize; i++) {
+						QString sname = QString::fromStdString(library.sdblist().Get(i));
+						int count = ui->lsdlist->count();
+						ui->lsdlist->insertItem(count, sname);
+						ui->lsddefault->insertItem(count, sname);
+					}
+					ui->lsddefault->setCurrentText(QString::fromStdString(library.sdbdefault()));
+
+					for (int i = 0; i < slinksize; i++) {
+						infinity::module::library::Library::link link = library.sdblink().Get(i);
+						int index = ui->lsdlink->rowCount();
+						ui->lsdlink->insertRow(index);
+						this->setllrow(
+							index,
+							QString::fromStdString(link.pitch()),
+							QString::fromStdString(link.sdb())
+						);
+					}
+
+					ui->librarycheckmethod->setCurrentIndex(library.checkmethod());
+					ui->libraryautocheck->setChecked(library.autocheck());
+					ui->libraryeula->setPlainText(QString::fromStdString(library.eula()));
+					ui->librarywarrantdate->setSelectedDate(QDate::fromString(QString::fromStdString(library.warrantdate()), "yyyy-MM-dd"));
+					ui->librarywarranttime->setTime(QTime::fromString(QString::fromStdString(library.warranttime()), "hh:mm:ss"));
+				}
+				else {
+					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen);
+				}
+			}
+			else {
+				QMessageBox::warning(this, "出错", "文件格式损坏：" + filen);
+			}
+		}
+		else {
+			QMessageBox::warning(this, "出错", "无法打开文件：" + filen);
+		}
+	}
+	ui->tabWidget->setCurrentIndex(1);
+	ui->toolBox_2->setCurrentIndex(0);
+}
+
+void MainWindow::on_actionOpenNew_dic_triggered()
+{
+	QString filen = QFileDialog::getExistingDirectory(this, "读取字典", QDir::currentPath());
+	if (!filen.isEmpty()) {
+		QDir::setCurrent(filen);
+		QFile file(filen + "/dictionary.iftdinfor2");
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QByteArray data = file.readAll();
+			file.close();
+			infinity::module::dictionary::Dictionary dictionary;
+			if (dictionary.ParseFromArray(data.data(), data.size())) {
+				if (dictionary.imt_version() <= ::_IMT_Version && dictionary.imt_version() > 0.3) {
+					ui->dicname->setText(QString::fromStdString(dictionary.name()));
+
+					QFile filec(filen + "/character.raw");
+					QFile filet(filen + "/translate.raw");
+
+					if (filec.open(QIODevice::ReadOnly | QIODevice::Text)) {
+						QString cdata = filec.readAll();
+						filec.close();
+
+						QStringList clist = cdata.split("\n", Qt::SkipEmptyParts);
+
+						while (ui->charactertable->rowCount() > 0) {
+							ui->charactertable->removeRow(0);
+						}
+
+						for (int i = 0; i < clist.size(); i++) {
+							QString sdata = clist.at(i);
+							QStringList slist = sdata.split(" ", Qt::SkipEmptyParts);
+							if (slist.size() >= 3) {
+								QString x_sampa;
+								for (int j = 2; j < slist.size(); j++) {
+									x_sampa += slist.at(j);
+									if (j < slist.size() - 1) {
+										x_sampa += " ";
+									}
+								}
+								ui->charactertable->insertRow(0);
+								this->setcharrow(0,
+									slist.at(0),
+									slist.at(1).toInt(),
+									x_sampa);
+
+							}
+						}
+					}
+					else {
+						QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/charater.raw");
+					}
+
+					if (filet.open(QIODevice::ReadOnly | QIODevice::Text)) {
+						QString tdata = filet.readAll();
+						filet.close();
+
+						QStringList tlist = tdata.split("\n", Qt::SkipEmptyParts);
+
+						while (ui->translatetable->rowCount() > 0) {
+							ui->translatetable->removeRow(0);
+						}
+
+						for (int i = 0; i < tlist.size(); i++) {
+							QString sdata = tlist.at(i);
+							QStringList slist = sdata.split(" ", Qt::SkipEmptyParts);
+							if (slist.size() == 2) {
+								ui->translatetable->insertRow(0);
+								this->settransrow(0,
+									slist.at(0),
+									slist.at(1));
+
+							}
+						}
+					}
+					else {
+						QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/translate.raw");
+					}
+
+
+				}
+				else {
+					QMessageBox::warning(this, "出错", "不支持的文件版本：" + filen + "/dictionary.iftdinfor2");
+				}
+
+			}
+			else {
+				QMessageBox::warning(this, "出错", "文件格式损坏：" + filen + "/dictionary.iftdinfor2");
+			}
+		}
+		else {
+			QMessageBox::warning(this, "出错", "无法打开文件：" + filen + "/dictionary.iftdinfor2");
+		}
+	}
+	ui->tabWidget->setCurrentIndex(2);
 }

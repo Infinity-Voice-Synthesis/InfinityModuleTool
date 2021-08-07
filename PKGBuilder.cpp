@@ -284,10 +284,10 @@ QStringList PKGBuilder::getInforList(QStringList filelist, QString rootpath, int
 		if (stemp.startsWith(rootpath)) {
 			stemp = stemp.right(stemp.size() - rootpath.size() - 1);
 			if (!stemp.contains("/")) {
-				if (stemp.endsWith(".ifteinfor") && type == 0) {
+				if (stemp.endsWith(".ifteinfor2") && type == 0) {
 					list.append(rootpath + "/" + stemp);
 				}
-				if (stemp.endsWith(".iftlinfor") && type == 1) {
+				if (stemp.endsWith(".iftlinfor2") && type == 1) {
 					list.append(rootpath + "/" + stemp);
 				}
 			}
@@ -301,34 +301,26 @@ bool PKGBuilder::checkSign(QString filename)
 	QFile file(filename);
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		QString data = file.readAll();
-		QJsonDocument jd = QJsonDocument::fromJson(data.toUtf8());
 		file.close();
-		if (jd.isObject()) {
-			QJsonObject jo = jd.object();
+		QFile publicfile(":/keys/keys/1.pub.key");
+		if (publicfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QString pubkey = publicfile.readAll();
+			publicfile.close();
 
-			if (jo.find("IMT_Version")->toDouble() <= ::_IMT_Version) {
+			QCryptographicHash hash(QCryptographicHash::Sha512);
+			hash.addData(data.toLatin1().data());
+			QString datahash = hash.result().toHex().toLower();
 
-				QFile publicfile(":/keys/keys/1.pub.key");
-				if (publicfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-					QString pubkey = publicfile.readAll();
-					publicfile.close();
+			QFile signfile(filename + ".signature");
+			if (signfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+				QString signdata = signfile.readAll();
+				signfile.close();
 
-					QCryptographicHash hash(QCryptographicHash::Sha512);
-					hash.addData(data.toLatin1().data());
-					QString datahash = hash.result().toHex().toLower();
+				QString datadecrypted;
+				RSASignature::public_decrypt(signdata, pubkey, datadecrypted);
 
-					QFile signfile(filename + ".signature");
-					if (signfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-						QString signdata = signfile.readAll();
-						signfile.close();
-
-						QString datadecrypted;
-						RSASignature::public_decrypt(signdata, pubkey, datadecrypted);
-
-						if (datadecrypted == datahash) {
-							return true;
-						}
-					}
+				if (datadecrypted == datahash) {
+					return true;
 				}
 			}
 		}

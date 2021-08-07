@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>952</width>
-    <height>713</height>
+    <width>865</width>
+    <height>652</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,8 +48,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>902</width>
-             <height>470</height>
+             <width>823</width>
+             <height>426</height>
             </rect>
            </property>
            <attribute name="label">
@@ -72,70 +72,17 @@
                  </property>
                 </widget>
                </item>
-               <item row="3" column="0" colspan="5">
-                <spacer name="horizontalSpacer_4">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>500</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="4" column="0" colspan="5">
-                <spacer name="horizontalSpacer_5">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>500</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="label_4">
-                 <property name="text">
-                  <string>引擎主模块</string>
-                 </property>
-                 <property name="buddy">
-                  <cstring>enginemain</cstring>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QLineEdit" name="enginemain">
-                 <property name="readOnly">
-                  <bool>true</bool>
-                 </property>
-                 <property name="placeholderText">
-                  <string>未选择</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="2">
-                <widget class="QPushButton" name="loadenginemain">
-                 <property name="text">
-                  <string>从文件选择</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1" colspan="2">
+               <item row="0" column="1" colspan="3">
                 <widget class="QLineEdit" name="enginename">
                  <property name="placeholderText">
                   <string>请输入引擎名称</string>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="5" rowspan="5">
+               <item row="0" column="4" rowspan="4">
                 <widget class="QGroupBox" name="groupBox">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -192,6 +139,85 @@
                   </item>
                  </layout>
                 </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>引擎主模块</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>enginemain</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1" colspan="2">
+                <widget class="QLineEdit" name="enginemain">
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                 <property name="placeholderText">
+                  <string>未选择</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="3">
+                <widget class="QPushButton" name="loadenginemain">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>从文件选择</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <spacer name="horizontalSpacer_14">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="2" column="1">
+                <widget class="QCheckBox" name="enginegroup">
+                 <property name="text">
+                  <string>接管渲染组切分</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="2" colspan="2">
+                <spacer name="horizontalSpacer_4">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>500</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="3" column="0" colspan="4">
+                <spacer name="horizontalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>500</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </widget>
@@ -326,8 +352,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>515</width>
-             <height>144</height>
+             <width>417</width>
+             <height>119</height>
             </rect>
            </property>
            <attribute name="label">
@@ -427,8 +453,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>515</width>
-             <height>144</height>
+             <width>417</width>
+             <height>119</height>
             </rect>
            </property>
            <attribute name="label">
@@ -531,8 +557,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>557</width>
-             <height>328</height>
+             <width>460</width>
+             <height>262</height>
             </rect>
            </property>
            <attribute name="label">
@@ -710,8 +736,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>607</width>
-             <height>346</height>
+             <width>823</width>
+             <height>456</height>
             </rect>
            </property>
            <attribute name="label">
@@ -964,8 +990,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>863</width>
-             <height>248</height>
+             <width>823</width>
+             <height>456</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1158,8 +1184,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>557</width>
-             <height>328</height>
+             <width>460</width>
+             <height>262</height>
             </rect>
            </property>
            <attribute name="label">
@@ -1460,8 +1486,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>952</width>
-     <height>26</height>
+     <width>865</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -1469,16 +1495,20 @@
      <string>引擎</string>
     </property>
     <addaction name="actionNew"/>
-    <addaction name="actionOpen"/>
+    <addaction name="actionOpenNew"/>
     <addaction name="actionSave_as"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>声库</string>
     </property>
     <addaction name="actionNew_2"/>
-    <addaction name="actionOpen_2"/>
+    <addaction name="actionOpenNew_2"/>
     <addaction name="actionSave_as_2"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_2"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="title">
@@ -1508,7 +1538,7 @@
      <string>字典</string>
     </property>
     <addaction name="actionNew_dic"/>
-    <addaction name="actionOpen_dic"/>
+    <addaction name="actionOpenNew_dic"/>
     <addaction name="actionSave_dic"/>
     <addaction name="separator"/>
     <addaction name="actionFrom_cedict"/>
@@ -1517,6 +1547,8 @@
     <addaction name="separator"/>
     <addaction name="actionAutoC"/>
     <addaction name="actionAutoC_X"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_dic"/>
    </widget>
    <widget class="QMenu" name="menu_7">
     <property name="title">
@@ -1539,7 +1571,7 @@
   </action>
   <action name="actionOpen">
    <property name="text">
-    <string>读取信息表</string>
+    <string>读取旧版信息表</string>
    </property>
   </action>
   <action name="actionSave_as">
@@ -1554,7 +1586,7 @@
   </action>
   <action name="actionOpen_2">
    <property name="text">
-    <string>读取信息表</string>
+    <string>读取旧版信息表</string>
    </property>
   </action>
   <action name="actionSave_as_2">
@@ -1584,7 +1616,7 @@
   </action>
   <action name="actionOpen_dic">
    <property name="text">
-    <string>读取字典</string>
+    <string>读取旧版字典</string>
    </property>
   </action>
   <action name="actionSave_dic">
@@ -1643,6 +1675,21 @@
   <action name="actionLoadDic">
    <property name="text">
     <string>从音素映射直接加载字典(SynthV格式)</string>
+   </property>
+  </action>
+  <action name="actionOpenNew">
+   <property name="text">
+    <string>读取信息表</string>
+   </property>
+  </action>
+  <action name="actionOpenNew_2">
+   <property name="text">
+    <string>读取信息表</string>
+   </property>
+  </action>
+  <action name="actionOpenNew_dic">
+   <property name="text">
+    <string>读取字典</string>
    </property>
   </action>
  </widget>

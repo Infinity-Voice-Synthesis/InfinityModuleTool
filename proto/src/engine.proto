@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package infinity.module.engine;
+
+message Engine {
+    double IMT_Version=1;
+
+    string name=2;
+    string main=3;
+    bool splitGroup=4;
+    string icon=5;
+
+    string author=6;
+    double version=7;
+    string infor=8;
+
+    message parameter {
+        string name=1;
+        double min=2;
+        double max=3;
+        double default=4;
+    }
+
+    repeated parameter trackParams=9;
+    repeated parameter noteParams=10;
+
+    uint32 checkMethod=11;
+    bool autoCheck=12;
+    string eula=13;
+    string warrantDate=14;
+    string warrantTime=15;
+}

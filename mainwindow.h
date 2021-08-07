@@ -39,6 +39,10 @@
 #include "BuildThread.h"
 #include <QLabel>
 
+#include "proto/engine.pb.h"
+#include "proto/library.pb.h"
+#include "proto/dictionary.pb.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -135,5 +139,8 @@ private slots:
 	void on_actionFrom_x_sampa_triggered();
 	void on_actionAutoC_X_triggered();
 	void on_actionLoadDic_triggered();
+	void on_actionOpenNew_triggered();
+	void on_actionOpenNew_2_triggered();
+	void on_actionOpenNew_dic_triggered();
 };
 #endif // MAINWINDOW_H
